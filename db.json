@@ -1,0 +1,527 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "RC red Racing Car",
+      "price": 1499,
+      "category": "Remote Control",
+      "description": "A fast remote control racing car for exciting indoor and outdoor play.",
+      "image": "images/rc/f1 red.png",
+      "rating": 4.5,
+      "stock": 12,
+      "maxQuantity": 5
+    },
+    {
+      "id": "2",
+      "name": "RC Monster Truck",
+      "price": 1899,
+      "category": "Remote Control",
+      "description": "A powerful monster truck with an easy-to-use remote controller.",
+      "image": "images/rc/mon truck.png",
+      "rating": 4.7,
+      "stock": 8,
+      "maxQuantity": 5
+    },
+    {
+      "id": "3",
+      "name": "Remote Control Helicopter",
+      "price": 2199,
+      "category": "Remote Control",
+      "description": "A lightweight remote control helicopter designed for exciting flying fun.",
+      "image": "images/rc/rc heli.png",
+      "rating": 4.4,
+      "stock": 10,
+      "maxQuantity": 5
+    },
+    {
+      "id": "4",
+      "name": "Remote Control Speed Boat",
+      "price": 1699,
+      "category": "Remote Control",
+      "description": "A fun speed boat designed for outdoor water play.",
+      "image": ["images/rc/jcb 1.png","images/rc/jcb 2.png","images/rc/jcb 3.png"],
+      "rating": 4.3,
+      "stock": 7,
+      "maxQuantity": 5
+    },
+    {
+      "id": "5",
+      "name": "Remote Control Stunt Car",
+      "price": 1599,
+      "category": "Remote Control",
+      "description": "Perform spins and stunts with this exciting remote control car.",
+      "image": ["images/rc/rc police.png","images/rc/rc police2.png","images/rc/rc police3.png"],
+      "rating": 4.6,
+      "stock": 15,
+      "maxQuantity": 5
+    },
+    {
+      "id": "6",
+      "name": "Remote Control cute Car",
+      "price": 1299,
+      "category": "Remote Control",
+      "description": "A police-themed remote control car for imaginative adventures.",
+      "image": "images/rc/rc Wcar.jpg",
+      "rating": 4.2,
+      "stock": 11,
+      "maxQuantity": 5
+    },
+    {
+      "id": "7",
+      "name": "Remote Control Drift Car",
+      "price": 1999,
+      "category": "Remote Control",
+      "description": "A stylish drift car designed for smooth turns and racing fun.",
+      "image": "images/rc/f1 black.png",
+      "rating": 4.8,
+      "stock": 9,
+      "maxQuantity": 5
+    },
+    {
+      "id": "8",
+      "name": "Remote Control Construction Truck",
+      "price": 1799,
+      "category": "Remote Control",
+      "description": "A construction-themed truck perfect for imaginative building play.",
+      "image": "images/rc/defend.png",
+      "rating": 4.5,
+      "stock": 6,
+      "maxQuantity": 5
+    },
+    {
+      "id": "9",
+      "name": "Fluffy Teddy Bear",
+      "price": 899,
+      "category": "Plush & Cuddly",
+      "description": "A soft and cuddly teddy bear made for hugs and bedtime adventures.",
+      "image": "images/plushy/bear.png",
+      "rating": 4.8,
+      "stock": 20,
+      "maxQuantity": 5
+    },
+    {
+      "id": "10",
+      "name": "Cute Bunny Plush",
+      "price": 799,
+      "category": "Plush & Cuddly",
+      "description": "A soft bunny plush that makes a lovely companion for children.",
+      "image": "images/plushy/bunny.png",
+      "rating": 4.7,
+      "stock": 18,
+      "maxQuantity": 5
+    },
+    {
+      "id": "11",
+      "name": "Rainbow Unicorn Plush",
+      "price": 999,
+      "category": "Plush & Cuddly",
+      "description": "A colorful unicorn plush for magical imaginary adventures.",
+      "image": "images/plushy/cute bear.png",
+      "rating": 4.6,
+      "stock": 14,
+      "maxQuantity": 5
+    },
+    {
+      "id": "12",
+      "name": "Cute Puppy Plush",
+      "price": 849,
+      "category": "Plush & Cuddly",
+      "description": "A soft puppy plush that is perfect for cuddles and playtime.",
+      "image": "public/images/plushy/puppy.png",
+      "rating": 4.5,
+      "stock": 16,
+      "maxQuantity": 5
+    },
+    {
+      "id": "13",
+      "name": "Sleepy Cat Plush",
+      "price": 749,
+      "category": "Plush & Cuddly",
+      "description": "A soft sleepy cat plush for cozy bedtime moments.",
+      "image": "images/plushy/star.png",
+      "rating": 4.4,
+      "stock": 13,
+      "maxQuantity": 5
+    },
+    {
+      "id": "14",
+      "name": "Elephant Cuddle Toy",
+      "price": 949,
+      "category": "Plush & Cuddly",
+      "description": "A gentle elephant plush with a soft and cuddly design.",
+      "image": "images/plushy/ele.png",
+      "rating": 4.7,
+      "stock": 10,
+      "maxQuantity": 5
+    },
+    {
+      "id": "15",
+      "name": "Dinosaur Plush Toy",
+      "price": 899,
+      "category": "Plush & Cuddly",
+      "description": "A friendly dinosaur plush for little prehistoric adventures.",
+      "image": "images/plushy/mamm.png",
+      "rating": 4.3,
+      "stock": 12,
+      "maxQuantity": 5
+    },
+    {
+      "id": "16",
+      "name": "Panda Plush Toy",
+      "price": 1099,
+      "category": "Plush & Cuddly",
+      "description": "A soft panda companion perfect for cuddling and imaginative play.",
+      "image": "images/plushy/peng.png",
+      "rating": 4.8,
+      "stock": 9,
+      "maxQuantity": 5
+    },
+    {
+      "id": "17",
+      "name": "Kids Learning Tablet",
+      "price": 1299,
+      "category": "Learn & Play",
+      "description": "An interactive learning toy designed to make learning fun.",
+      "image": "https://images.unsplash.com/photo-1587614382346-4ec70e388b28",
+      "rating": 4.5,
+      "stock": 10,
+      "maxQuantity": 5
+    },
+    {
+      "id": "18",
+      "name": "Alphabet Learning Board",
+      "price": 599,
+      "category": "Learn & Play",
+      "description": "A colorful board that helps children practice letters and words.",
+      "image": "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9",
+      "rating": 4.4,
+      "stock": 20,
+      "maxQuantity": 5
+    },
+    {
+      "id": "19",
+      "name": "Counting Math Game",
+      "price": 699,
+      "category": "Learn & Play",
+      "description": "A fun educational game for learning numbers and basic counting.",
+      "image": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1",
+      "rating": 4.6,
+      "stock": 17,
+      "maxQuantity": 5
+    },
+    {
+      "id": "20",
+      "name": "Kids Science Kit",
+      "price": 1499,
+      "category": "Learn & Play",
+      "description": "A beginner-friendly science kit for fun experiments and discovery.",
+      "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d",
+      "rating": 4.7,
+      "stock": 8,
+      "maxQuantity": 5
+    },
+    {
+      "id": "21",
+      "name": "Memory Matching Game",
+      "price": 499,
+      "category": "Learn & Play",
+      "description": "A colorful memory game that encourages concentration and recall.",
+      "image": "https://images.unsplash.com/photo-1606503153255-59d8b8b821f6",
+      "rating": 4.3,
+      "stock": 25,
+      "maxQuantity": 5
+    },
+    {
+      "id": "22",
+      "name": "Kids Puzzle Set",
+      "price": 549,
+      "category": "Learn & Play",
+      "description": "A collection of puzzles designed to develop problem-solving skills.",
+      "image": "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5",
+      "rating": 4.6,
+      "stock": 19,
+      "maxQuantity": 5
+    },
+    {
+      "id": "23",
+      "name": "Shape Sorting Game",
+      "price": 649,
+      "category": "Learn & Play",
+      "description": "A colorful shape sorting toy for early learning and exploration.",
+      "image": "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65",
+      "rating": 4.5,
+      "stock": 14,
+      "maxQuantity": 5
+    },
+    {
+      "id": "24",
+      "name": "Musical Learning Toy",
+      "price": 899,
+      "category": "Learn & Play",
+      "description": "An interactive musical toy that introduces children to sounds and rhythm.",
+      "image": "https://images.unsplash.com/photo-1524650359799-842906ca1c06",
+      "rating": 4.4,
+      "stock": 11,
+      "maxQuantity": 5
+    },
+    {
+      "id": "25",
+      "name": "Building Blocks Set",
+      "price": 999,
+      "category": "Build & Create",
+      "description": "A colorful building block set for creative construction.",
+      "image": "https://images.unsplash.com/photo-1587654780291-39c9404d746b",
+      "rating": 4.8,
+      "stock": 18,
+      "maxQuantity": 5
+    },
+    {
+      "id": "26",
+      "name": "Creative Brick Set",
+      "price": 1299,
+      "category": "Build & Create",
+      "description": "A creative brick set with pieces for endless building possibilities.",
+      "image": "https://images.unsplash.com/photo-1560961911-ba7ef651a56c",
+      "rating": 4.7,
+      "stock": 15,
+      "maxQuantity": 5
+    },
+    {
+      "id": "27",
+      "name": "Magnetic Building Tiles",
+      "price": 1599,
+      "category": "Build & Create",
+      "description": "Magnetic tiles that make it easy to create colorful structures.",
+      "image": "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60",
+      "rating": 4.9,
+      "stock": 12,
+      "maxQuantity": 5
+    },
+    {
+      "id": "28",
+      "name": "DIY Craft Kit",
+      "price": 799,
+      "category": "Build & Create",
+      "description": "A creative craft kit for making fun handmade projects.",
+      "image": "https://images.unsplash.com/photo-1452860606245-08befc0ff44b",
+      "rating": 4.5,
+      "stock": 16,
+      "maxQuantity": 5
+    },
+    {
+      "id": "29",
+      "name": "Mini Construction Set",
+      "price": 1099,
+      "category": "Build & Create",
+      "description": "A construction set that encourages creativity and hands-on building.",
+      "image": "https://images.unsplash.com/photo-1599623560574-39d485900c95",
+      "rating": 4.6,
+      "stock": 13,
+      "maxQuantity": 5
+    },
+    {
+      "id": "30",
+      "name": "Wooden Builder Set",
+      "price": 899,
+      "category": "Build & Create",
+      "description": "Classic wooden pieces for creative and imaginative construction.",
+      "image": "https://images.unsplash.com/photo-1596464716127-f2a82984de30",
+      "rating": 4.4,
+      "stock": 17,
+      "maxQuantity": 5
+    },
+    {
+      "id": "31",
+      "name": "Creative Marble Run",
+      "price": 1399,
+      "category": "Build & Create",
+      "description": "Build exciting marble tracks and explore cause and effect.",
+      "image": "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65",
+      "rating": 4.7,
+      "stock": 9,
+      "maxQuantity": 5
+    },
+    {
+      "id": "32",
+      "name": "Robot Building Kit",
+      "price": 1799,
+      "category": "Build & Create",
+      "description": "A creative robot kit that combines construction with imaginative play.",
+      "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+      "rating": 4.8,
+      "stock": 7,
+      "maxQuantity": 5
+    }
+  ],
+  "cartItem": [
+    {
+      "product": {
+        "id": "2",
+        "name": "Remote Control Monster Truck",
+        "price": 1899,
+        "category": "Remote Control",
+        "description": "A powerful monster truck with an easy-to-use remote controller.",
+        "image": "https://images.unsplash.com/photo-1594787318286-3d835c1d207f",
+        "rating": 4.7,
+        "stock": 8,
+        "maxQuantity": 5
+      },
+      "quantity": 1,
+      "userId": "bR0OACKgvps",
+      "id": "_W4Ijk108Ek"
+    },
+    {
+      "product": {
+        "id": "3",
+        "name": "Remote Control Helicopter",
+        "price": 2199,
+        "category": "Remote Control",
+        "description": "A lightweight remote control helicopter designed for exciting flying fun.",
+        "image": "https://images.unsplash.com/photo-1473968512647-3e447244af8f",
+        "rating": 4.4,
+        "stock": 10,
+        "maxQuantity": 5
+      },
+      "quantity": 2,
+      "userId": "bR0OACKgvps",
+      "id": "Ue0Vmn8S7d8"
+    },
+    {
+      "product": {
+        "id": "1",
+        "name": "Remote Control Racing Car",
+        "price": 1499,
+        "category": "Remote Control",
+        "description": "A fast remote control racing car for exciting indoor and outdoor play.",
+        "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
+        "rating": 4.5,
+        "stock": 12,
+        "maxQuantity": 5
+      },
+      "quantity": 1,
+      "userId": "bR0OACKgvps",
+      "id": "7g69SC3w2aE"
+    }
+  ],
+  "wishlist": [
+    {
+      "product": {
+        "id": "1",
+        "name": "Remote Control Racing Car",
+        "price": 1499,
+        "category": "Remote Control",
+        "description": "A fast remote control racing car for exciting indoor and outdoor play.",
+        "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
+        "rating": 4.5,
+        "stock": 12,
+        "maxQuantity": 5
+      },
+      "userId": "bR0OACKgvps",
+      "id": "JvWZaSZjtU8"
+    }
+  ],
+  "users": [
+    {
+      "name": "fathima",
+      "email": "fath@gmail.com",
+      "password": "Fathima7*",
+      "id": "bR0OACKgvps"
+    },
+    {
+      "name": "sanjay",
+      "email": "sanjay@gmail.com",
+      "password": "Sanjay7*",
+      "id": "kmPlYlUm9-E"
+    }
+  ],
+  "orders": [
+    {
+      "userId": "bR0OACKgvps",
+      "items": [
+        {
+          "product": {
+            "id": "4",
+            "name": "Remote Control Speed Boat",
+            "price": 1699,
+            "category": "Remote Control",
+            "description": "A fun speed boat designed for outdoor water play.",
+            "image": "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13",
+            "rating": 4.3,
+            "stock": 7,
+            "maxQuantity": 5
+          },
+          "quantity": 2,
+          "id": "LX4JGJ00uY8",
+          "userId": "bR0OACKgvps"
+        },
+        {
+          "product": {
+            "id": "1",
+            "name": "Remote Control Racing Car",
+            "price": 1499,
+            "category": "Remote Control",
+            "description": "A fast remote control racing car for exciting indoor and outdoor play.",
+            "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
+            "rating": 4.5,
+            "stock": 12,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "id": "15X8-GJKMRw",
+          "userId": "bR0OACKgvps"
+        },
+        {
+          "product": {
+            "id": "5",
+            "name": "Remote Control Stunt Car",
+            "price": 1599,
+            "category": "Remote Control",
+            "description": "Perform spins and stunts with this exciting remote control car.",
+            "image": "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d",
+            "rating": 4.6,
+            "stock": 15,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "id": "rE8wWaRbUxo",
+          "userId": "bR0OACKgvps"
+        },
+        {
+          "product": {
+            "id": "8",
+            "name": "Remote Control Construction Truck",
+            "price": 1799,
+            "category": "Remote Control",
+            "description": "A construction-themed truck perfect for imaginative building play.",
+            "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12",
+            "rating": 4.5,
+            "stock": 6,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "DUmWASObqW8"
+        }
+      ],
+      "address": {
+        "id": "addr1",
+        "userId": "bR0OACKgvps",
+        "fullName": "Fathima",
+        "phone": "9876543210",
+        "line1": "12 Palm Grove Street",
+        "line2": "Near City Park",
+        "city": "Kozhikode",
+        "state": "Kerala",
+        "pincode": "673001",
+        "isDefault": true
+      },
+      "paymentMethod": "cod",
+      "total": 8295,
+      "status": "placed",
+      "createdAt": "2026-09-22T11:26:26.519Z",
+      "id": "6B_jus51Y-4"
+    }
+  ],
+  "addresses": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}

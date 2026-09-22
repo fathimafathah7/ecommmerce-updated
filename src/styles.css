@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Toast / snackbar theming (MatSnackBar renders outside component
+   encapsulation, so these rules must live in the global stylesheet). */
+.app-snackbar {
+  font-family: inherit;
+  border-radius: 0.75rem !important;
+}
+
+.app-snackbar-success .mdc-snackbar__surface {
+  background-color: #16a34a !important;
+}
+
+.app-snackbar-error .mdc-snackbar__surface {
+  background-color: #dc2626 !important;
+}
+
+.app-snackbar-info .mdc-snackbar__surface {
+  background-color: #1f2937 !important;
+}
+
+.app-snackbar-warning .mdc-snackbar__surface {
+  background-color: #d97706 !important;
+}
+
+.app-snackbar .mdc-snackbar__label,
+.app-snackbar .mdc-snackbar__surface {
+  color: #ffffff !important;
+}
+
+.app-snackbar .mat-mdc-button {
+  color: #ffffff !important;
+}

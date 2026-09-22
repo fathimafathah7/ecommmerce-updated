@@ -1,0 +1,55 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center px-4"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
+    (click)="onCancel()"
+  ></div>
+
+  <!-- Card -->
+  <div
+    class="relative bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 confirm-dialog-card"
+  >
+    <div class="flex items-start gap-3">
+      <div
+        class="w-10 h-10 rounded-full bg-red-50 text-red-500
+               flex items-center justify-center text-xl shrink-0"
+      >
+        ⚠️
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">
+          {{ title() }}
+        </h3>
+        <p class="mt-1 text-sm text-gray-500">
+          {{ message() }}
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-3 justify-end">
+      <button
+        type="button"
+        (click)="onCancel()"
+        class="px-4 py-2 rounded-lg text-sm font-medium
+               text-gray-700 border border-gray-300
+               hover:bg-gray-50 transition"
+      >
+        {{ cancelLabel() }}
+      </button>
+
+      <button
+        type="button"
+        (click)="onConfirm()"
+        class="px-4 py-2 rounded-lg text-sm font-medium
+               text-white bg-red-600 hover:bg-red-700 transition"
+      >
+        {{ confirmLabel() }}
+      </button>
+    </div>
+  </div>
+</div>

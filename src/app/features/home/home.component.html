@@ -1,0 +1,197 @@
+<section class="min-h-[560px] bg-[#F7F5F0]">
+
+  <div class="mx-auto flex min-h-[560px] max-w-7xl items-center px-6 py-20">
+
+<div class="max-w-2xl">
+
+  <p class="mb-5 text-xs font-semibold uppercase tracking-[0.25em] text-[#8B6F52]">
+    Welcome to ToyStore
+  </p>
+
+  <h1 class="text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#292723] md:text-7xl">
+
+    Find Something
+
+    <span class="block text-[#8B6F52]">
+      You'll Love
+    </span>
+
+  </h1>
+
+  <p class="mt-7 max-w-xl text-base leading-8 text-[#716C64] md:text-lg">
+    Discover thoughtfully selected toys for every little adventure.
+    Find something special for every child.
+  </p>
+
+  <button
+    routerLink="/products"
+    class="mt-9 rounded-full bg-[#292723]
+           px-8 py-3.5
+           text-sm font-medium text-white
+           transition-all duration-300
+           hover:bg-[#8B6F52]
+           hover:shadow-lg"
+  >
+    Shop Collection
+  </button>
+
+</div>
+
+  </div>
+
+</section>
+
+<section class="bg-white py-20">
+
+  <div class="mx-auto max-w-7xl px-6">
+
+<div class="mb-12">
+
+  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
+    Explore
+  </p>
+
+  <h2 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
+    Shop by Category
+  </h2>
+
+  <p class="mt-3 text-[#716C64]">
+    Find the perfect toy for every little adventure.
+  </p>
+
+</div>
+
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+
+  <!-- Plush -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Plush Toys' }"
+    class="group rounded-2xl border border-[#E7E2D9]
+           bg-[#F9F8F5] p-8
+           transition-all duration-300
+           hover:-translate-y-1
+           hover:border-[#CFC4B4]
+           hover:bg-[#F4F0E9]"
+  >
+
+    <div
+      class="mb-10 flex h-12 w-12 items-center justify-center
+             rounded-full bg-white
+             text-2xl shadow-sm"
+    >
+      🧸
+    </div>
+
+    <h3 class="text-lg font-semibold text-[#292723]">
+      Plush & Cuddly
+    </h3>
+
+    <p class="mt-2 text-sm text-[#8A857C]">
+      Soft companions for little ones
+    </p>
+
+  </a>
+
+
+  <!-- Remote Control -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Vehicles' }"
+    class="group rounded-2xl border border-[#E7E2D9]
+           bg-[#F9F8F5] p-8
+           transition-all duration-300
+           hover:-translate-y-1
+           hover:border-[#CFC4B4]
+           hover:bg-[#F4F0E9]"
+  >
+
+    <div
+      class="mb-10 flex h-12 w-12 items-center justify-center
+             rounded-full bg-white
+             text-2xl shadow-sm"
+    >
+      🚗
+    </div>
+
+    <h3 class="text-lg font-semibold text-[#292723]">
+      Remote Control
+    </h3>
+
+    <p class="mt-2 text-sm text-[#8A857C]">
+      Exciting toys built for adventure
+    </p>
+
+  </a>
+
+
+  <!-- Learn -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Puzzles & Games' }"
+    class="group rounded-2xl border border-[#E7E2D9]
+           bg-[#F9F8F5] p-8
+           transition-all duration-300
+           hover:-translate-y-1
+           hover:border-[#CFC4B4]
+           hover:bg-[#F4F0E9]"
+  >
+
+    <div
+      class="mb-10 flex h-12 w-12 items-center justify-center
+             rounded-full bg-white
+             text-2xl shadow-sm"
+    >
+      🧩
+    </div>
+
+    <h3 class="text-lg font-semibold text-[#292723]">
+      Learn & Play
+    </h3>
+
+    <p class="mt-2 text-sm text-[#8A857C]">
+      Playful ways to learn and explore
+    </p>
+
+  </a>
+
+
+  <!-- Build -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Building Toys' }"
+    class="group rounded-2xl border border-[#E7E2D9]
+           bg-[#F9F8F5] p-8
+           transition-all duration-300
+           hover:-translate-y-1
+           hover:border-[#CFC4B4]
+           hover:bg-[#F4F0E9]"
+  >
+
+    <div
+      class="mb-10 flex h-12 w-12 items-center justify-center
+             rounded-full bg-white
+             text-2xl shadow-sm"
+    >
+      🧱
+    </div>
+
+    <h3 class="text-lg font-semibold text-[#292723]">
+      Build & Create
+    </h3>
+
+    <p class="mt-2 text-sm text-[#8A857C]">
+      Create, build and imagine
+    </p>
+
+  </a>
+
+</div>
+
+  </div>
+
+</section>
+
+<app-footer></app-footer>

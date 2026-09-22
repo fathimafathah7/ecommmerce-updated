@@ -1,0 +1,132 @@
+<section class="min-h-screen bg-gray-50 py-12">
+
+  <div class="max-w-5xl mx-auto px-6">
+
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">My Orders</h1>
+      <p class="mt-2 text-gray-500">Track and review your past purchases.</p>
+    </div>
+
+    @if (loading) {
+
+      <div class="flex justify-center py-16">
+        <p class="text-gray-600">Loading your orders...</p>
+      </div>
+
+    } @else if (orders.length === 0) {
+
+      <div class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+        <div class="text-5xl mb-4">📦</div>
+        <h2 class="text-xl font-semibold text-gray-800">No orders yet</h2>
+        <p class="text-gray-500 mt-2">When you place an order, it will show up here.</p>
+        <a
+          routerLink="/products"
+          class="inline-block mt-6 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+        >
+          Start Shopping
+        </a>
+      </div>
+
+    } @else {
+
+      <div class="space-y-4">
+
+        @for (order of orders; track order.id) {
+
+          <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+            <!-- Summary row -->
+            <button
+              type="button"
+              (click)="toggleExpand(order)"
+              class="w-full flex flex-col sm:flex-row sm:items-center justify-between
+                     gap-3 p-5 text-left hover:bg-gray-50 transition"
+            >
+              <div>
+                <p class="font-semibold text-gray-900">
+                  Order #{{ order.id?.toString()?.slice(-6) }}
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                  Placed on {{ order.createdAt | date:'medium' }} · {{ order.items.length }} item(s)
+                </p>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <span
+                  class="text-xs font-semibold px-2.5 py-1 rounded-full capitalize"
+                  [class]="statusBadgeClass(order.status)"
+                >
+                  {{ order.status }}
+                </span>
+
+                <span class="text-lg font-bold text-gray-900">
+                  {{ order.total | currency:'INR':'symbol':'1.0-0' }}
+                </span>
+
+                <span class="text-gray-400 text-sm">
+                  {{ expandedOrderId === order.id ? '▲' : '▼' }}
+                </span>
+              </div>
+            </button>
+
+            <!-- Expanded details -->
+            @if (expandedOrderId === order.id) {
+
+              <div class="border-t border-gray-100 p-5 bg-gray-50/50">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                  <!-- Items -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Items</h3>
+                    <div class="space-y-3">
+                      @for (item of order.items; track item.product.id) {
+                        <div class="flex items-center gap-3">
+                          <img
+                            [src]="item.product.image"
+                            [alt]="item.product.name"
+                            class="w-12 h-12 rounded-lg object-contain bg-white border border-gray-200 p-1 shrink-0"
+                          >
+                          <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate">{{ item.product.name }}</p>
+                            <p class="text-xs text-gray-500">Qty {{ item.quantity }}</p>
+                          </div>
+                          <p class="text-sm font-semibold text-gray-900">
+                            {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
+                          </p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Delivery + payment -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Delivery Address</h3>
+                    <p class="text-sm text-gray-600">
+                      {{ order.address.fullName }}<br>
+                      {{ order.address.line1 }}@if (order.address.line2) {, {{ order.address.line2 }}}<br>
+                      {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
+                      📞 {{ order.address.phone }}
+                    </p>
+
+                    <h3 class="text-sm font-semibold text-gray-800 mt-5 mb-2">Payment Method</h3>
+                    <p class="text-sm text-gray-600">{{ paymentLabel(order.paymentMethod) }}</p>
+                  </div>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</section>

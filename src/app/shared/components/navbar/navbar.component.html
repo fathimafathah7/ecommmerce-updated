@@ -1,0 +1,389 @@
+<nav class="sticky top-0 z-40 border-b border-[#E8E4DC] bg-[#F7F5F0]/95 backdrop-blur-md">
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+<div class="flex min-h-[72px] items-center justify-between gap-4">
+
+  <!-- Logo -->
+  <a
+    routerLink="/"
+    class="shrink-0 text-xl font-semibold tracking-[-0.02em] text-[#292723] sm:text-2xl"
+  >
+    Toy<span class="text-[#8B6F52]">Store</span>
+  </a>
+
+
+  <!-- Desktop Navigation -->
+  <div class="hidden items-center gap-7 lg:flex">
+
+    <a
+      routerLink="/"
+      routerLinkActive="text-[#8B6F52]"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-sm font-medium text-[#5F5A52] transition-colors duration-200 hover:text-[#8B6F52]"
+    >
+      Home
+    </a>
+
+    <a
+      routerLink="/products"
+      routerLinkActive="text-[#8B6F52]"
+      class="text-sm font-medium text-[#5F5A52] transition-colors duration-200 hover:text-[#8B6F52]"
+    >
+      Products
+    </a>
+
+  </div>
+
+
+  <!-- Desktop Search -->
+  <div class="hidden flex-1 justify-center px-4 sm:flex">
+
+    <div
+      class="flex w-full max-w-md items-center
+             rounded-full border border-[#DDD8CE]
+             bg-white
+             transition-all duration-200
+             focus-within:border-[#9A8063]
+             focus-within:ring-2
+             focus-within:ring-[#9A8063]/10"
+    >
+
+      <input
+        type="text"
+        name="search"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="search()"
+        placeholder="Search products..."
+        class="min-w-0 flex-1 bg-transparent px-4 py-2.5
+               text-sm text-[#292723]
+               outline-none
+               placeholder:text-[#9A958C]"
+      >
+
+      <!-- Professional Search Icon -->
+      <button
+        type="button"
+        (click)="search()"
+        aria-label="Search"
+        class="mr-1 flex h-9 w-9 items-center justify-center
+               rounded-full text-[#6F695F]
+               transition-all duration-200
+               hover:bg-[#F1EEE8]
+               hover:text-[#8B6F52]"
+      >
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.7"
+          stroke="currentColor"
+          class="h-[19px] w-[19px]"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m21 21-4.35-4.35m1.85-5.4a7.25 7.25 0 1 1-14.5 0 7.25 7.25 0 0 1 14.5 0Z"
+          />
+        </svg>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Right Side -->
+  <div class="flex items-center gap-3 sm:gap-5">
+
+    <!-- Wishlist -->
+    <a
+      routerLink="/wishlist"
+      title="Wishlist"
+      class="relative flex h-9 w-9 items-center justify-center
+             text-[#5F5A52]
+             transition-colors duration-200
+             hover:text-[#8B6F52]"
+    >
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.6"
+        stroke="currentColor"
+        class="h-[21px] w-[21px]"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
+        />
+      </svg>
+
+      @if ((wishlistCount$ | async); as count) {
+        @if (count > 0) {
+
+          <span
+            class="absolute -right-0.5 -top-0.5 flex h-4 min-w-4
+                   items-center justify-center rounded-full
+                   bg-[#8B6F52] px-1
+                   text-[9px] font-semibold text-white"
+          >
+            {{ count }}
+          </span>
+
+        }
+      }
+
+    </a>
+
+
+    <!-- Cart -->
+    <a
+      routerLink="/cart"
+      title="Cart"
+      class="relative flex h-9 w-9 items-center justify-center
+             text-[#5F5A52]
+             transition-colors duration-200
+             hover:text-[#8B6F52]"
+    >
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.6"
+        stroke="currentColor"
+        class="h-[21px] w-[21px]"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25"
+        />
+        <circle cx="9" cy="20" r="1" />
+        <circle cx="18" cy="20" r="1" />
+      </svg>
+
+      @if ((cartCount$ | async); as count) {
+        @if (count > 0) {
+
+          <span
+            class="absolute -right-0.5 -top-0.5 flex h-4 min-w-4
+                   items-center justify-center rounded-full
+                   bg-[#8B6F52] px-1
+                   text-[9px] font-semibold text-white"
+          >
+            {{ count }}
+          </span>
+
+        }
+      }
+
+    </a>
+
+
+    <!-- Account -->
+    <div class="relative">
+
+      <button
+        type="button"
+        (click)="toggleAccountMenu()"
+        [attr.aria-expanded]="accountMenuOpen"
+        title="Account"
+        class="flex h-9 w-9 items-center justify-center
+               text-[#5F5A52]
+               transition-colors duration-200
+               hover:text-[#8B6F52]"
+      >
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.6"
+          stroke="currentColor"
+          class="h-[21px] w-[21px]"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0"
+          />
+        </svg>
+
+      </button>
+
+
+      @if (accountMenuOpen) {
+
+        <div
+          class="absolute right-0 mt-3 w-60 overflow-hidden
+                 rounded-2xl border border-[#E5E0D7]
+                 bg-white shadow-[0_15px_45px_rgba(41,39,35,0.10)]"
+        >
+
+          @if (currentUser$ | async; as user) {
+
+            <div class="border-b border-[#EEEAE3] px-5 py-4">
+
+              <p class="truncate text-sm font-semibold text-[#292723]">
+                {{ user.name }}
+              </p>
+
+              <p class="mt-0.5 truncate text-xs text-[#8A857C]">
+                {{ user.email }}
+              </p>
+
+            </div>
+
+
+            <a
+              routerLink="/profile"
+              (click)="closeAccountMenu()"
+              class="flex items-center gap-3 px-5 py-3
+                     text-sm text-[#5F5A52]
+                     transition-colors hover:bg-[#F7F5F0]"
+            >
+              My Profile
+            </a>
+
+
+            <a
+              routerLink="/orders"
+              (click)="closeAccountMenu()"
+              class="flex items-center gap-3 px-5 py-3
+                     text-sm text-[#5F5A52]
+                     transition-colors hover:bg-[#F7F5F0]"
+            >
+              My Orders
+            </a>
+
+
+            <div class="mx-5 border-t border-[#EEEAE3]"></div>
+
+
+            <button
+              type="button"
+              (click)="logout()"
+              class="w-full px-5 py-3 text-left
+                     text-sm text-[#9A5B52]
+                     transition-colors hover:bg-[#FAF3F1]"
+            >
+              Logout
+            </button>
+
+          } @else {
+
+            <a
+              routerLink="/auth"
+              (click)="closeAccountMenu()"
+              class="block px-5 py-3 text-sm text-[#5F5A52]
+                     transition-colors hover:bg-[#F7F5F0]"
+            >
+              Login
+            </a>
+
+            <a
+              routerLink="/auth"
+              (click)="closeAccountMenu()"
+              class="block px-5 py-3 text-sm text-[#5F5A52]
+                     transition-colors hover:bg-[#F7F5F0]"
+            >
+              Create Account
+            </a>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Mobile Search -->
+<div class="pb-3 sm:hidden">
+
+  <div
+    class="flex items-center rounded-full
+           border border-[#DDD8CE]
+           bg-white
+           focus-within:border-[#9A8063]
+           focus-within:ring-2
+           focus-within:ring-[#9A8063]/10"
+  >
+
+    <input
+      type="text"
+      name="search-mobile"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="search()"
+      placeholder="Search products..."
+      class="min-w-0 flex-1 bg-transparent px-4 py-2.5
+             text-sm text-[#292723]
+             outline-none
+             placeholder:text-[#9A958C]"
+    >
+
+    <button
+      type="button"
+      (click)="search()"
+      aria-label="Search"
+      class="mr-1 flex h-9 w-9 items-center justify-center
+             rounded-full text-[#6F695F]
+             hover:bg-[#F1EEE8]"
+    >
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.7"
+        stroke="currentColor"
+        class="h-[19px] w-[19px]"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m21 21-4.35-4.35m1.85-5.4a7.25 7.25 0 1 1-14.5 0 7.25 7.25 0 0 1 14.5 0Z"
+        />
+      </svg>
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- Mobile Links -->
+<div class="flex items-center gap-6 pb-3 text-sm lg:hidden">
+
+  <a
+    routerLink="/"
+    class="font-medium text-[#5F5A52] hover:text-[#8B6F52]"
+  >
+    Home
+  </a>
+
+  <a
+    routerLink="/products"
+    class="font-medium text-[#5F5A52] hover:text-[#8B6F52]"
+  >
+    Products
+  </a>
+
+</div>
+
+
+  </div>
+
+</nav>

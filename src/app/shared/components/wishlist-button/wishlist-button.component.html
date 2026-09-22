@@ -1,0 +1,20 @@
+<button
+  type="button"
+  (click)="toggle($event)"
+  [class.w-10]="size() === 'md'"
+  [class.h-10]="size() === 'md'"
+  [class.text-xl]="size() === 'md'"
+  [class.w-8]="size() === 'sm'"
+  [class.h-8]="size() === 'sm'"
+  [class.text-base]="size() === 'sm'"
+  class="rounded-full bg-white/90 shadow flex items-center justify-center
+         hover:bg-white transition active:scale-90"
+  [attr.aria-pressed]="(isInWishlist$ | async) ? 'true' : 'false'"
+  aria-label="Toggle wishlist"
+>
+  @if (isInWishlist$ | async) {
+    <span class="text-red-500">❤</span>
+  } @else {
+    <span class="text-gray-400 hover:text-red-400">♡</span>
+  }
+</button>
