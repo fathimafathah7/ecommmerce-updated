@@ -76,4 +76,11 @@ export class AuthService {
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
+  findByEmail(email: string): Observable<User[]> {
+  return this.http.get<User[]>(`${this.apiUrl}?email=${email}`);
+}
+
+updatePassword(userId: number | string, newPassword: string): Observable<User> {
+  return this.http.patch<User>(`${this.apiUrl}/${userId}`, { password: newPassword });
+}
 }

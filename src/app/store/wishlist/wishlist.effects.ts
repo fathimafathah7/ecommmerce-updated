@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   Actions,
@@ -10,6 +11,7 @@ import { map, switchMap, tap } from 'rxjs';
 
 import { WishlistService } from '../../core/services/wishlist.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
+import { AuthService } from '../../core/services/auth.service';
 
 import {
   loadWishlist,
@@ -18,7 +20,8 @@ import {
   addToWishlist,
   addToWishlistSuccess,
   removeFromWishlist,
-  removeFromWishlistSuccess
+  removeFromWishlistSuccess,
+  wishlistNoop
 } from './wishlist.action';
 
 
@@ -28,6 +31,20 @@ export class WishlistEffects {
   private actions$ = inject(Actions);
   private wishlistService = inject(WishlistService);
   private snackbar = inject(SnackbarService);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  /** Same guard pattern as CartEffects.requireAuth(). */
+  private requireAuth(): boolean {
+
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+
+    this.snackbar.warning('Please sign in to use your wishlist.');
+    this.router.navigate(['/auth']);
+    return false;
+  }
 
 
   // LOAD WISHLIST
@@ -52,17 +69,20 @@ export class WishlistEffects {
   );
 
 
-  // TOGGLE WISHLIST — resolves current state from the backend and either
-  // adds or removes the product, one action for the whole UI to use.
+  // TOGGLE WISHLIST
   toggleWishlist$ = createEffect(() =>
 
     this.actions$.pipe(
 
       ofType(toggleWishlist),
 
-      switchMap(({ product }) =>
+      switchMap(({ product }) => {
 
-        this.wishlistService.getWishlist().pipe(
+        if (!this.requireAuth()) {
+          return [wishlistNoop()];
+        }
+
+        return this.wishlistService.getWishlist().pipe(
 
           switchMap(items => {
 
@@ -88,9 +108,9 @@ export class WishlistEffects {
 
           })
 
-        )
+        );
 
-      )
+      })
 
     )
 

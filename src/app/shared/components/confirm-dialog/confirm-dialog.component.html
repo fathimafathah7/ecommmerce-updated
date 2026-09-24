@@ -1,55 +1,65 @@
-<div
-  class="fixed inset-0 z-50 flex items-center justify-center px-4"
-  role="dialog"
-  aria-modal="true"
->
-  <!-- Backdrop -->
-  <div
-    class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
-    (click)="onCancel()"
-  ></div>
+<div class="fixed inset-0 z-50 flex items-center justify-center px-4" role="dialog" aria-modal="true" >
 
-  <!-- Card -->
-  <div
-    class="relative bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 confirm-dialog-card"
-  >
-    <div class="flex items-start gap-3">
-      <div
-        class="w-10 h-10 rounded-full bg-red-50 text-red-500
-               flex items-center justify-center text-xl shrink-0"
-      >
-        ⚠️
-      </div>
+<div class="absolute inset-0 bg-[#292723]/40 backdrop-blur-sm" (click)="onCancel()" ></div>
 
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900">
-          {{ title() }}
-        </h3>
-        <p class="mt-1 text-sm text-gray-500">
-          {{ message() }}
-        </p>
-      </div>
-    </div>
+<div class="relative w-full max-w-sm rounded-3xl border border-[#E5E0D7] bg-white p-6 shadow-[0_25px_80px_rgba(41,39,35,0.16)]">
 
-    <div class="mt-6 flex gap-3 justify-end">
-      <button
-        type="button"
-        (click)="onCancel()"
-        class="px-4 py-2 rounded-lg text-sm font-medium
-               text-gray-700 border border-gray-300
-               hover:bg-gray-50 transition"
-      >
-        {{ cancelLabel() }}
-      </button>
+<div class="flex items-start gap-4">
 
-      <button
-        type="button"
-        (click)="onConfirm()"
-        class="px-4 py-2 rounded-lg text-sm font-medium
-               text-white bg-red-600 hover:bg-red-700 transition"
-      >
-        {{ confirmLabel() }}
-      </button>
-    </div>
+  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FAF0EE]">
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.6"
+      stroke="currentColor"
+      class="h-5 w-5 text-[#9A5B52]"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 9v3.75m0 3.75h.008M10.3 3.6 2.5 17.1a1.75 1.75 0 0 0 1.52 2.65h15.96a1.75 1.75 0 0 0 1.52-2.65L13.7 3.6a1.95 1.95 0 0 0-3.4 0Z" />
+    </svg>
+
   </div>
+
+
+  <div>
+
+    <h3 class="text-lg font-semibold text-[#292723]">
+      {{ title() }}
+    </h3>
+
+    <p class="mt-1.5 text-sm leading-6 text-[#817B72]">
+      {{ message() }}
+    </p>
+
+  </div>
+
+</div>
+
+
+<div class="mt-7 flex justify-end gap-3">
+
+  <button
+    type="button"
+    (click)="onCancel()"
+    class="rounded-full border border-[#D9D3C9] px-5 py-2.5 text-sm font-medium text-[#5F5A52]
+           transition hover:bg-[#F7F5F0]"
+  >
+    {{ cancelLabel() }}
+  </button>
+
+  <button
+    type="button"
+    (click)="onConfirm()"
+    class="rounded-full bg-[#9A5B52] px-5 py-2.5 text-sm font-medium text-white
+           transition hover:bg-[#814840]"
+  >
+    {{ confirmLabel() }}
+  </button>
+
+</div>
+
+</div>
+
 </div>

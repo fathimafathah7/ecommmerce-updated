@@ -18,6 +18,9 @@ export const loadWishlistSuccess = createAction(
 export const clearWishlist = createAction(
   '[Wishlist] Clear Wishlist'
 );
+// Fired when nothing needs to change in the store but we still need a
+// terminal action for an effect stream (e.g. not signed in).
+export const wishlistNoop = createAction('[Wishlist] Noop');
 
 // TOGGLE — a single entry point used by the UI (product list, product
 // detail, cart). The effect figures out whether to add or remove.

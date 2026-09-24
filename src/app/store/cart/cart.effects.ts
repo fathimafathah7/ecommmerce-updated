@@ -11,6 +11,7 @@ import { map, switchMap, tap } from 'rxjs';
 
 import { CartService } from '../../core/services/cart.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
+import { AuthService } from '../../core/services/auth.service';
 
 import {
   loadCart,
@@ -34,6 +35,23 @@ export class CartEffects {
   private cartService = inject(CartService);
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
+  private authService = inject(AuthService);
+
+  /**
+   * Every cart-mutating action funnels through here. If nobody is signed
+   * in, bounce to the auth page with a toast instead of hitting the API
+   * (which would otherwise happily create a cart item with userId=null).
+   */
+  private requireAuth(): boolean {
+
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+
+    this.snackbar.warning('Please sign in to add items to your cart.');
+    this.router.navigate(['/auth']);
+    return false;
+  }
 
 
   // LOAD CART
@@ -52,18 +70,19 @@ export class CartEffects {
 
 
   // ADD TO CART
-  // Resolves whether the product already exists in the cart and either
-  // creates a new cart entry or bumps the existing quantity, showing the
-  // right toast for every outcome (added / quantity updated / limit hit).
   addToCart$ = createEffect(() =>
 
     this.actions$.pipe(
 
       ofType(addToCart),
 
-      switchMap(({ product }) =>
+      switchMap(({ product }) => {
 
-        this.cartService.getCart().pipe(
+        if (!this.requireAuth()) {
+          return [cartNoop()];
+        }
+
+        return this.cartService.getCart().pipe(
 
           switchMap(items => {
 
@@ -99,9 +118,9 @@ export class CartEffects {
 
           })
 
-        )
+        );
 
-      )
+      })
 
     )
 
@@ -109,18 +128,19 @@ export class CartEffects {
 
 
   // BUY NOW
-  // Same resolution as addToCart, but always redirects to checkout once
-  // the cart state is settled, and explicitly calls out when the item
-  // was already sitting in the cart.
   buyNow$ = createEffect(() =>
 
     this.actions$.pipe(
 
       ofType(buyNow),
 
-      switchMap(({ product }) =>
+      switchMap(({ product }) => {
 
-        this.cartService.getCart().pipe(
+        if (!this.requireAuth()) {
+          return [cartNoop()];
+        }
+
+        return this.cartService.getCart().pipe(
 
           switchMap(items => {
 
@@ -149,9 +169,9 @@ export class CartEffects {
 
           })
 
-        )
+        );
 
-      )
+      })
 
     )
 

@@ -16,9 +16,11 @@ export class OrderService {
 
   /** Only ever returns orders that belong to the signed-in user. */
   getOrders(): Observable<Order[]> {
-    const userId = this.authService.getCurrentUserId();
-    return this.http.get<Order[]>(`${this.apiUrl}?userId=${userId}&_sort=createdAt&_order=desc`);
-  }
+  const userId = this.authService.getCurrentUserId();
+  // json-server v1 dropped `_order` — descending sort is now expressed
+  // with a leading "-" directly on the _sort field.
+  return this.http.get<Order[]>(`${this.apiUrl}?userId=${userId}&_sort=-createdAt`);
+}
 
   placeOrder(order: Order): Observable<Order> {
     const userId = this.authService.getCurrentUserId();

@@ -1,77 +1,132 @@
-/* Hero Section */
-
-.hero {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 70px 60px;
-  border-radius: 12px;
-  background: #f3f4f6;
+.hero-section {
+  position: relative;
+  background: #f7f5f0;
 }
 
-.hero-content {
-  max-width: 600px;
-}
+/* -------------------------------- */
+/* Animated Hero Background */
+/* -------------------------------- */
 
-.hero-label {
-  margin: 0 0 12px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #6b7280;
-}
-.category-card {
-  text-decoration: none;
-}
+.hero-background {
+  position: absolute;
+  inset: -6%;
 
-.hero h1 {
-  margin: 0;
-  font-size: 52px;
-  line-height: 1.1;
-  color: #111827;
-}
+  background-image: url('/images/09ce03cd-efbc-4d45-8f45-245b72dc6520.png');
+  background-size: cover;
+  background-position: 60% center;
 
-.hero h1 span {
-  display: block;
-}
+  animation: heroFloat 16s ease-in-out infinite alternate;
 
-.hero-description {
-  margin: 20px 0;
-  max-width: 500px;
-  font-size: 17px;
-  line-height: 1.6;
-  color: #6b7280;
-}
-
-.shop-btn {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 6px;
-  background: #ffd814;
-  color: #111827;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.shop-btn:hover {
-  background: #f7ca00;
+  will-change: transform, background-position;
 }
 
 
-/* Mobile */
+/* Slow movement of the whole scene */
 
-@media (max-width: 600px) {
+@keyframes heroFloat {
 
-  .hero {
-    margin: 0 15px;
-    padding: 45px 25px;
+  0% {
+    transform: scale(1);
+    background-position: 58% 50%;
   }
 
-  .hero h1 {
-    font-size: 38px;
+  50% {
+    transform: scale(1.035);
+    background-position: 61% 48%;
   }
 
-  .hero-description {
-    font-size: 15px;
+  100% {
+    transform: scale(1.07);
+    background-position: 64% 52%;
   }
+
+}
+
+
+/* -------------------------------- */
+/* Soft overlay */
+/* -------------------------------- */
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(247, 245, 240, 0.94) 0%,
+      rgba(247, 245, 240, 0.78) 38%,
+      rgba(247, 245, 240, 0.25) 70%,
+      rgba(247, 245, 240, 0.05) 100%
+    );
+
+  z-index: 1;
+}
+
+
+/* -------------------------------- */
+/* Floating Stars */
+/* -------------------------------- */
+
+.floating-star {
+  position: absolute;
+
+  z-index: 2;
+
+  color: #c19a70;
+  font-size: 22px;
+
+  opacity: 0.6;
+
+  pointer-events: none;
+
+  animation: floatingStar 5s ease-in-out infinite;
+}
+
+
+.floating-star-one {
+  top: 24%;
+  right: 30%;
+
+  animation-delay: 0s;
+}
+
+
+.floating-star-two {
+  top: 62%;
+  right: 12%;
+
+  font-size: 16px;
+
+  animation-delay: 2s;
+}
+
+
+/* Gentle floating motion */
+
+@keyframes floatingStar {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(8deg);
+  }
+
+}
+
+
+/* -------------------------------- */
+/* Accessibility */
+/* -------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero-background,
+  .floating-star {
+    animation: none;
+  }
+
 }

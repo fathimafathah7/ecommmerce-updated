@@ -73,8 +73,8 @@
   </div>
 
 
-  <!-- Category -->
-  <div class="flex items-center gap-3">
+  <!-- Category + Sort -->
+  <div class="flex flex-wrap items-center gap-3">
 
     <select
       [ngModel]="selectedCategory"
@@ -104,7 +104,35 @@
     </select>
 
 
-    @if (searchTerm || selectedCategory) {
+    <select
+      [ngModel]="sortOrder"
+      (ngModelChange)="onSortChange($event)"
+      class="rounded-full
+             border border-[#DDD8CE]
+             bg-white
+             px-4 py-2.5
+             text-sm text-[#5F5A52]
+             outline-none
+             transition
+             focus:border-[#9A8063]"
+    >
+
+      <option value="">
+        Sort by
+      </option>
+
+      <option value="low-high">
+        Price: Low to High
+      </option>
+
+      <option value="high-low">
+        Price: High to Low
+      </option>
+
+    </select>
+
+
+    @if (searchTerm || selectedCategory || sortOrder) {
 
       <button
         type="button"

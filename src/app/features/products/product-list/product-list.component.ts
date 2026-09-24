@@ -28,9 +28,11 @@ export class ProductListComponent implements OnInit {
 
   searchTerm = '';
   selectedCategory = '';
+  sortOrder = '';
 
   private categorySubject = new BehaviorSubject<string>('');
   private searchSubject = new BehaviorSubject<string>('');
+  private sortSubject = new BehaviorSubject<string>('');
 
   categories$!: Observable<string[]>;
   filteredProducts$!: Observable<Product[]>;
@@ -58,9 +60,10 @@ export class ProductListComponent implements OnInit {
     this.filteredProducts$ = combineLatest([
       this.products$,
       this.searchSubject,
-      this.categorySubject
+      this.categorySubject,
+      this.sortSubject
     ]).pipe(
-      map(([products, search, category]) => {
+      map(([products, search, category, sort]) => {
 
         let result = products;
 
@@ -76,9 +79,21 @@ export class ProductListComponent implements OnInit {
           result = result.filter(product => product.category === category);
         }
 
+        // Sort by price without mutating the original array.
+        if (sort === 'low-high') {
+          result = [...result].sort((a, b) => a.price - b.price);
+        } else if (sort === 'high-low') {
+          result = [...result].sort((a, b) => b.price - a.price);
+        }
+
         return result;
       })
     );
+  }
+
+  onSortChange(sort: string) {
+    this.sortOrder = sort;
+    this.sortSubject.next(sort);
   }
 
   onSearchInput() {
@@ -93,8 +108,10 @@ export class ProductListComponent implements OnInit {
   clearFilters() {
     this.searchTerm = '';
     this.selectedCategory = '';
+    this.sortOrder = '';
     this.searchSubject.next('');
     this.categorySubject.next('');
+    this.sortSubject.next('');
     this.router.navigate([], { relativeTo: this.route, queryParams: {} });
   }
 }

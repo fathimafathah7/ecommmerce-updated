@@ -1,123 +1,204 @@
-<section class="min-h-screen bg-gray-50 py-12">
+<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-  <div class="max-w-5xl mx-auto px-6">
+<div class="mx-auto max-w-5xl px-6">
 
-    <div class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">My Orders</h1>
-      <p class="mt-2 text-gray-500">Track and review your past purchases.</p>
+<div class="mb-10">
+
+  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
+    Purchase History
+  </p>
+
+  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
+    My Orders
+  </h1>
+
+  <p class="mt-2 text-sm text-[#817B72]">
+    Track and review your past purchases.
+  </p>
+
+</div>
+
+
+@if (loading) {
+
+  <div class="rounded-2xl border border-[#E5E0D7] bg-white py-16 text-center">
+
+    <p class="text-sm text-[#817B72]">
+      Loading your orders...
+    </p>
+
+  </div>
+
+} @else if (orders.length === 0) {
+
+  <div class="rounded-3xl border border-[#E5E0D7] bg-white px-6 py-20 text-center">
+
+    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F1EEE8]">
+
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-6 w-6 text-[#8B6F52]">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M20 7.5v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9m16 0L12 3 4 7.5m16 0-8 4.5-8-4.5" />
+      </svg>
+
     </div>
 
-    @if (loading) {
+    <h2 class="mt-5 text-xl font-semibold text-[#292723]">
+      No orders yet
+    </h2>
 
-      <div class="flex justify-center py-16">
-        <p class="text-gray-600">Loading your orders...</p>
-      </div>
+    <p class="mt-2 text-sm text-[#817B72]">
+      When you place an order, it will show up here.
+    </p>
 
-    } @else if (orders.length === 0) {
+    <a
+      routerLink="/products"
+      class="mt-7 inline-flex rounded-full bg-[#292723] px-7 py-3 text-sm font-medium text-white
+             transition hover:bg-[#8B6F52]"
+    >
+      Start Shopping
+    </a>
 
-      <div class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-        <div class="text-5xl mb-4">📦</div>
-        <h2 class="text-xl font-semibold text-gray-800">No orders yet</h2>
-        <p class="text-gray-500 mt-2">When you place an order, it will show up here.</p>
-        <a
-          routerLink="/products"
-          class="inline-block mt-6 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+  </div>
+
+} @else {
+
+  <div class="space-y-4">
+
+    @for (order of orders; track order.id) {
+
+      <div class="overflow-hidden rounded-2xl border border-[#E5E0D7] bg-white">
+
+        <button
+          type="button"
+          (click)="toggleExpand(order)"
+          class="flex w-full flex-col gap-4 p-5 text-left transition hover:bg-[#FBF9F5]
+                 sm:flex-row sm:items-center sm:justify-between"
         >
-          Start Shopping
-        </a>
-      </div>
 
-    } @else {
+          <div>
 
-      <div class="space-y-4">
+            <p class="font-semibold text-[#292723]">
+              Order #{{ order.id?.toString()?.slice(-6) }}
+            </p>
 
-        @for (order of orders; track order.id) {
+            <p class="mt-1 text-xs text-[#817B72]">
+              Placed on {{ order.createdAt | date:'medium' }} · {{ order.items.length }} item(s)
+            </p>
 
-          <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          </div>
 
-            <!-- Summary row -->
-            <button
-              type="button"
-              (click)="toggleExpand(order)"
-              class="w-full flex flex-col sm:flex-row sm:items-center justify-between
-                     gap-3 p-5 text-left hover:bg-gray-50 transition"
+
+          <div class="flex items-center gap-4">
+
+            <span
+              class="rounded-full px-2.5 py-1 text-[10px] font-semibold capitalize"
+              [class]="statusBadgeClass(order.status)"
             >
+              {{ order.status }}
+            </span>
+
+            <span class="text-sm font-semibold text-[#292723]">
+              {{ order.total | currency:'INR':'symbol':'1.0-0' }}
+            </span>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.6"
+              stroke="currentColor"
+              class="h-4 w-4 text-[#817B72]"
+              [class.rotate-180]="expandedOrderId === order.id"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m6 9 6 6 6-6" />
+            </svg>
+
+          </div>
+
+        </button>
+
+
+        @if (expandedOrderId === order.id) {
+
+          <div class="border-t border-[#EAE6DE] bg-[#FBF9F5] p-5 md:p-6">
+
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+
+              <!-- Items -->
               <div>
-                <p class="font-semibold text-gray-900">
-                  Order #{{ order.id?.toString()?.slice(-6) }}
-                </p>
-                <p class="text-sm text-gray-500 mt-1">
-                  Placed on {{ order.createdAt | date:'medium' }} · {{ order.items.length }} item(s)
-                </p>
-              </div>
 
-              <div class="flex items-center gap-4">
-                <span
-                  class="text-xs font-semibold px-2.5 py-1 rounded-full capitalize"
-                  [class]="statusBadgeClass(order.status)"
-                >
-                  {{ order.status }}
-                </span>
+                <h3 class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#5F5A52]">
+                  Items
+                </h3>
 
-                <span class="text-lg font-bold text-gray-900">
-                  {{ order.total | currency:'INR':'symbol':'1.0-0' }}
-                </span>
+                <div class="space-y-4">
 
-                <span class="text-gray-400 text-sm">
-                  {{ expandedOrderId === order.id ? '▲' : '▼' }}
-                </span>
-              </div>
-            </button>
+                  @for (item of order.items; track item.product.id) {
 
-            <!-- Expanded details -->
-            @if (expandedOrderId === order.id) {
+                    <div class="flex items-center gap-3">
 
-              <div class="border-t border-gray-100 p-5 bg-gray-50/50">
+                      <div class="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white">
+                        <img
+                          [src]="item.product.images[0]"
+                          [alt]="item.product.name"
+                          class="h-full w-full object-contain p-1"
+                        >
+                      </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="min-w-0 flex-1">
 
-                  <!-- Items -->
-                  <div>
-                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Items</h3>
-                    <div class="space-y-3">
-                      @for (item of order.items; track item.product.id) {
-                        <div class="flex items-center gap-3">
-                          <img
-                            [src]="item.product.image"
-                            [alt]="item.product.name"
-                            class="w-12 h-12 rounded-lg object-contain bg-white border border-gray-200 p-1 shrink-0"
-                          >
-                          <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 truncate">{{ item.product.name }}</p>
-                            <p class="text-xs text-gray-500">Qty {{ item.quantity }}</p>
-                          </div>
-                          <p class="text-sm font-semibold text-gray-900">
-                            {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
-                          </p>
-                        </div>
-                      }
+                        <p class="truncate text-sm font-medium text-[#292723]">
+                          {{ item.product.name }}
+                        </p>
+
+                        <p class="mt-1 text-xs text-[#817B72]">
+                          Qty {{ item.quantity }}
+                        </p>
+
+                      </div>
+
+                      <p class="text-sm font-semibold text-[#292723]">
+                        {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
+                      </p>
+
                     </div>
-                  </div>
 
-                  <!-- Delivery + payment -->
-                  <div>
-                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Delivery Address</h3>
-                    <p class="text-sm text-gray-600">
-                      {{ order.address.fullName }}<br>
-                      {{ order.address.line1 }}@if (order.address.line2) {, {{ order.address.line2 }}}<br>
-                      {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
-                      📞 {{ order.address.phone }}
-                    </p>
-
-                    <h3 class="text-sm font-semibold text-gray-800 mt-5 mb-2">Payment Method</h3>
-                    <p class="text-sm text-gray-600">{{ paymentLabel(order.paymentMethod) }}</p>
-                  </div>
+                  }
 
                 </div>
 
               </div>
 
-            }
+
+              <!-- Delivery -->
+              <div>
+
+                <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#5F5A52]">
+                  Delivery Address
+                </h3>
+
+                <p class="text-sm leading-6 text-[#716C64]">
+                  {{ order.address.fullName }}<br>
+                  {{ order.address.line1 }}@if (order.address.line2) {, {{ order.address.line2 }}}<br>
+                  {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
+                  {{ order.address.phone }}
+                </p>
+
+
+                <h3 class="mb-2 mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-[#5F5A52]">
+                  Payment Method
+                </h3>
+
+                <p class="text-sm text-[#716C64]">
+                  {{ paymentLabel(order.paymentMethod) }}
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -128,5 +209,9 @@
     }
 
   </div>
+
+}
+
+</div>
 
 </section>

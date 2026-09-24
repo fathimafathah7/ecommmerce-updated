@@ -1,304 +1,491 @@
-<section class="min-h-screen bg-gray-50 py-12">
+<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-  <div class="max-w-6xl mx-auto px-6">
+<div class="mx-auto max-w-6xl px-6">
 
-    <div class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Checkout</h1>
-      <p class="mt-2 text-gray-500">Review your order and complete your purchase.</p>
+<div class="mb-10">
+  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
+    Secure Checkout
+  </p>
+
+  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
+    Checkout
+  </h1>
+
+  <p class="mt-2 text-sm text-[#817B72]">
+    Review your order and complete your purchase.
+  </p>
+</div>
+
+
+@if (items$ | async; as items) {
+
+  @if (items.length === 0) {
+
+    <div class="rounded-3xl border border-[#E5E0D7] bg-white px-6 py-20 text-center">
+
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F1EEE8]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="h-6 w-6 text-[#8B6F52]">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25" />
+          <circle cx="9" cy="20" r="1" />
+          <circle cx="18" cy="20" r="1" />
+        </svg>
+      </div>
+
+      <h2 class="mt-5 text-xl font-semibold text-[#292723]">
+        Your cart is empty
+      </h2>
+
+      <p class="mt-2 text-sm text-[#817B72]">
+        Add some products before checking out.
+      </p>
+
+      <a
+        routerLink="/products"
+        class="mt-7 inline-flex rounded-full bg-[#292723] px-7 py-3 text-sm font-medium text-white
+               transition hover:bg-[#8B6F52]"
+      >
+        Browse Products
+      </a>
+
     </div>
 
-    @if (items$ | async; as items) {
+  } @else {
 
-      @if (items.length === 0) {
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
-        <div class="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-          <div class="text-5xl mb-4">🛒</div>
-          <h2 class="text-xl font-semibold text-gray-800">Your cart is empty</h2>
-          <p class="text-gray-500 mt-2">Add some products before checking out.</p>
-          <a
-            routerLink="/products"
-            class="inline-block mt-6 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
-          >
-            Browse Products
-          </a>
-        </div>
+      <!-- Address + Payment -->
+      <div class="space-y-6 lg:col-span-2">
 
-      } @else {
+        <!-- Address -->
+        <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 md:p-7">
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="mb-5 flex items-center justify-between gap-4">
 
-          <!-- Left column: address + payment -->
-          <div class="lg:col-span-2 space-y-6">
+            <div>
+              <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
+                Step 01
+              </p>
 
-            <!-- Delivery Address -->
-            <div class="bg-white rounded-xl border border-gray-200 p-6">
-
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-gray-900">Delivery Address</h2>
-                <button
-                  type="button"
-                  (click)="openAddAddress()"
-                  class="text-sm font-medium text-blue-600 hover:text-blue-700 transition"
-                >
-                  + Add New Address
-                </button>
-              </div>
-
-              @if (loadingAddresses) {
-                <p class="text-sm text-gray-500">Loading addresses...</p>
-              } @else if (addresses.length === 0) {
-                <div class="text-center py-8 border border-dashed border-gray-300 rounded-lg">
-                  <p class="text-gray-500 text-sm">You have no saved addresses yet.</p>
-                  <button
-                    type="button"
-                    (click)="openAddAddress()"
-                    class="mt-3 text-sm font-medium text-blue-600 hover:text-blue-700"
-                  >
-                    Add your first address
-                  </button>
-                </div>
-              } @else {
-                <div class="space-y-3">
-                  @for (address of addresses; track address.id) {
-                    <label
-                      (click)="selectAddress(address.id!)"
-                      [class.border-blue-500]="selectedAddressId === address.id"
-                      [class.ring-1]="selectedAddressId === address.id"
-                      [class.ring-blue-500]="selectedAddressId === address.id"
-                      class="block border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-300 transition"
-                    >
-                      <div class="flex items-start gap-3">
-                        <input
-                          type="radio"
-                          name="selectedAddress"
-                          [checked]="selectedAddressId === address.id"
-                          class="mt-1"
-                        >
-                        <div class="flex-1">
-                          <div class="flex items-center gap-2">
-                            <p class="font-medium text-gray-900">{{ address.fullName }}</p>
-                            @if (address.isDefault) {
-                              <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">
-                                Default
-                              </span>
-                            }
-                          </div>
-                          <p class="text-sm text-gray-600 mt-1">
-                            {{ address.line1 }}@if (address.line2) {, {{ address.line2 }}}, {{ address.city }}, {{ address.state }} - {{ address.pincode }}
-                          </p>
-                          <p class="text-sm text-gray-500 mt-1">📞 {{ address.phone }}</p>
-                        </div>
-                        <div class="flex gap-3 shrink-0">
-                          <button
-                            type="button"
-                            (click)="openEditAddress(address, $event)"
-                            class="text-xs font-medium text-gray-500 hover:text-blue-600 transition"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            type="button"
-                            (click)="askDeleteAddress(address, $event)"
-                            class="text-xs font-medium text-gray-500 hover:text-red-600 transition"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </label>
-                  }
-                </div>
-              }
-
+              <h2 class="mt-1 text-lg font-semibold text-[#292723]">
+                Delivery Address
+              </h2>
             </div>
 
-            <!-- Payment Method -->
-            <div class="bg-white rounded-xl border border-gray-200 p-6">
-
-              <h2 class="text-lg font-semibold text-gray-900 mb-4">Payment Method</h2>
-
-              <form [formGroup]="paymentForm" class="space-y-4">
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-
-                  <label
-                    class="flex items-center gap-2 border rounded-lg px-4 py-3 cursor-pointer transition"
-                    [class.border-blue-500]="selectedPaymentMethod === 'cod'"
-                    [class.ring-1]="selectedPaymentMethod === 'cod'"
-                    [class.ring-blue-500]="selectedPaymentMethod === 'cod'"
-                    [class.border-gray-200]="selectedPaymentMethod !== 'cod'"
-                  >
-                    <input type="radio" formControlName="method" value="cod">
-                    <span class="text-sm font-medium text-gray-800">💵 Cash on Delivery</span>
-                  </label>
-
-                  <label
-                    class="flex items-center gap-2 border rounded-lg px-4 py-3 cursor-pointer transition"
-                    [class.border-blue-500]="selectedPaymentMethod === 'card'"
-                    [class.ring-1]="selectedPaymentMethod === 'card'"
-                    [class.ring-blue-500]="selectedPaymentMethod === 'card'"
-                    [class.border-gray-200]="selectedPaymentMethod !== 'card'"
-                  >
-                    <input type="radio" formControlName="method" value="card">
-                    <span class="text-sm font-medium text-gray-800">💳 Credit / Debit Card</span>
-                  </label>
-
-                  <label
-                    class="flex items-center gap-2 border rounded-lg px-4 py-3 cursor-pointer transition"
-                    [class.border-blue-500]="selectedPaymentMethod === 'upi'"
-                    [class.ring-1]="selectedPaymentMethod === 'upi'"
-                    [class.ring-blue-500]="selectedPaymentMethod === 'upi'"
-                    [class.border-gray-200]="selectedPaymentMethod !== 'upi'"
-                  >
-                    <input type="radio" formControlName="method" value="upi">
-                    <span class="text-sm font-medium text-gray-800">📱 UPI</span>
-                  </label>
-
-                </div>
-
-                @if (selectedPaymentMethod === 'card') {
-                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                    <div class="sm:col-span-3">
-                      <label class="block text-sm font-medium text-gray-700 mb-1.5">Card Number</label>
-                      <input
-                        type="text"
-                        formControlName="cardNumber"
-                        maxlength="16"
-                        placeholder="1234 5678 9012 3456"
-                        class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      >
-                      @if (paymentForm.controls.cardNumber.touched && paymentForm.controls.cardNumber.invalid) {
-                        <p class="text-xs text-red-500 mt-1">Enter a valid 16-digit card number.</p>
-                      }
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium text-gray-700 mb-1.5">Expiry (MM/YY)</label>
-                      <input
-                        type="text"
-                        formControlName="cardExpiry"
-                        placeholder="MM/YY"
-                        maxlength="5"
-                        class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      >
-                      @if (paymentForm.controls.cardExpiry.touched && paymentForm.controls.cardExpiry.invalid) {
-                        <p class="text-xs text-red-500 mt-1">Use MM/YY format.</p>
-                      }
-                    </div>
-                    <div class="sm:col-span-2">
-                      <label class="block text-sm font-medium text-gray-700 mb-1.5">CVV</label>
-                      <input
-                        type="password"
-                        formControlName="cardCvv"
-                        maxlength="3"
-                        placeholder="•••"
-                        class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      >
-                      @if (paymentForm.controls.cardCvv.touched && paymentForm.controls.cardCvv.invalid) {
-                        <p class="text-xs text-red-500 mt-1">Enter a valid 3-digit CVV.</p>
-                      }
-                    </div>
-                  </div>
-                }
-
-                @if (selectedPaymentMethod === 'upi') {
-                  <div class="pt-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">UPI ID</label>
-                    <input
-                      type="text"
-                      formControlName="upiId"
-                      placeholder="yourname@upi"
-                      class="w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    >
-                    @if (paymentForm.controls.upiId.touched && paymentForm.controls.upiId.invalid) {
-                      <p class="text-xs text-red-500 mt-1">Enter a valid UPI ID (e.g. name&#64;bank).</p>
-                    }
-                  </div>
-                }
-
-              </form>
-
-            </div>
+            <button
+              type="button"
+              (click)="openAddAddress()"
+              class="text-sm font-medium text-[#8B6F52] transition hover:text-[#6F543B]"
+            >
+              + Add New Address
+            </button>
 
           </div>
 
-          <!-- Right column: order summary -->
-          <div class="bg-white rounded-xl border border-gray-200 p-6 h-fit lg:sticky lg:top-6">
 
-            <h2 class="text-lg font-semibold text-gray-900">Order Summary</h2>
+          @if (loadingAddresses) {
 
-            <div class="mt-5 space-y-3 max-h-64 overflow-y-auto pr-1">
-              @for (item of items; track item.product.id) {
-                <div class="flex items-center gap-3">
-                  <img
-                    [src]="item.product.image"
-                    [alt]="item.product.name"
-                    class="w-12 h-12 rounded-lg object-contain bg-gray-100 p-1 shrink-0"
-                  >
-                  <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate">{{ item.product.name }}</p>
-                    <p class="text-xs text-gray-500">Qty {{ item.quantity }}</p>
-                  </div>
-                  <p class="text-sm font-semibold text-gray-900 shrink-0">
-                    {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
-                  </p>
-                </div>
-              }
-            </div>
+            <p class="text-sm text-[#817B72]">
+              Loading addresses...
+            </p>
 
-            <div class="border-t border-gray-200 my-5"></div>
+          } @else if (addresses.length === 0) {
 
-            @if (total$ | async; as total) {
+            <div class="rounded-xl border border-dashed border-[#D9D3C9] px-5 py-9 text-center">
 
-              <div class="flex justify-between text-gray-600 text-sm">
-                <span>Items</span>
-                <span>{{ items.length }}</span>
-              </div>
-
-              <div class="flex justify-between items-center mt-4">
-                <span class="text-lg font-semibold">Total</span>
-                <span class="text-xl font-bold text-gray-900">
-                  {{ total | currency:'INR':'symbol':'1.0-0' }}
-                </span>
-              </div>
+              <p class="text-sm text-[#817B72]">
+                You have no saved addresses yet.
+              </p>
 
               <button
                 type="button"
-                [disabled]="placingOrder"
-                (click)="placeOrder(items, total)"
-                class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold
-                       hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                (click)="openAddAddress()"
+                class="mt-3 text-sm font-medium text-[#8B6F52] hover:underline"
               >
-                {{ placingOrder ? 'Placing Order...' : 'Place Order' }}
+                Add your first address
               </button>
 
-            }
+            </div>
 
-          </div>
+          } @else {
+
+            <div class="space-y-3">
+
+              @for (address of addresses; track address.id) {
+
+                <label
+                  (click)="selectAddress(address.id!)"
+                  [class.border-[#8B6F52]]="selectedAddressId === address.id"
+                  [class.bg-[#FBF9F5]]="selectedAddressId === address.id"
+                  [class.ring-1]="selectedAddressId === address.id"
+                  [class.ring-[#8B6F52]]="selectedAddressId === address.id"
+                  class="block cursor-pointer rounded-xl border border-[#E5E0D7] p-4 transition
+                         hover:border-[#CFC4B4]"
+                >
+
+                  <div class="flex items-start gap-3">
+
+                    <input
+                      type="radio"
+                      name="selectedAddress"
+                      [checked]="selectedAddressId === address.id"
+                      class="mt-1 accent-[#8B6F52]"
+                    >
+
+                    <div class="min-w-0 flex-1">
+
+                      <div class="flex flex-wrap items-center gap-2">
+
+                        <p class="font-medium text-[#292723]">
+                          {{ address.fullName }}
+                        </p>
+
+                        @if (address.isDefault) {
+
+                          <span class="rounded-full bg-[#F1EEE8] px-2.5 py-1 text-[10px] font-semibold text-[#8B6F52]">
+                            Default
+                          </span>
+
+                        }
+
+                      </div>
+
+                      <p class="mt-1.5 text-sm leading-6 text-[#716C64]">
+                        {{ address.line1 }}@if (address.line2) {, {{ address.line2 }}, }{{ address.city }}, {{ address.state }} - {{ address.pincode }}
+                      </p>
+
+                      <p class="mt-1 text-xs text-[#817B72]">
+                        {{ address.phone }}
+                      </p>
+
+                    </div>
+
+
+                    <div class="flex shrink-0 gap-3">
+
+                      <button
+                        type="button"
+                        (click)="openEditAddress(address, $event)"
+                        class="text-xs font-medium text-[#817B72] hover:text-[#8B6F52]"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        (click)="askDeleteAddress(address, $event)"
+                        class="text-xs font-medium text-[#817B72] hover:text-[#9A5B52]"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                </label>
+
+              }
+
+            </div>
+
+          }
 
         </div>
 
 
-      }
+        <!-- Payment -->
+        <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 md:p-7">
 
-    }
+          <div class="mb-5">
+            <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
+              Step 02
+            </p>
 
-  </div>
+            <h2 class="mt-1 text-lg font-semibold text-[#292723]">
+              Payment Method
+            </h2>
+          </div>
+
+
+          <form [formGroup]="paymentForm" class="space-y-5">
+
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+              <label
+                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
+                [class.border-[#8B6F52]]="selectedPaymentMethod === 'cod'"
+                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'cod'"
+                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'cod'"
+              >
+                <input type="radio" formControlName="method" value="cod" class="accent-[#8B6F52]">
+                <span class="text-sm font-medium text-[#4E4942]">
+                  Cash on Delivery
+                </span>
+              </label>
+
+
+              <label
+                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
+                [class.border-[#8B6F52]]="selectedPaymentMethod === 'card'"
+                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'card'"
+                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'card'"
+              >
+                <input type="radio" formControlName="method" value="card" class="accent-[#8B6F52]">
+                <span class="text-sm font-medium text-[#4E4942]">
+                  Credit / Debit Card
+                </span>
+              </label>
+
+
+              <label
+                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
+                [class.border-[#8B6F52]]="selectedPaymentMethod === 'upi'"
+                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'upi'"
+                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'upi'"
+              >
+                <input type="radio" formControlName="method" value="upi" class="accent-[#8B6F52]">
+                <span class="text-sm font-medium text-[#4E4942]">
+                  UPI
+                </span>
+              </label>
+
+            </div>
+
+
+            @if (selectedPaymentMethod === 'card') {
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+                <div class="sm:col-span-3">
+
+                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
+                    Card Number
+                  </label>
+
+                  <input
+                    type="text"
+                    formControlName="cardNumber"
+                    maxlength="16"
+                    placeholder="1234 5678 9012 3456"
+                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
+                           text-[#292723] outline-none transition
+                           focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+                  >
+
+                  @if (paymentForm.controls.cardNumber.touched && paymentForm.controls.cardNumber.invalid) {
+                    <p class="mt-1 text-xs text-[#9A5B52]">
+                      Enter a valid 16-digit card number.
+                    </p>
+                  }
+
+                </div>
+
+
+                <div>
+
+                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
+                    Expiry (MM/YY)
+                  </label>
+
+                  <input
+                    type="text"
+                    formControlName="cardExpiry"
+                    placeholder="MM/YY"
+                    maxlength="5"
+                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
+                           outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+                  >
+
+                  @if (paymentForm.controls.cardExpiry.touched && paymentForm.controls.cardExpiry.invalid) {
+                    <p class="mt-1 text-xs text-[#9A5B52]">
+                      Use MM/YY format.
+                    </p>
+                  }
+
+                </div>
+
+
+                <div class="sm:col-span-2">
+
+                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
+                    CVV
+                  </label>
+
+                  <input
+                    type="password"
+                    formControlName="cardCvv"
+                    maxlength="3"
+                    placeholder="•••"
+                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
+                           outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+                  >
+
+                  @if (paymentForm.controls.cardCvv.touched && paymentForm.controls.cardCvv.invalid) {
+                    <p class="mt-1 text-xs text-[#9A5B52]">
+                      Enter a valid 3-digit CVV.
+                    </p>
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+
+            @if (selectedPaymentMethod === 'upi') {
+
+              <div>
+
+                <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
+                  UPI ID
+                </label>
+
+                <input
+                  type="text"
+                  formControlName="upiId"
+                  placeholder="yourname@upi"
+                  class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
+                         outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+                >
+
+                @if (paymentForm.controls.upiId.touched && paymentForm.controls.upiId.invalid) {
+                  <p class="mt-1 text-xs text-[#9A5B52]">
+                    Enter a valid UPI ID (e.g. name&#64;bank).
+                  </p>
+                }
+
+              </div>
+
+            }
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+      <!-- Summary -->
+      <div
+        class="h-fit rounded-2xl border border-[#E5E0D7] bg-white p-6
+               lg:sticky lg:top-24"
+      >
+
+        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
+          Your Order
+        </p>
+
+        <h2 class="mt-2 text-xl font-semibold text-[#292723]">
+          Order Summary
+        </h2>
+
+
+        <div class="mt-6 max-h-64 space-y-4 overflow-y-auto pr-1">
+
+          @for (item of items; track item.product.id) {
+
+            <div class="flex items-center gap-3">
+
+              <div class="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#F4F1EB]">
+                <img
+                  [src]="item.product.images"
+                  [alt]="item.product.name"
+                  class="h-full w-full object-contain p-1"
+                >
+              </div>
+
+              <div class="min-w-0 flex-1">
+
+                <p class="truncate text-sm font-medium text-[#292723]">
+                  {{ item.product.name }}
+                </p>
+
+                <p class="mt-0.5 text-xs text-[#817B72]">
+                  Qty {{ item.quantity }}
+                </p>
+
+              </div>
+
+              <p class="shrink-0 text-sm font-semibold text-[#292723]">
+                {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
+              </p>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <div class="my-5 border-t border-[#EAE6DE]"></div>
+
+
+        @if (total$ | async; as total) {
+
+          <div class="flex justify-between text-sm text-[#716C64]">
+            <span>Items</span>
+            <span>{{ items.length }}</span>
+          </div>
+
+          <div class="mt-4 flex items-center justify-between">
+
+            <span class="font-medium text-[#5F5A52]">
+              Total
+            </span>
+
+            <span class="text-xl font-semibold text-[#292723]">
+              {{ total | currency:'INR':'symbol':'1.0-0' }}
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            [disabled]="placingOrder"
+            (click)="placeOrder(items, total)"
+            class="mt-7 w-full rounded-full bg-[#292723] py-3.5 text-sm font-semibold text-white
+                   transition hover:bg-[#8B6F52]
+                   disabled:cursor-not-allowed disabled:bg-[#D7D3CB]"
+          >
+            {{ placingOrder ? 'Placing Order...' : 'Place Order' }}
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+}
+
+</div>
 
 </section>
 
 @if (showAddressForm) {
-  <app-address-form
-    [editingAddress]="editingAddress"
-    (saved)="saveAddress($event)"
-    (cancelled)="closeAddressForm()"
-  />
+
+<app-address-form
+[editingAddress]="editingAddress"
+(saved)="saveAddress($event)"
+(cancelled)="closeAddressForm()"
+/>
+
 }
 
 @if (addressPendingDelete) {
-  <app-confirm-dialog
-    title="Remove this address?"
-    [message]="'This will permanently delete the address for ' + addressPendingDelete.fullName + '.'"
-    (confirmed)="confirmDeleteAddress()"
-    (cancelled)="cancelDeleteAddress()"
-  />
+
+<app-confirm-dialog
+title="Remove this address?"
+[message]="'This will permanently delete the address for  + addressPendingDelete.fullName + .'"
+(confirmed)="confirmDeleteAddress()"
+(cancelled)="cancelDeleteAddress()"
+/>
+
 }
