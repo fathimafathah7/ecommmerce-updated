@@ -13,8 +13,7 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:3000/users';
 
-  // Reactive current-user state so components (navbar, guards, etc.)
-  // update immediately on login/logout without needing a page reload.
+  
   private currentUserSubject = new BehaviorSubject<User | null>(
     this.readUserFromStorage()
   );
@@ -37,6 +36,11 @@ export class AuthService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
+ 
+   updateProfilePhoto(userId: number | string, photoDataUrl: string): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, { profilePhoto: photoDataUrl });
+  }
+ 
   register(user: User): Observable<User> {
     return this.http.post<User>(
       this.apiUrl,
@@ -71,11 +75,7 @@ export class AuthService {
   getCurrentUserId(): number | string | null {
     return this.currentUserSubject.value?.id ?? null;
   }
-
-  logout(): void {
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null);
-  }
+  
   findByEmail(email: string): Observable<User[]> {
   return this.http.get<User[]>(`${this.apiUrl}?email=${email}`);
 }
@@ -83,4 +83,22 @@ export class AuthService {
 updatePassword(userId: number | string, newPassword: string): Observable<User> {
   return this.http.patch<User>(`${this.apiUrl}/${userId}`, { password: newPassword });
 }
+ isAdmin(): boolean {
+    return this.currentUserSubject.value?.role === 'admin';
+  }
+ 
+  /**
+   * Used by the admin "Manage Users" page. Deleting a user does not
+   * touch their cart/wishlist/order rows — those stay orphaned in
+   * db.json but are harmless since nothing queries them without a
+   * matching signed-in userId.
+   */
+  deleteUser(id: number | string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+ 
+  logout(): void {
+    localStorage.removeItem('user');
+    this.currentUserSubject.next(null);
+  }
 }

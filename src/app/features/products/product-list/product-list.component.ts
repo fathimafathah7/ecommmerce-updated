@@ -37,6 +37,14 @@ export class ProductListComponent implements OnInit {
   categories$!: Observable<string[]>;
   filteredProducts$!: Observable<Product[]>;
 
+  // --- Pagination ---
+  pageSize = 8;
+  currentPage = 1;
+  private pageSubject = new BehaviorSubject<number>(1);
+
+  pagedProducts$!: Observable<Product[]>;
+  totalPages$!: Observable<number>;
+
   viewProduct(id: number | string) {
     this.router.navigate(['/products', id]);
   }
@@ -89,20 +97,54 @@ export class ProductListComponent implements OnInit {
         return result;
       })
     );
+
+    this.totalPages$ = this.filteredProducts$.pipe(
+      map(products => Math.max(1, Math.ceil(products.length / this.pageSize)))
+    );
+
+    this.pagedProducts$ = combineLatest([
+      this.filteredProducts$,
+      this.pageSubject
+    ]).pipe(
+      map(([products, page]) => {
+        const start = (page - 1) * this.pageSize;
+        return products.slice(start, start + this.pageSize);
+      })
+    );
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.pageSubject.next(page);
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  nextPage(totalPages: number) {
+    if (this.currentPage < totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
   }
 
   onSortChange(sort: string) {
     this.sortOrder = sort;
     this.sortSubject.next(sort);
+    this.goToPage(1);
   }
 
   onSearchInput() {
     this.searchSubject.next(this.searchTerm.trim().toLowerCase());
+    this.goToPage(1);
   }
 
   onCategoryChange(category: string) {
     this.selectedCategory = category;
     this.categorySubject.next(category);
+    this.goToPage(1);
   }
 
   clearFilters() {
@@ -112,6 +154,7 @@ export class ProductListComponent implements OnInit {
     this.searchSubject.next('');
     this.categorySubject.next('');
     this.sortSubject.next('');
+    this.goToPage(1);
     this.router.navigate([], { relativeTo: this.route, queryParams: {} });
   }
 }

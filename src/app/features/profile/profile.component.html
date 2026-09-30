@@ -1,247 +1,431 @@
-<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-<div class="mx-auto max-w-5xl px-6">
+<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
 
-<div class="mb-10">
+  <div class="mx-auto max-w-5xl px-6">
 
-  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
-    Account
-  </p>
+    <!-- Page Header -->
 
-  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
-    My Profile
-  </h1>
+    <div class="mb-10">
 
-  <p class="mt-2 text-sm text-[#817B72]">
-    Manage your account details and saved addresses.
-  </p>
+      <p
+        class="text-xs font-semibold uppercase
+               tracking-[0.22em] text-[#9D174D]"
+      >
+        Account
+      </p>
 
-</div>
+      <h1
+        class="mt-3 text-3xl font-semibold
+               tracking-[-0.03em] text-[#7A123D]
+               md:text-4xl"
+      >
+        My Profile
+      </h1>
+
+      <p class="mt-2 text-sm text-[#765662]">
+        Manage your account details and saved addresses.
+      </p>
+
+    </div>
 
 
-<div class="grid grid-cols-1 gap-7 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-7 lg:grid-cols-3">
 
-  <!-- User -->
-  <div class="space-y-6">
 
-    @if (user) {
+      <!-- =========================
+           USER
+      ========================== -->
 
-      <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 text-center">
+      <div class="space-y-6">
+
+        @if (user) {
+
+          <div
+            class="rounded-2xl border border-[#F3C4D3]
+                   bg-white p-6 text-center"
+          >
+
+                <div class="relative mx-auto h-20 w-20">
+ 
+              <button
+                type="button"
+                (click)="triggerPhotoUpload()"
+                [disabled]="uploadingPhoto"
+                class="group relative block h-20 w-20 overflow-hidden rounded-full
+                       ring-2 ring-transparent transition hover:ring-blue-200
+                       disabled:cursor-not-allowed"
+                aria-label="Change profile photo"
+              >
+ 
+                @if (user.profilePhoto) {
+ 
+                  <img
+                    [src]="user.profilePhoto"
+                    alt="Profile photo"
+                    class="h-full w-full object-cover"
+                  >
+ 
+                } @else {
+ 
+                  <div
+                    class="flex h-full w-full items-center justify-center
+                           bg-blue-600 text-2xl font-bold text-white"
+                  >
+                    {{ user.name.charAt(0).toUpperCase() }}
+                  </div>
+ 
+                }
+ 
+                               <!-- Hover / uploading overlay -->
+                <div
+                  class="absolute inset-0 flex items-center justify-center
+                         text-white transition
+                         group-hover:bg-black/40 group-hover:opacity-100"
+                  [class]="uploadingPhoto ? 'bg-black/40 opacity-100' : 'bg-black/0 opacity-0'"
+                >
+                  @if (uploadingPhoto) {
+                    <span class="text-xs font-medium">Uploading...</span>
+                  } @else {
+                    <span class="text-lg">📷</span>
+                  }
+                </div>
+ 
+              </button>
+ 
+              <!-- Small camera badge, always visible -->
+              <div
+                class="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-7 w-7
+                       items-center justify-center rounded-full border-2 border-white
+                       bg-gray-900 text-xs text-white"
+              >
+                📷
+              </div>
+ 
+              <input
+                #photoInput
+                type="file"
+                accept="image/*"
+                class="hidden"
+                (change)="onPhotoSelected($event)"
+              >
+ 
+            </div>
+ 
+            <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ user.name }}</h2>
+            <p class="text-sm text-gray-500">{{ user.email }}</p>
+ 
+            <div class="mt-5 flex gap-3">
+              <a
+                routerLink="/orders"
+                class="flex-1 text-sm font-medium text-blue-600 border border-blue-200
+                       bg-blue-50 rounded-lg py-2 hover:bg-blue-100 transition"
+              >
+                My Orders
+              </a>
+              <a
+                routerLink="/cart"
+                class="flex-1 text-sm font-medium text-gray-700 border border-gray-200
+                       rounded-lg py-2 hover:bg-gray-50 transition"
+              >
+                My Cart
+              </a>
+            </div>
+ 
+          </div>
+        }
+
+        <!-- =========================
+             RECENT ACTIVITY
+        ========================== -->
 
         <div
-          class="mx-auto flex h-20 w-20 items-center justify-center rounded-full
-                 bg-[#292723] text-2xl font-semibold text-white"
+          class="rounded-2xl border border-[#F3C4D3]
+                 bg-white p-6"
         >
-          {{ user.name.charAt(0).toUpperCase() }}
-        </div>
 
-        <h2 class="mt-4 text-lg font-semibold text-[#292723]">
-          {{ user.name }}
-        </h2>
-
-        <p class="mt-1 text-sm text-[#817B72]">
-          {{ user.email }}
-        </p>
-
-
-        <div class="mt-6 flex gap-3">
-
-          <a
-            routerLink="/orders"
-            class="flex-1 rounded-full border border-[#D9D3C9] py-2.5 text-xs font-medium
-                   text-[#5F5A52] transition hover:bg-[#F7F5F0]"
+          <h3
+            class="text-sm font-semibold uppercase
+                   tracking-[0.12em] text-[#9D174D]"
           >
-            My Orders
-          </a>
-
-          <a
-            routerLink="/cart"
-            class="flex-1 rounded-full bg-[#292723] py-2.5 text-xs font-medium text-white
-                   transition hover:bg-[#8B6F52]"
-          >
-            My Cart
-          </a>
-
-        </div>
-
-      </div>
-
-    }
+            Recent Activity
+          </h3>
 
 
-    <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6">
+          @if (loadingOrders) {
 
-      <h3 class="text-sm font-semibold uppercase tracking-[0.12em] text-[#5F5A52]">
-        Recent Activity
-      </h3>
+            <p class="mt-5 text-sm text-[#765662]">
+              Loading...
+            </p>
 
+          } @else if (recentOrders.length === 0) {
 
-      @if (loadingOrders) {
+            <p class="mt-5 text-sm text-[#765662]">
+              No orders placed yet.
+            </p>
 
-        <p class="mt-5 text-sm text-[#817B72]">
-          Loading...
-        </p>
+          } @else {
 
-      } @else if (recentOrders.length === 0) {
+            <div class="mt-5 space-y-4">
 
-        <p class="mt-5 text-sm text-[#817B72]">
-          No orders placed yet.
-        </p>
+              @for (order of recentOrders; track order.id) {
 
-      } @else {
+                <div
+                  class="flex items-center
+                         justify-between gap-3"
+                >
 
-        <div class="mt-5 space-y-4">
+                  <div class="min-w-0">
 
-          @for (order of recentOrders; track order.id) {
+                    <p
+                      class="truncate text-sm font-medium
+                             text-[#7A123D]"
+                    >
+                      Order #{{ order.id?.toString()?.slice(-6) }}
+                    </p>
 
-            <div class="flex items-center justify-between gap-3">
+                    <p
+                      class="mt-1 text-xs text-[#B58E9B]"
+                    >
+                      {{ order.createdAt | date:'mediumDate' }}
+                      ·
+                      {{ order.items.length }} item(s)
+                    </p>
 
-              <div class="min-w-0">
-
-                <p class="truncate text-sm font-medium text-[#292723]">
-                  Order #{{ order.id?.toString()?.slice(-6) }}
-                </p>
-
-                <p class="mt-1 text-xs text-[#817B72]">
-                  {{ order.createdAt | date:'mediumDate' }} · {{ order.items.length }} item(s)
-                </p>
-
-              </div>
-
-              <span
-                class="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold capitalize"
-                [class]="statusBadgeClass(order.status)"
-              >
-                {{ order.status }}
-              </span>
-
-            </div>
-
-          }
-
-        </div>
+                  </div>
 
 
-        <a
-          routerLink="/orders"
-          class="mt-5 block text-center text-xs font-medium text-[#8B6F52] hover:underline"
-        >
-          View all orders →
-        </a>
-
-      }
-
-    </div>
-
-  </div>
-
-
-  <!-- Addresses -->
-  <div class="lg:col-span-2">
-
-    <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 md:p-7">
-
-      <div class="mb-6 flex items-center justify-between gap-4">
-
-        <div>
-          <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
-            Delivery
-          </p>
-
-          <h2 class="mt-1 text-lg font-semibold text-[#292723]">
-            Saved Addresses
-          </h2>
-        </div>
-
-        <button
-          type="button"
-          (click)="openAddAddress()"
-          class="rounded-full bg-[#292723] px-4 py-2.5 text-xs font-medium text-white
-                 transition hover:bg-[#8B6F52]"
-        >
-          + Add New
-        </button>
-
-      </div>
-
-
-      @if (loadingAddresses) {
-
-        <p class="text-sm text-[#817B72]">
-          Loading addresses...
-        </p>
-
-      } @else if (addresses.length === 0) {
-
-        <div class="rounded-xl border border-dashed border-[#D9D3C9] px-5 py-10 text-center">
-
-          <p class="text-sm text-[#817B72]">
-            You haven't saved any addresses yet.
-          </p>
-
-          <button
-            type="button"
-            (click)="openAddAddress()"
-            class="mt-3 text-sm font-medium text-[#8B6F52] hover:underline"
-          >
-            Add your first address
-          </button>
-
-        </div>
-
-      } @else {
-
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-
-          @for (address of addresses; track address.id) {
-
-            <div class="rounded-xl border border-[#E5E0D7] p-5 transition hover:border-[#CFC4B4]">
-
-              <div class="flex items-center gap-2">
-
-                <p class="font-medium text-[#292723]">
-                  {{ address.fullName }}
-                </p>
-
-                @if (address.isDefault) {
-
-                  <span class="rounded-full bg-[#F1EEE8] px-2.5 py-1 text-[10px] font-semibold text-[#8B6F52]">
-                    Default
+                  <span
+                    class="shrink-0 rounded-full px-2.5 py-1
+                           text-[10px] font-semibold capitalize"
+                    [class]="statusBadgeClass(order.status)"
+                  >
+                    {{ order.status }}
                   </span>
 
-                }
+                </div>
 
-              </div>
+              }
+
+            </div>
 
 
-              <p class="mt-2 text-sm leading-6 text-[#716C64]">
-                {{ address.line1 }}@if (address.line2) {, {{ address.line2 }}, }{{ address.city }}, {{ address.state }} - {{ address.pincode }}
+            <a
+              routerLink="/orders"
+              class="mt-5 block text-center
+                     text-xs font-medium text-[#D24F82]
+                     transition hover:text-[#9D174D]
+                     hover:underline"
+            >
+              View all orders →
+            </a>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           ADDRESSES
+      ========================== -->
+
+      <div class="lg:col-span-2">
+
+        <div
+          class="rounded-2xl border border-[#F3C4D3]
+                 bg-white p-6 md:p-7"
+        >
+
+          <!-- Address Header -->
+
+          <div
+            class="mb-6 flex items-center
+                   justify-between gap-4"
+          >
+
+            <div>
+
+              <p
+                class="text-[10px] font-semibold uppercase
+                       tracking-[0.16em] text-[#9D174D]"
+              >
+                Delivery
               </p>
 
-              <p class="mt-2 text-xs text-[#817B72]">
-                {{ address.phone }}
+              <h2
+                class="mt-1 text-lg font-semibold
+                       text-[#7A123D]"
+              >
+                Saved Addresses
+              </h2>
+
+            </div>
+
+
+            <!-- Add Address -->
+
+            <button
+              type="button"
+              (click)="openAddAddress()"
+              class="rounded-full
+                     bg-[#BE185D]
+                     px-4 py-2.5 text-xs
+                     font-medium text-white
+                     transition hover:bg-[#9D174D]"
+            >
+              + Add New
+            </button>
+
+          </div>
+
+
+          <!-- Loading -->
+
+          @if (loadingAddresses) {
+
+            <p class="text-sm text-[#765662]">
+              Loading addresses...
+            </p>
+
+          }
+
+
+          <!-- Empty -->
+
+          @else if (addresses.length === 0) {
+
+            <div
+              class="rounded-xl border border-dashed
+                     border-[#F3C4D3]
+                     bg-[#FFF5F7]
+                     px-5 py-10 text-center"
+            >
+
+              <p class="text-sm text-[#765662]">
+                You haven't saved any addresses yet.
               </p>
 
+              <button
+                type="button"
+                (click)="openAddAddress()"
+                class="mt-3 text-sm font-medium
+                       text-[#D24F82]
+                       hover:text-[#9D174D]
+                       hover:underline"
+              >
+                Add your first address
+              </button>
 
-              <div class="mt-4 flex gap-4">
+            </div>
 
-                <button
-                  type="button"
-                  (click)="openEditAddress(address)"
-                  class="text-xs font-medium text-[#817B72] hover:text-[#8B6F52]"
+          }
+
+
+          <!-- Address List -->
+
+          @else {
+
+            <div
+              class="grid grid-cols-1 gap-4
+                     sm:grid-cols-2"
+            >
+
+              @for (address of addresses; track address.id) {
+
+                <div
+                  class="rounded-xl border
+                         border-[#F3C4D3]
+                         bg-white p-5
+                         transition
+                         hover:border-[#E28DAA]
+                         hover:bg-[#FFFBFC]"
                 >
-                  Edit
-                </button>
 
-                <button
-                  type="button"
-                  (click)="askDeleteAddress(address)"
-                  class="text-xs font-medium text-[#817B72] hover:text-[#9A5B52]"
-                >
-                  Delete
-                </button>
+                  <!-- Name + Default -->
 
-              </div>
+                  <div class="flex items-center gap-2">
+
+                    <p
+                      class="font-medium text-[#7A123D]"
+                    >
+                      {{ address.fullName }}
+                    </p>
+
+
+                    @if (address.isDefault) {
+
+                      <span
+                        class="rounded-full
+                               bg-[#FCE7EF]
+                               px-2.5 py-1 text-[10px]
+                               font-semibold text-[#9D174D]"
+                      >
+                        Default
+                      </span>
+
+                    }
+
+                  </div>
+
+
+                  <!-- Address -->
+
+                  <p
+                    class="mt-2 text-sm leading-6
+                           text-[#765662]"
+                  >
+                    {{ address.line1 }}
+
+                    @if (address.line2) {
+                      , {{ address.line2 }},
+                    }
+
+                    {{ address.city }},
+                    {{ address.state }} -
+                    {{ address.pincode }}
+                  </p>
+
+
+                  <!-- Phone -->
+
+                  <p
+                    class="mt-2 text-xs text-[#B58E9B]"
+                  >
+                    {{ address.phone }}
+                  </p>
+
+
+                  <!-- Actions -->
+
+                  <div class="mt-4 flex gap-4">
+
+                    <button
+                      type="button"
+                      (click)="openEditAddress(address)"
+                      class="text-xs font-medium
+                             text-[#765662]
+                             transition hover:text-[#BE185D]"
+                    >
+                      Edit
+                    </button>
+
+
+                    <button
+                      type="button"
+                      (click)="askDeleteAddress(address)"
+                      class="text-xs font-medium
+                             text-[#765662]
+                             transition hover:text-[#C6284F]"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </div>
+
+              }
 
             </div>
 
@@ -249,35 +433,42 @@
 
         </div>
 
-      }
+      </div>
 
     </div>
 
   </div>
-
-</div>
-
-</div>
 
 </section>
 
+
+<!-- =========================
+     ADDRESS FORM
+========================== -->
+
 @if (showAddressForm) {
 
-<app-address-form
-[editingAddress]="editingAddress"
-(saved)="saveAddress($event)"
-(cancelled)="closeAddressForm()"
-/>
+  <app-address-form
+    [editingAddress]="editingAddress"
+    (saved)="saveAddress($event)"
+    (cancelled)="closeAddressForm()"
+  />
 
 }
+
+
+<!-- =========================
+     DELETE CONFIRMATION
+========================== -->
 
 @if (addressPendingDelete) {
 
-<app-confirm-dialog
-title="Remove this address?"
-[message]="'This will permanently delete the address for ' + addressPendingDelete.fullName + '.'"
-(confirmed)="confirmDeleteAddress()"
-(cancelled)="cancelDeleteAddress()"
-/>
+  <app-confirm-dialog
+    title="Remove this address?"
+    [message]="'This will permanently delete the address for ' + addressPendingDelete.fullName + '.'"
+    (confirmed)="confirmDeleteAddress()"
+    (cancelled)="cancelDeleteAddress()"
+  />
 
 }
+

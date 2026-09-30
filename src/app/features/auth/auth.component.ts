@@ -21,7 +21,6 @@ export class AuthComponent {
 
   isLogin = true;
 
-  // Controls whether each password field shows plain text or dots.
   showLoginPassword = false;
   showRegisterPassword = false;
   showConfirmPassword = false;
@@ -44,7 +43,6 @@ export class AuthComponent {
     }
   }
 
-  // --- Forgot password state ---
   showForgotPassword = false;
   forgotStep: 'request' | 'reset' = 'request';
   forgotEmailNotFound = false;
@@ -96,7 +94,7 @@ export class AuthComponent {
     ])
   }, { validators: passwordsMatchValidator });
 
-  // Step 1 of forgot password: just the email.
+ 
   forgotForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -104,9 +102,7 @@ export class AuthComponent {
     ])
   });
 
-  // Step 2 of forgot password: new password. Reuses the same
-  // 'password' / 'confirmPassword' control names as registerForm so the
-  // existing passwordsMatchValidator works unchanged.
+ 
   resetForm = new FormGroup({
     password: new FormControl('', [
       Validators.required,
@@ -164,7 +160,6 @@ export class AuthComponent {
           this.forgotEmailNotFound = true;
           return;
         }
-
         this.matchedUserId = users[0].id!;
         this.forgotStep = 'reset';
       },
@@ -258,7 +253,8 @@ export class AuthComponent {
 
           this.authService.setCurrentUser(user);
           this.snackbar.success(`Welcome back, ${user.name}!`);
-          this.router.navigate(['/']);
+          const destination = user.role === 'admin' ? '/admin' : '/';
+          this.router.navigate([destination], { replaceUrl: true });
 
         } else {
           this.snackbar.error('Invalid email or password.');
@@ -279,9 +275,6 @@ export class AuthComponent {
 
   const email = this.registerForm.controls.email.value!;
 
-  // Check for an existing account with this email before creating a new
-  // one — json-server has no unique-field constraint of its own, so this
-  // has to be enforced on the client.
   this.authService.findByEmail(email).subscribe({
     next: existingUsers => {
 
@@ -291,7 +284,6 @@ export class AuthComponent {
       }
 
       this.emailTaken = false;
-
       const user = {
         name: this.registerForm.controls.name.value!,
         email,

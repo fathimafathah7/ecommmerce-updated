@@ -1,177 +1,214 @@
-<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-<div class="mx-auto max-w-6xl px-6">
+<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
 
-<div class="mb-10">
-  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
-    Saved For Later
-  </p>
+  <div class="mx-auto max-w-6xl px-6">
 
-  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
-    My Wishlist
-  </h1>
-
-  <p class="mt-2 text-sm text-[#817B72]">
-    {{ count$ | async }} saved items
-  </p>
-</div>
-
-
-@if (items$ | async; as items) {
-
-  @if (items.length === 0) {
-
-    <div class="rounded-3xl border border-[#E5E0D7] bg-white px-6 py-20 text-center">
-
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F1EEE8]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-[#8B6F52]">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
-        </svg>
-      </div>
-
-      <h2 class="mt-5 text-xl font-semibold text-[#292723]">
-        Your wishlist is empty
-      </h2>
-
-      <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#817B72]">
-        Save toys you love by tapping the heart icon.
+    <!-- Header -->
+    <div class="mb-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9D174D]">
+        Saved For Later
       </p>
 
-      <a
-        routerLink="/products"
-        class="mt-7 inline-flex rounded-full bg-[#292723] px-7 py-3
-               text-sm font-medium text-white transition hover:bg-[#8B6F52]"
-      >
-        Browse Products
-      </a>
+      <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#7A123D] md:text-4xl">
+        My Wishlist
+      </h1>
 
+      <p class="mt-2 text-sm text-[#765662]">
+        {{ count$ | async }} saved items
+      </p>
     </div>
 
-  } @else {
 
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    @if (items$ | async; as items) {
 
-      @for (item of items; track item.id) {
+      @if (items.length === 0) {
 
-        <div
-          class="group flex overflow-hidden rounded-2xl border border-[#E5E0D7]
-                 bg-white transition duration-300
-                 hover:-translate-y-1 hover:border-[#D4CCBF]
-                 hover:shadow-[0_18px_40px_rgba(41,39,35,0.07)]"
-        >
+        <!-- Empty Wishlist -->
+        <div class="rounded-3xl border border-[#F3C4D3] bg-white px-6 py-20 text-center">
 
-          <div class="flex w-full flex-col">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FCE7EF]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6 text-[#BE185D]"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
+              />
+            </svg>
+          </div>
+
+          <h2 class="mt-5 text-xl font-semibold text-[#7A123D]">
+            Your wishlist is empty
+          </h2>
+
+          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#765662]">
+            Save toys you love by tapping the heart icon.
+          </p>
+
+          <a
+            routerLink="/products"
+            class="mt-7 inline-flex rounded-full bg-[#BE185D] px-7 py-3
+                   text-sm font-medium text-white transition hover:bg-[#9D174D]"
+          >
+            Browse Products
+          </a>
+
+        </div>
+
+      } @else {
+
+        <!-- Wishlist Grid -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+          @for (item of items; track item.id) {
 
             <div
-              class="relative h-56 cursor-pointer overflow-hidden bg-[#F4F1EB]"
-              (click)="viewProduct(item.product.id)"
+              class="group flex overflow-hidden rounded-2xl border border-[#F3C4D3]
+                     bg-white transition duration-300
+                     hover:-translate-y-1 hover:border-[#E28DAA]
+                     hover:shadow-[0_18px_40px_rgba(190,24,93,0.10)]"
             >
 
-              <img
-                [src]="item.product.images[0]"
-                [alt]="item.product.name"
-                class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-              >
+              <div class="flex w-full flex-col">
 
-              <button
-                type="button"
-                (click)="$event.stopPropagation(); askRemove(item)"
-                class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center
-                       rounded-full border border-[#E5E0D7] bg-white/95
-                       text-[#8B6F52] shadow-sm transition hover:bg-[#F7F5F0]"
-                aria-label="Remove from wishlist"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor"
-                  class="h-4 w-4">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M6 6l12 12M18 6 6 18" />
-                </svg>
-              </button>
+                <!-- Product Image -->
+                <div
+                  class="relative h-56 cursor-pointer overflow-hidden bg-[#FFF5F7]"
+                  (click)="viewProduct(item.product.id)"
+                >
+
+                  <img
+                    [src]="item.product.images[0]"
+                    [alt]="item.product.name"
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  >
+
+                  <!-- Remove Icon -->
+                  <button
+                    type="button"
+                    (click)="$event.stopPropagation(); askRemove(item)"
+                    class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center
+                           rounded-full border border-[#F3C4D3] bg-white/95
+                           text-[#9D174D] shadow-sm transition
+                           hover:bg-[#FCE7EF] hover:text-[#C6284F]"
+                    aria-label="Remove from wishlist"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.6"
+                      stroke="currentColor"
+                      class="h-4 w-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 6l12 12M18 6 6 18"
+                      />
+                    </svg>
+                  </button>
+
+                </div>
+
+
+                <!-- Product Info -->
+                <div class="flex flex-1 flex-col p-5">
+
+                  <!-- Category -->
+                  <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9D174D]">
+                    {{ item.product.category }}
+                  </p>
+
+                  <!-- Product Name -->
+                  <h2
+                    class="mt-2 line-clamp-2 cursor-pointer text-base font-semibold text-[#7A123D]
+                           transition hover:text-[#BE185D]"
+                    (click)="viewProduct(item.product.id)"
+                  >
+                    {{ item.product.name }}
+                  </h2>
+
+
+                  <!-- Rating -->
+                  <div class="mt-3 flex items-center gap-2">
+                    <span class="text-sm text-[#D24F82]">★</span>
+
+                    <span class="text-xs text-[#765662]">
+                      {{ item.product.rating }}
+                    </span>
+                  </div>
+
+
+                  <!-- Price -->
+                  <p class="mt-3 text-lg font-semibold text-[#7A123D]">
+                    {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
+                  </p>
+
+
+                  <!-- Actions -->
+                  <div class="mt-auto flex gap-2 pt-5">
+
+                    <!-- Add To Cart -->
+                    <button
+                      type="button"
+                      (click)="addToCart(item)"
+                      [disabled]="item.product.stock === 0"
+                      class="flex-1 rounded-full bg-[#BE185D] py-2.5 text-xs font-semibold text-white
+                             transition hover:bg-[#9D174D]
+                             disabled:cursor-not-allowed disabled:bg-[#E28DAA]"
+                    >
+                      Add to Cart
+                    </button>
+
+                    <!-- Remove -->
+                    <button
+                      type="button"
+                      (click)="askRemove(item)"
+                      class="rounded-full border border-[#F3C4D3] px-4 py-2.5 text-xs font-medium
+                             text-[#9D174D] transition
+                             hover:bg-[#FCE7EF] hover:text-[#BE185D]"
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
 
             </div>
 
-
-            <div class="flex flex-1 flex-col p-5">
-
-              <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
-                {{ item.product.category }}
-              </p>
-
-              <h2
-                class="mt-2 line-clamp-2 cursor-pointer text-base font-semibold text-[#292723]
-                       transition hover:text-[#8B6F52]"
-                (click)="viewProduct(item.product.id)"
-              >
-                {{ item.product.name }}
-              </h2>
-
-
-              <div class="mt-3 flex items-center gap-2">
-                <span class="text-sm text-[#A07C4D]">★</span>
-                <span class="text-xs text-[#817B72]">
-                  {{ item.product.rating }}
-                </span>
-              </div>
-
-
-              <p class="mt-3 text-lg font-semibold text-[#292723]">
-                {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
-              </p>
-
-
-              <div class="mt-auto flex gap-2 pt-5">
-
-                <button
-                  type="button"
-                  (click)="addToCart(item)"
-                  [disabled]="item.product.stock === 0"
-                  class="flex-1 rounded-full bg-[#292723] py-2.5 text-xs font-semibold text-white
-                         transition hover:bg-[#8B6F52]
-                         disabled:cursor-not-allowed disabled:bg-[#D7D3CB]"
-                >
-                  Add to Cart
-                </button>
-
-                <button
-                  type="button"
-                  (click)="askRemove(item)"
-                  class="rounded-full border border-[#D9D3C9] px-4 py-2.5 text-xs font-medium
-                         text-[#5F5A52] transition hover:bg-[#F7F5F0]"
-                >
-                  Remove
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
+          }
 
         </div>
 
       }
 
-    </div>
+    }
 
-  }
-
-}
-
-</div>
+  </div>
 
 </section>
 
+
+<!-- Confirmation Dialog -->
 @if (itemPendingDelete) {
 
-<app-confirm-dialog
-title="Remove from wishlist?"
-[message]="'Remove ' + itemPendingDelete.product.name + ' from your wishlist?'"
-confirmLabel="Remove"
-(confirmed)="confirmRemove()"
-(cancelled)="cancelRemove()"
-/>
+  <app-confirm-dialog
+    title="Remove from wishlist?"
+    [message]="'Remove ' + itemPendingDelete.product.name + ' from your wishlist?'"
+    confirmLabel="Remove"
+    (confirmed)="confirmRemove()"
+    (cancelled)="cancelRemove()"
+  />
 
 }
+

@@ -4,6 +4,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 
+
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { productReducer } from './store/products/product.reducer';
@@ -12,6 +13,7 @@ import { cartReducer } from './store/cart/cart.reducer';
 import { CartEffects } from './store/cart/cart.effects';
 import { WishlistEffects } from './store/wishlist/wishlist.effects';
 import { wishlistReducer } from './store/wishlist/wishlist.reducer';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -22,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       cart:cartReducer,
       wishlist:wishlistReducer
     }),
-    provideEffects(ProductEffects,CartEffects,WishlistEffects)
+    provideEffects(ProductEffects,CartEffects,WishlistEffects),
+    provideCharts(withDefaultRegisterables())
   ]
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
@@ -31,6 +31,11 @@ export class ProfileComponent implements OnInit {
   private snackbar = inject(SnackbarService);
 
   user: User | null = null;
+   // --- Profile photo upload ---
+  @ViewChild('photoInput') photoInput?: ElementRef<HTMLInputElement>;
+  uploadingPhoto = false;
+ 
+  private readonly maxPhotoSizeBytes = 2 * 1024 * 1024; 
 
   addresses: Address[] = [];
   loadingAddresses = true;
@@ -140,14 +145,81 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+   // --- Profile photo upload ---
+ 
+  /** Clicking the avatar (or its camera badge) opens the hidden file picker. */
+  triggerPhotoUpload() {
+    this.photoInput?.nativeElement.click();
+  }
+ 
+  onPhotoSelected(event: Event) {
+ 
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+ 
+    // Reset the input so selecting the same file again still fires a
+    // change event next time.
+    input.value = '';
+ 
+    if (!file) {
+      return;
+    }
+ 
+    if (!file.type.startsWith('image/')) {
+      this.snackbar.error('Please choose an image file.');
+      return;
+    }
+ 
+    if (file.size > this.maxPhotoSizeBytes) {
+      this.snackbar.error('Image is too large. Please choose one under 2MB.');
+      return;
+    }
+ 
+    if (!this.user?.id) {
+      return;
+    }
+ 
+    const reader = new FileReader();
+ 
+    reader.onload = () => {
+ 
+      const dataUrl = reader.result as string;
+ 
+      this.uploadingPhoto = true;
+ 
+      this.authService.updateProfilePhoto(this.user!.id!, dataUrl).subscribe({
+        next: updatedUser => {
+ 
+          this.user = updatedUser;
+          // Keep localStorage / the app-wide currentUser$ stream in sync
+          // so the new photo shows up anywhere else it's used too.
+          this.authService.setCurrentUser(updatedUser);
+ 
+          this.uploadingPhoto = false;
+          this.snackbar.success('Profile photo updated.');
+        },
+        error: () => {
+          this.uploadingPhoto = false;
+          this.snackbar.error('Could not update your profile photo. Please try again.');
+        }
+      });
+    };
+ 
+    reader.onerror = () => {
+      this.snackbar.error('Could not read that file. Please try again.');
+    };
+ 
+    reader.readAsDataURL(file);
+  }
+ 
 
   statusBadgeClass(status: Order['status']): string {
     switch (status) {
-      case 'delivered': return 'bg-green-50 text-green-700';
-      case 'shipped': return 'bg-blue-50 text-blue-700';
-      case 'processing': return 'bg-amber-50 text-amber-700';
-      case 'cancelled': return 'bg-red-50 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'delivered': return 'bg-[#FCE7EF] text-[#9D174D]';
+      case 'shipped': return 'bg-[#FCE7EF] text-[#BE185D]';
+      case 'processing': return 'bg-[#FFF5F7] text-[#D24F82]';
+      case 'cancelled': return 'bg-[#FFF1F3] text-[#C6284F]';
+      default: return 'bg-[#FCE7EF] text-[#765662]';
     }
   }
 }

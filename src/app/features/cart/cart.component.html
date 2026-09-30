@@ -1,243 +1,264 @@
-<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-<div class="mx-auto max-w-6xl px-6">
+<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
 
-<div class="mb-10">
-  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
-    Your Selection
-  </p>
+  <div class="mx-auto max-w-6xl px-6">
 
-  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
-    Shopping Cart
-  </h1>
-
-  <p class="mt-2 text-sm text-[#817B72]">
-    {{ itemCount$ | async }} items in your cart
-  </p>
-</div>
-
-
-@if (items$ | async; as items) {
-
-  @if (items.length === 0) {
-
-    <div class="rounded-3xl border border-[#E5E0D7] bg-white px-6 py-20 text-center">
-
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F1EEE8] text-[#8B6F52]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25" />
-          <circle cx="9" cy="20" r="1" />
-          <circle cx="18" cy="20" r="1" />
-        </svg>
-      </div>
-
-      <h2 class="mt-5 text-xl font-semibold text-[#292723]">
-        Your cart is empty
-      </h2>
-
-      <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#817B72]">
-        Looks like you haven't added any toys yet.
+    <!-- Header -->
+    <div class="mb-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9D174D]">
+        Your Selection
       </p>
 
-      <a
-        routerLink="/products"
-        class="mt-7 inline-flex rounded-full bg-[#292723] px-7 py-3 text-sm font-medium text-white
-               transition hover:bg-[#8B6F52]"
-      >
-        Browse Products
-      </a>
+      <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#7A123D] md:text-4xl">
+        Shopping Cart
+      </h1>
 
+      <p class="mt-2 text-sm text-[#765662]">
+        {{ itemCount$ | async }} items in your cart
+      </p>
     </div>
 
-  } @else {
 
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+    @if (items$ | async; as items) {
 
-      <div class="space-y-4 lg:col-span-2">
+      @if (items.length === 0) {
 
-        @for (item of items; track item.product.id) {
+        <!-- Empty Cart -->
+        <div class="rounded-3xl border border-[#F3C4D3] bg-white px-6 py-20 text-center">
 
-          <div
-            class="rounded-2xl border border-[#E5E0D7] bg-white p-5
-                   transition hover:border-[#D4CCBF]
-                   sm:p-6"
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FCE7EF] text-[#BE185D]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25"
+              />
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+            </svg>
+          </div>
+
+          <h2 class="mt-5 text-xl font-semibold text-[#7A123D]">
+            Your cart is empty
+          </h2>
+
+          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#765662]">
+            Looks like you haven't added any toys yet.
+          </p>
+
+          <a
+            routerLink="/products"
+            class="mt-7 inline-flex rounded-full bg-[#BE185D] px-7 py-3 text-sm font-medium text-white
+                   transition hover:bg-[#9D174D]"
           >
+            Browse Products
+          </a>
 
-            <div class="flex flex-col gap-5 sm:flex-row">
+        </div>
 
-              <div class="h-32 w-full shrink-0 overflow-hidden rounded-xl bg-[#F4F1EB] sm:w-32">
-                <img
-                  [src]="item.product.images[0]"
-                  [alt]="item.product.name"
-                  class="h-full w-full object-contain p-3"
-                >
-              </div>
+      } @else {
 
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
-              <div class="flex-1">
+          <!-- Cart Items -->
+          <div class="space-y-4 lg:col-span-2">
 
-                <div class="flex items-start justify-between gap-4">
+            @for (item of items; track item.product.id) {
 
-                  <div>
-                    <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9A8063]">
-                      {{ item.product.category }}
-                    </p>
+              <div
+                class="rounded-2xl border border-[#F3C4D3] bg-white p-5
+                       transition hover:border-[#E28DAA]
+                       sm:p-6"
+              >
 
-                    <h2 class="mt-1 text-lg font-semibold text-[#292723]">
-                      {{ item.product.name }}
-                    </h2>
+                <div class="flex flex-col gap-5 sm:flex-row">
+
+                  <!-- Product Image -->
+                  <div class="h-32 w-full shrink-0 overflow-hidden rounded-xl bg-[#FFF5F7] sm:w-32">
+                    <img
+                      [src]="item.product.images[0]"
+                      [alt]="item.product.name"
+                      class="h-full w-full object-contain p-3"
+                    >
                   </div>
 
-                  <app-wishlist-button
-                    [product]="item.product"
-                    size="sm"
-                  />
+
+                  <div class="flex-1">
+
+                    <div class="flex items-start justify-between gap-4">
+
+                      <div>
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9D174D]">
+                          {{ item.product.category }}
+                        </p>
+
+                        <h2 class="mt-1 text-lg font-semibold text-[#7A123D]">
+                          {{ item.product.name }}
+                        </h2>
+                      </div>
+
+                      <app-wishlist-button
+                        [product]="item.product"
+                        size="sm"
+                      />
+
+                    </div>
+
+
+                    <!-- Unit Price -->
+                    <p class="mt-3 text-lg font-semibold text-[#7A123D]">
+                      {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
+                    </p>
+
+
+                    <!-- Quantity Controls -->
+                    <div class="mt-5 flex items-center gap-3">
+
+                      <span class="text-xs font-medium uppercase tracking-wide text-[#765662]">
+                        Quantity
+                      </span>
+
+                      <button
+                        type="button"
+                        (click)="decrease(item)"
+                        class="flex h-8 w-8 items-center justify-center rounded-full
+                               border border-[#F3C4D3] text-[#9D174D]
+                               transition hover:border-[#BE185D] hover:bg-[#FCE7EF]"
+                      >
+                        −
+                      </button>
+
+                      <span class="w-7 text-center text-sm font-semibold text-[#7A123D]">
+                        {{ item.quantity }}
+                      </span>
+
+                      <button
+                        type="button"
+                        (click)="increase(item)"
+                        [disabled]="item.quantity >= item.product.maxQuantity"
+                        class="flex h-8 w-8 items-center justify-center rounded-full
+                               border border-[#F3C4D3] text-[#9D174D]
+                               transition hover:border-[#BE185D] hover:bg-[#FCE7EF]
+                               disabled:cursor-not-allowed disabled:opacity-30"
+                      >
+                        +
+                      </button>
+
+                    </div>
+
+
+                    <!-- Remove Item -->
+                    <button
+                      type="button"
+                      (click)="askRemove(item)"
+                      class="mt-4 text-xs font-medium text-[#C6284F]
+                             transition hover:text-[#9D174D]"
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+
+                  <!-- Item Subtotal -->
+                  <div class="text-left sm:text-right">
+
+                    <p class="text-sm font-semibold text-[#7A123D]">
+                      {{
+                        item.product.price * item.quantity
+                          | currency:'INR':'symbol':'1.0-0'
+                      }}
+                    </p>
+
+                  </div>
 
                 </div>
 
-
-                <p class="mt-3 text-lg font-semibold text-[#292723]">
-                  {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
-                </p>
-
-
-                <div class="mt-5 flex items-center gap-3">
-
-                  <span class="text-xs font-medium uppercase tracking-wide text-[#817B72]">
-                    Quantity
-                  </span>
-
-                  <button
-                    type="button"
-                    (click)="decrease(item)"
-                    class="flex h-8 w-8 items-center justify-center rounded-full
-                           border border-[#D9D3C9] text-[#5F5A52]
-                           transition hover:border-[#8B6F52] hover:bg-[#F7F5F0]"
-                  >
-                    −
-                  </button>
-
-                  <span class="w-7 text-center text-sm font-semibold text-[#292723]">
-                    {{ item.quantity }}
-                  </span>
-
-                  <button
-                    type="button"
-                    (click)="increase(item)"
-                    [disabled]="item.quantity >= item.product.maxQuantity"
-                    class="flex h-8 w-8 items-center justify-center rounded-full
-                           border border-[#D9D3C9] text-[#5F5A52]
-                           transition hover:border-[#8B6F52] hover:bg-[#F7F5F0]
-                           disabled:cursor-not-allowed disabled:opacity-30"
-                  >
-                    +
-                  </button>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  (click)="askRemove(item)"
-                  class="mt-4 text-xs font-medium text-[#9A5B52]
-                         transition hover:text-[#7E443D]"
-                >
-                  Remove
-                </button>
-
               </div>
 
-
-              <div class="text-left sm:text-right">
-
-                <p class="text-sm font-semibold text-[#292723]">
-                  {{
-                    item.product.price * item.quantity
-                      | currency:'INR':'symbol':'1.0-0'
-                  }}
-                </p>
-
-              </div>
-
-            </div>
+            }
 
           </div>
 
-        }
 
-      </div>
+          <!-- Order Summary -->
+          <div
+            class="h-fit rounded-2xl border border-[#F3C4D3] bg-white p-6
+                   lg:sticky lg:top-24"
+          >
 
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9D174D]">
+              Summary
+            </p>
 
-      <div
-        class="h-fit rounded-2xl border border-[#E5E0D7] bg-white p-6
-               lg:sticky lg:top-24"
-      >
-
-        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9A8063]">
-          Summary
-        </p>
-
-        <h2 class="mt-2 text-xl font-semibold text-[#292723]">
-          Order Summary
-        </h2>
+            <h2 class="mt-2 text-xl font-semibold text-[#7A123D]">
+              Order Summary
+            </h2>
 
 
-        <div class="mt-7 flex justify-between text-sm text-[#716C64]">
-          <span>Items</span>
-          <span>{{ itemCount$ | async }}</span>
+            <div class="mt-7 flex justify-between text-sm text-[#765662]">
+              <span>Items</span>
+              <span>{{ itemCount$ | async }}</span>
+            </div>
+
+
+            <div class="my-5 border-t border-[#F3C4D3]"></div>
+
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium text-[#765662]">
+                Total
+              </span>
+
+              <span class="text-xl font-semibold text-[#7A123D]">
+                {{
+                  total$ | async
+                    | currency:'INR':'symbol':'1.0-0'
+                }}
+              </span>
+            </div>
+
+
+            <button
+              type="button"
+              (click)="goToCheckout(items.length)"
+              class="mt-7 w-full rounded-full bg-[#BE185D] py-3.5
+                     text-sm font-semibold text-white
+                     transition duration-300
+                     hover:bg-[#9D174D]"
+            >
+              Proceed to Checkout
+            </button>
+
+          </div>
+
         </div>
 
+      }
 
-        <div class="my-5 border-t border-[#EAE6DE]"></div>
+    }
 
-
-        <div class="flex items-center justify-between">
-          <span class="font-medium text-[#5F5A52]">
-            Total
-          </span>
-
-          <span class="text-xl font-semibold text-[#292723]">
-            {{
-              total$ | async
-                | currency:'INR':'symbol':'1.0-0'
-            }}
-          </span>
-        </div>
-
-
-        <button
-          type="button"
-          (click)="goToCheckout(items.length)"
-          class="mt-7 w-full rounded-full bg-[#292723] py-3.5
-                 text-sm font-semibold text-white
-                 transition duration-300
-                 hover:bg-[#8B6F52]"
-        >
-          Proceed to Checkout
-        </button>
-
-      </div>
-
-    </div>
-
-  }
-
-}
-
-</div>
+  </div>
 
 </section>
 
+
+<!-- Confirmation Dialog -->
 @if (itemPendingDelete) {
 
-<app-confirm-dialog
-title="Remove item?"
-[message]="'Remove &quot;' + itemPendingDelete.product.name + '&quot; from your cart?'"
-confirmLabel="Remove"
-(confirmed)="confirmRemove()"
-(cancelled)="cancelRemove()"
-/>
+  <app-confirm-dialog
+    title="Remove item?"
+    [message]="'Remove &quot;' + itemPendingDelete.product.name + '&quot; from your cart?'"
+    confirmLabel="Remove"
+    (confirmed)="confirmRemove()"
+    (cancelled)="cancelRemove()"
+  />
 
 }

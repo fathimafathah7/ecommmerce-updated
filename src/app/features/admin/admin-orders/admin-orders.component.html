@@ -1,0 +1,134 @@
+<p>admin-orders works!</p>
+<div>
+
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+    <div>
+      <h1 class="text-2xl font-semibold tracking-[-0.02em] text-[#292723]">
+        Orders
+      </h1>
+      <p class="mt-1 text-sm text-[#817B72]">
+        Every order placed across all customers.
+      </p>
+    </div>
+
+    <select
+      [(ngModel)]="statusFilter"
+      class="rounded-full border border-[#D9D3C9] bg-white px-4 py-2.5 text-sm text-[#5F5A52] outline-none focus:border-[#8B6F52]"
+    >
+      <option value="">All statuses</option>
+      @for (status of statusOptions; track status) {
+        <option [value]="status">{{ status }}</option>
+      }
+    </select>
+
+  </div>
+
+
+  @if (loading) {
+
+    <p class="mt-8 text-sm text-[#817B72]">Loading orders...</p>
+
+  } @else if (filteredOrders.length === 0) {
+
+    <p class="mt-8 text-sm text-[#817B72]">No orders match this filter.</p>
+
+  } @else {
+
+    <div class="mt-6 space-y-3">
+
+      @for (order of filteredOrders; track order.id) {
+
+        <div class="overflow-hidden rounded-2xl border border-[#E5E0D7] bg-white">
+
+          <button
+            type="button"
+            (click)="toggleExpand(order)"
+            class="flex w-full flex-col gap-3 p-5 text-left transition hover:bg-[#FAF9F7] sm:flex-row sm:items-center sm:justify-between"
+          >
+
+            <div>
+              <p class="font-semibold text-[#292723]">
+                #{{ order.id?.toString()?.slice(-6) }}
+                <span class="ml-2 font-normal text-[#817B72]">— {{ order.address.fullName }}</span>
+              </p>
+              <p class="mt-1 text-sm text-[#817B72]">
+                {{ order.createdAt | date:'medium' }} · {{ order.items.length }} item(s)
+              </p>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <span class="rounded-full px-2.5 py-1 text-xs font-semibold capitalize" [class]="statusBadgeClass(order.status)">
+                {{ order.status }}
+              </span>
+              <span class="text-lg font-bold text-[#292723]">
+                {{ order.total | currency:'INR':'symbol':'1.0-0' }}
+              </span>
+              <span class="text-[#A09A91]">
+                {{ expandedOrderId === order.id ? '▲' : '▼' }}
+              </span>
+            </div>
+
+          </button>
+
+          @if (expandedOrderId === order.id) {
+
+            <div class="border-t border-[#F1EEE8] bg-[#FAF9F7] p-5">
+
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+
+                <div>
+                  <h3 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[#9A8063]">Items</h3>
+                  <div class="space-y-3">
+                    @for (item of order.items; track item.product.id) {
+                      <div class="flex items-center gap-3">
+                        <img [src]="item.product.images[0]" [alt]="item.product.name" class="h-10 w-10 shrink-0 rounded-lg bg-white border border-[#EAE6DE] object-contain p-1">
+                        <div class="min-w-0 flex-1">
+                          <p class="truncate text-sm font-medium text-[#292723]">{{ item.product.name }}</p>
+                          <p class="text-xs text-[#817B72]">Qty {{ item.quantity }}</p>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[#9A8063]">Delivery Address</h3>
+                  <p class="text-sm text-[#5F5A52]">
+                    {{ order.address.fullName }}<br>
+                    {{ order.address.line1 }}@if (order.address.line2) {, {{ order.address.line2 }}}<br>
+                    {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
+                    📞 {{ order.address.phone }}
+                  </p>
+                  <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-[#9A8063]">Payment</p>
+                  <p class="mt-1 text-sm text-[#5F5A52]">{{ paymentLabel(order.paymentMethod) }}</p>
+                </div>
+
+                <div>
+                  <h3 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[#9A8063]">Update Status</h3>
+                  <select
+                    [ngModel]="order.status"
+                    (ngModelChange)="updateStatus(order, $event)"
+                    class="w-full rounded-lg border border-[#D9D3C9] bg-white px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]"
+                  >
+                    @for (status of statusOptions; track status) {
+                      <option [value]="status">{{ status }}</option>
+                    }
+                  </select>
+                </div>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

@@ -1,229 +1,291 @@
-<div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto px-4 py-8" role="dialog" aria-modal="true" >
 
-<div class="absolute inset-0 bg-[#292723]/40 backdrop-blur-sm" (click)="cancel()" ></div>
-
-<div class="relative my-auto w-full max-w-lg rounded-3xl border border-[#E5E0D7] bg-white p-6 shadow-[0_25px_80px_rgba(41,39,35,0.16)] md:p-8">
-
-<div class="mb-7">
-
-  <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9A8063]">
-    Address
-  </p>
-
-  <h3 class="mt-2 text-xl font-semibold text-[#292723]">
-    {{ isEditMode ? 'Edit Address' : 'Add New Address' }}
-  </h3>
-
-</div>
-
-
-<form
-  [formGroup]="form"
-  (ngSubmit)="submit()"
-  class="space-y-4"
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto px-4 py-8"
+  role="dialog"
+  aria-modal="true"
 >
 
-  <div>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-[#7A123D]/30 backdrop-blur-sm"
+    (click)="cancel()"
+  ></div>
 
-    <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-      Full Name
-    </label>
+  <!-- Modal -->
+  <div
+    class="relative my-auto w-full max-w-lg rounded-3xl border border-[#F3C4D3]
+           bg-white p-6 shadow-[0_25px_80px_rgba(122,18,61,0.14)] md:p-8"
+  >
 
-    <input
-      type="text"
-      formControlName="fullName"
-      placeholder="Recipient's full name"
-      class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-             text-[#292723] outline-none transition placeholder:text-[#AAA59D]
-             focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-    >
+    <!-- Header -->
+    <div class="mb-7">
 
-    @if (form.controls.fullName.touched && form.controls.fullName.invalid) {
-      <p class="mt-1 text-xs text-[#9A5B52]">
-        Please enter a valid name (min 3 characters).
-      </p>
-    }
-
-  </div>
-
-
-  <div>
-
-    <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-      Phone Number
-    </label>
-
-    <input
-      type="tel"
-      formControlName="phone"
-      placeholder="10-digit mobile number"
-      maxlength="10"
-      class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-             outline-none transition placeholder:text-[#AAA59D]
-             focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-    >
-
-    @if (form.controls.phone.touched && form.controls.phone.invalid) {
-      <p class="mt-1 text-xs text-[#9A5B52]">
-        Enter a valid 10-digit mobile number.
-      </p>
-    }
-
-  </div>
-
-
-  <div>
-
-    <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-      Address Line 1
-    </label>
-
-    <input
-      type="text"
-      formControlName="line1"
-      placeholder="House no., street, area"
-      class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-             outline-none transition placeholder:text-[#AAA59D]
-             focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-    >
-
-    @if (form.controls.line1.touched && form.controls.line1.invalid) {
-      <p class="mt-1 text-xs text-[#9A5B52]">
-        Please enter a valid address.
-      </p>
-    }
-
-  </div>
-
-
-  <div>
-
-    <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-      Address Line 2
-      <span class="font-normal text-[#AAA59D]">(optional)</span>
-    </label>
-
-    <input
-      type="text"
-      formControlName="line2"
-      placeholder="Landmark, apartment, etc."
-      class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-             outline-none transition placeholder:text-[#AAA59D]
-             focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-    >
-
-  </div>
-
-
-  <div class="grid grid-cols-2 gap-4">
-
-    <div>
-
-      <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-        City
-      </label>
-
-      <input
-        type="text"
-        formControlName="city"
-        class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-               outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+      <p
+        class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9D174D]"
       >
+        Address
+      </p>
 
-      @if (form.controls.city.touched && form.controls.city.invalid) {
-        <p class="mt-1 text-xs text-[#9A5B52]">
-          Required.
-        </p>
-      }
+      <h3 class="mt-2 text-xl font-semibold text-[#7A123D]">
+        {{ isEditMode ? 'Edit Address' : 'Add New Address' }}
+      </h3>
 
     </div>
 
 
-    <div>
+    <!-- Form -->
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="space-y-4"
+    >
 
-      <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-        State
-      </label>
+      <!-- Full Name -->
+      <div>
 
-      <input
-        type="text"
-        formControlName="state"
-        class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-               outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+        <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          formControlName="fullName"
+          placeholder="Recipient's full name"
+          class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                 px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                 placeholder:text-[#B58E9B]
+                 focus:border-[#BE185D]
+                 focus:ring-2 focus:ring-[#E28DAA]/30"
+        >
+
+        @if (form.controls.fullName.touched) {
+          @if(form.controls.fullName.hasError('minlength')){
+          <p class="mt-1 text-xs text-[#C6284F]">
+            Please enter a valid name (min 3 characters).
+          </p>
+        }
+        @else if(form.controls.fullName.hasError('pattern')){
+          <p class="mt-1 text-xs text-[#C6284F]">
+            Full name can only contain letters(A-Z)
+          </p>
+        }
+      }
+      </div>
+
+
+      <!-- Phone -->
+      <div>
+
+        <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+          Phone Number
+        </label>
+
+        <input
+          type="tel"
+          formControlName="phone"
+          placeholder="10-digit mobile number"
+          maxlength="10"
+          class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                 px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                 placeholder:text-[#B58E9B]
+                 focus:border-[#BE185D]
+                 focus:ring-2 focus:ring-[#E28DAA]/30"
+        >
+
+        @if (form.controls.phone.touched && form.controls.phone.invalid) {
+          <p class="mt-1 text-xs text-[#C6284F]">
+            Enter a valid 10-digit mobile number.
+          </p>
+        }
+
+      </div>
+
+
+      <!-- Address Line 1 -->
+      <div>
+
+        <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+          Address Line 1
+        </label>
+
+        <input
+          type="text"
+          formControlName="line1"
+          placeholder="House no., street, area"
+          class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                 px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                 placeholder:text-[#B58E9B]
+                 focus:border-[#BE185D]
+                 focus:ring-2 focus:ring-[#E28DAA]/30"
+        >
+
+        @if (form.controls.line1.touched && form.controls.line1.invalid) {
+          <p class="mt-1 text-xs text-[#C6284F]">
+            Please enter a valid address.
+          </p>
+        }
+
+      </div>
+
+
+      <!-- Address Line 2 -->
+      <div>
+
+        <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+          Address Line 2
+          <span class="font-normal text-[#B58E9B]">(optional)</span>
+        </label>
+
+        <input
+          type="text"
+          formControlName="line2"
+          placeholder="Landmark, apartment, etc."
+          class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                 px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                 placeholder:text-[#B58E9B]
+                 focus:border-[#BE185D]
+                 focus:ring-2 focus:ring-[#E28DAA]/30"
+        >
+
+      </div>
+
+
+      <!-- City + State -->
+      <div class="grid grid-cols-2 gap-4">
+
+        <!-- City -->
+        <div>
+
+          <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+            City
+          </label>
+
+          <input
+            type="text"
+            formControlName="city"
+            placeholder="City"
+            class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                   px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                   placeholder:text-[#B58E9B]
+                   focus:border-[#BE185D]
+                   focus:ring-2 focus:ring-[#E28DAA]/30"
+          >
+
+          @if (form.controls.city.touched && form.controls.city.invalid) {
+            <p class="mt-1 text-xs text-[#C6284F]">
+              Required.
+            </p>
+          }
+
+        </div>
+
+
+        <!-- State -->
+        <div>
+
+          <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+            State
+          </label>
+
+          <input
+            type="text"
+            formControlName="state"
+            placeholder="State"
+            class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                   px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                   placeholder:text-[#B58E9B]
+                   focus:border-[#BE185D]
+                   focus:ring-2 focus:ring-[#E28DAA]/30"
+          >
+
+          @if (form.controls.state.touched && form.controls.state.invalid) {
+            <p class="mt-1 text-xs text-[#C6284F]">
+              Required.
+            </p>
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Pincode -->
+      <div>
+
+        <label class="mb-1.5 block text-sm font-medium text-[#9D174D]">
+          Pincode
+        </label>
+
+        <input
+          type="text"
+          formControlName="pincode"
+          maxlength="6"
+          placeholder="6-digit pincode"
+          class="w-full rounded-xl border border-[#F3C4D3] bg-[#FFFBFC]
+                 px-3.5 py-3 text-sm text-[#4A3039] outline-none transition
+                 placeholder:text-[#B58E9B]
+                 focus:border-[#BE185D]
+                 focus:ring-2 focus:ring-[#E28DAA]/30"
+        >
+
+        @if (form.controls.pincode.touched && form.controls.pincode.invalid) {
+          <p class="mt-1 text-xs text-[#C6284F]">
+            Enter a valid 6-digit pincode.
+          </p>
+        }
+
+      </div>
+
+
+      <!-- Default Address -->
+      <label
+        class="flex cursor-pointer items-center gap-2 py-1 text-sm text-[#765662]"
       >
 
-      @if (form.controls.state.touched && form.controls.state.invalid) {
-        <p class="mt-1 text-xs text-[#9A5B52]">
-          Required.
-        </p>
-      }
+        <input
+          type="checkbox"
+          formControlName="isDefault"
+          class="h-4 w-4 accent-[#BE185D]"
+        >
 
-    </div>
+        Set as default address
 
-  </div>
-
-
-  <div>
-
-    <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">
-      Pincode
-    </label>
-
-    <input
-      type="text"
-      formControlName="pincode"
-      maxlength="6"
-      placeholder="6-digit pincode"
-      class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-             outline-none transition placeholder:text-[#AAA59D]
-             focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-    >
-
-    @if (form.controls.pincode.touched && form.controls.pincode.invalid) {
-      <p class="mt-1 text-xs text-[#9A5B52]">
-        Enter a valid 6-digit pincode.
-      </p>
-    }
-
-  </div>
+      </label>
 
 
-  <label class="flex cursor-pointer items-center gap-2 py-1 text-sm text-[#5F5A52]">
+      <!-- Buttons -->
+      <div class="flex gap-3 pt-3">
 
-    <input
-      type="checkbox"
-      formControlName="isDefault"
-      class="h-4 w-4 accent-[#8B6F52]"
-    >
+        <!-- Cancel -->
+        <button
+          type="button"
+          (click)="cancel()"
+          class="flex-1 rounded-full border border-[#F3C4D3] py-3
+                 text-sm font-medium text-[#765662] transition
+                 hover:bg-[#FCE7EF] hover:text-[#9D174D]"
+        >
+          Cancel
+        </button>
 
-    Set as default address
 
-  </label>
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          class="flex-1 rounded-full bg-[#BE185D] py-3 text-sm
+                 font-semibold text-white transition
+                 hover:bg-[#9D174D]
+                 disabled:cursor-not-allowed
+                 disabled:bg-[#E28DAA]"
+        >
+          {{ isEditMode ? 'Save Changes' : 'Add Address' }}
+        </button>
 
+      </div>
 
-  <div class="flex gap-3 pt-3">
-
-    <button
-      type="button"
-      (click)="cancel()"
-      class="flex-1 rounded-full border border-[#D9D3C9] py-3 text-sm font-medium text-[#5F5A52]
-             transition hover:bg-[#F7F5F0]"
-    >
-      Cancel
-    </button>
-
-    <button
-      type="submit"
-      class="flex-1 rounded-full bg-[#292723] py-3 text-sm font-semibold text-white
-             transition hover:bg-[#8B6F52]"
-    >
-      {{ isEditMode ? 'Save Changes' : 'Add Address' }}
-    </button>
+    </form>
 
   </div>
-
-</form>
 
 </div>
 
-</div>

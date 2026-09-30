@@ -37,6 +37,7 @@
       "category": "Remote Control",
       "description": "A powerful stylish Green Defender with remote conroler.Aa perfect Gift For the loved once.",
       "images": [
+        "images/rc/defender.jpg",
         "images/rc/defend.png",
         "images/rc/defend2.png"
       ],
@@ -47,7 +48,7 @@
     {
       "id": "4",
       "name": "RC Helicopter",
-      "price": 1699,
+      "price": 1700,
       "category": "Remote Control",
       "description": "A lightweight military shade helicopter for flying Fun.",
       "images": [
@@ -55,7 +56,7 @@
         "images/rc/rc heli2.png",
         "images/rc/rc heli3.png"
       ],
-      "rating": 4.3,
+      "rating": 4.8,
       "stock": 7,
       "maxQuantity": 5
     },
@@ -66,11 +67,12 @@
       "category": "Remote Control",
       "description": "Perform spins and stunts with this exciting remote control car.perfect for indoor and outdoor play.",
       "images": [
+        "images/rc/w1.jpg",
         "images/rc/f1 red3.png",
         "images/rc/f1 red2.png",
         "images/rc/f1 red.png"
       ],
-      "rating": 4.6,
+      "rating": 4.8,
       "stock": 15,
       "maxQuantity": 5
     },
@@ -98,7 +100,7 @@
         "images/rc/f1 black2.png",
         "images/rc/f1 black.png"
       ],
-      "rating": 4.8,
+      "rating": 4.5,
       "stock": 9,
       "maxQuantity": 5
     },
@@ -124,7 +126,7 @@
       "category": "Plush & Cuddly",
       "description": "A soft and cuddly teddy bear made for hugs and bedtime adventures.",
       "images": [
-        "images/plushy/bear.png",
+        "images/plushy/pinky.jpg",
         "images/plushy/bear2.png"
       ],
       "rating": 4.8,
@@ -138,6 +140,7 @@
       "category": "Plush & Cuddly",
       "description": "A soft bunny plush that makes a lovely companion for children.",
       "images": [
+        "images/plushy/chinnu.jpg",
         "images/plushy/Screenshot 2026-09-23 102754.png"
       ],
       "rating": 4.7,
@@ -151,9 +154,9 @@
       "category": "Plush & Cuddly",
       "description": "A colorful unicorn plush for magical imaginary adventures.",
       "images": [
-        "images/plushy/ele.png"
+        "images/plushy/pengu.jpg"
       ],
-      "rating": 4.6,
+      "rating": 4.9,
       "stock": 14,
       "maxQuantity": 5
     },
@@ -164,7 +167,7 @@
       "category": "Plush & Cuddly",
       "description": "A soft puppy plush that is perfect for cuddles and playtime.",
       "images": [
-        "images/plushy/puppy.png"
+        "/images/plushy/caaatt.jpg"
       ],
       "rating": 4.5,
       "stock": 16,
@@ -177,8 +180,8 @@
       "category": "Plush & Cuddly",
       "description": "A soft sleepy cat plush for cozy bedtime moments.",
       "images": [
-        "images/plushy/star2.png",
-        "images/plushy/star.png"
+        "images/plushy/dudu.jpg",
+        "images/plushy/star2.png"
       ],
       "rating": 4.4,
       "stock": 13,
@@ -191,7 +194,7 @@
       "category": "Plush & Cuddly",
       "description": "A gentle elephant plush with a soft and cuddly design.",
       "images": [
-        "images/plushy/fishy.png"
+        "images/plushy/puppy.png"
       ],
       "rating": 4.7,
       "stock": 10,
@@ -204,9 +207,10 @@
       "category": "Plush & Cuddly",
       "description": "A friendly dinosaur plush for little prehistoric adventures.",
       "images": [
-        "images/plushy/mamm.png"
+        "images/plushy/ele.png",
+        "images/plushy/mittu.jpg"
       ],
-      "rating": 4.3,
+      "rating": 4.7,
       "stock": 12,
       "maxQuantity": 5
     },
@@ -217,9 +221,9 @@
       "category": "Plush & Cuddly",
       "description": "A soft panda companion perfect for cuddling and imaginative play.",
       "images": [
-        "images/plushy/peng.png"
+        "images/plushy/mini.jpg"
       ],
-      "rating": 4.8,
+      "rating": 4.3,
       "stock": 9,
       "maxQuantity": 5
     },
@@ -336,7 +340,7 @@
       "images": [
         "images/lego/house2.png"
       ],
-      "rating": 4.8,
+      "rating": 4.5,
       "stock": 18,
       "maxQuantity": 5
     },
@@ -362,7 +366,7 @@
       "images": [
         "images/lego/batman.png"
       ],
-      "rating": 4.9,
+      "rating": 4.4,
       "stock": 12,
       "maxQuantity": 5
     },
@@ -430,6 +434,19 @@
       "rating": 4.8,
       "stock": 7,
       "maxQuantity": 5
+    },
+    {
+      "name": "ha",
+      "category": "remote car",
+      "price": 1233,
+      "stock": 2,
+      "maxQuantity": 5,
+      "rating": 4.5,
+      "images": [
+        "3e4r4r"
+      ],
+      "description": "e3e3rr4rt5t5t",
+      "id": "Gu8AEy15DIg"
     }
   ],
   "cartItem": [
@@ -577,6 +594,96 @@
     },
     {
       "product": {
+        "id": "11",
+        "name": "Elephant cuddle plush",
+        "price": 999,
+        "category": "Plush & Cuddly",
+        "description": "A colorful unicorn plush for magical imaginary adventures.",
+        "images": [
+          "images/plushy/ele.png"
+        ],
+        "rating": 4.6,
+        "stock": 14,
+        "maxQuantity": 5
+      },
+      "userId": "bR0OACKgvps",
+      "id": "GBA2PaeUdPs"
+    },
+    {
+      "product": {
+        "id": "11",
+        "name": "Elephant cuddle plush",
+        "price": 999,
+        "category": "Plush & Cuddly",
+        "description": "A colorful unicorn plush for magical imaginary adventures.",
+        "images": [
+          "images/plushy/ele.png"
+        ],
+        "rating": 4.6,
+        "stock": 14,
+        "maxQuantity": 5
+      },
+      "userId": "0mPkwoieYDc",
+      "id": "S7qV_xKY7NM"
+    },
+    {
+      "product": {
+        "id": "2",
+        "name": "RC Police Car",
+        "price": 1899,
+        "category": "Remote Control",
+        "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+        "images": [
+          "images/rc/rc police4.png",
+          "images/rc/rc police2.png",
+          "images/rc/rc police3.png",
+          "images/rc/rc police.png"
+        ],
+        "rating": 4.7,
+        "stock": 8,
+        "maxQuantity": 5
+      },
+      "userId": "0mPkwoieYDc",
+      "id": "At8X7XdxIeI"
+    },
+    {
+      "product": {
+        "id": "1",
+        "name": "RC Red BMW",
+        "price": 1499,
+        "category": "Remote Control",
+        "description": "Premium fast remote control racing BMW for exciting indoor and outdoor play.",
+        "images": [
+          "images/rc/red bmw.png",
+          "images/rc/bmw2.png"
+        ],
+        "rating": 4.5,
+        "stock": 12,
+        "maxQuantity": 5
+      },
+      "userId": "0mPkwoieYDc",
+      "id": "R0_X5sT1mSQ"
+    },
+    {
+      "product": {
+        "id": "1",
+        "name": "RC Red BMW",
+        "price": 1499,
+        "category": "Remote Control",
+        "description": "Premium fast remote control racing BMW for exciting indoor and outdoor play.",
+        "images": [
+          "images/rc/red bmw.png",
+          "images/rc/bmw2.png"
+        ],
+        "rating": 4.5,
+        "stock": 12,
+        "maxQuantity": 5
+      },
+      "userId": "bR0OACKgvps",
+      "id": "cK9BJDmPmMo"
+    },
+    {
+      "product": {
         "id": "2",
         "name": "RC Police Car",
         "price": 1899,
@@ -593,24 +700,7 @@
         "maxQuantity": 5
       },
       "userId": "bR0OACKgvps",
-      "id": "QVPL6CX3y5A"
-    },
-    {
-      "product": {
-        "id": "11",
-        "name": "Elephant cuddle plush",
-        "price": 999,
-        "category": "Plush & Cuddly",
-        "description": "A colorful unicorn plush for magical imaginary adventures.",
-        "images": [
-          "images/plushy/ele.png"
-        ],
-        "rating": 4.6,
-        "stock": 14,
-        "maxQuantity": 5
-      },
-      "userId": "bR0OACKgvps",
-      "id": "GBA2PaeUdPs"
+      "id": "gTbK8eP8ak8"
     }
   ],
   "users": [
@@ -618,12 +708,14 @@
       "name": "fathima",
       "email": "fath@gmail.com",
       "password": "Fathima7*",
-      "id": "bR0OACKgvps"
+      "id": "bR0OACKgvps",
+      "role": "admin",
+      "profilePhoto": "data:image/png;base64,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"
     },
     {
       "name": "sanjay",
       "email": "sanjay@gmail.com",
-      "password": "Sanjay7@",
+      "password": "Sanjay7*",
       "id": "kmPlYlUm9-E"
     },
     {
@@ -637,12 +729,6 @@
       "email": "safa@gmail.com",
       "password": "Safa@123",
       "id": "Wo-Qb_a_MAk"
-    },
-    {
-      "name": "sj",
-      "email": "fath@gmail.com",
-      "password": "Zz123456@",
-      "id": "4rfYEhUlu1U"
     },
     {
       "name": "arun",
@@ -740,7 +826,7 @@
       },
       "paymentMethod": "cod",
       "total": 8295,
-      "status": "placed",
+      "status": "",
       "createdAt": "2026-09-22T11:26:26.519Z",
       "id": "6B_jus51Y-4"
     },
@@ -1113,7 +1199,7 @@
       },
       "paymentMethod": "cod",
       "total": 2598,
-      "status": "placed",
+      "status": "delivered",
       "createdAt": "2026-09-23T10:33:27.864Z",
       "id": "SXNLJBvN1Xc"
     },
@@ -1171,7 +1257,7 @@
       },
       "paymentMethod": "cod",
       "total": 2498,
-      "status": "placed",
+      "status": "shipped",
       "createdAt": "2026-09-23T10:38:31.884Z",
       "id": "dirOpk-5Q8g"
     },
@@ -1217,6 +1303,561 @@
       "status": "placed",
       "createdAt": "2026-09-24T03:14:33.683Z",
       "id": "4c1O4ZcBqPk"
+    },
+    {
+      "userId": "0mPkwoieYDc",
+      "items": [
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "6EynIbZf7HE"
+        },
+        {
+          "product": {
+            "id": "3",
+            "name": "Remote Control Defender",
+            "price": 2199,
+            "category": "Remote Control",
+            "description": "A powerful stylish Green Defender with remote conroler.Aa perfect Gift For the loved once.",
+            "images": [
+              "images/rc/defend.png",
+              "images/rc/defend2.png"
+            ],
+            "rating": 4.4,
+            "stock": 10,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "QH_bw3N-pBQ"
+        }
+      ],
+      "address": {
+        "fullName": "arun",
+        "phone": "6037485657",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "0mPkwoieYDc",
+        "id": "ojSUZXeGiVI"
+      },
+      "paymentMethod": "cod",
+      "total": 4098,
+      "status": "placed",
+      "createdAt": "2026-09-24T14:38:00.402Z",
+      "id": "wim3nu5L0x8"
+    },
+    {
+      "userId": "0mPkwoieYDc",
+      "items": [
+        {
+          "product": {
+            "id": "3",
+            "name": "Remote Control Defender",
+            "price": 2199,
+            "category": "Remote Control",
+            "description": "A powerful stylish Green Defender with remote conroler.Aa perfect Gift For the loved once.",
+            "images": [
+              "images/rc/defend.png",
+              "images/rc/defend2.png"
+            ],
+            "rating": 4.4,
+            "stock": 10,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "i39YG72syfg"
+        }
+      ],
+      "address": {
+        "fullName": "arun",
+        "phone": "6037485657",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "0mPkwoieYDc",
+        "id": "ojSUZXeGiVI"
+      },
+      "paymentMethod": "upi",
+      "total": 2199,
+      "status": "placed",
+      "createdAt": "2026-09-25T04:18:10.832Z",
+      "id": "Egbds98q6sc"
+    },
+    {
+      "userId": "0mPkwoieYDc",
+      "items": [
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "wxQmZ6awx28"
+        },
+        {
+          "product": {
+            "id": "11",
+            "name": "Elephant cuddle plush",
+            "price": 999,
+            "category": "Plush & Cuddly",
+            "description": "A colorful unicorn plush for magical imaginary adventures.",
+            "images": [
+              "images/plushy/ele.png"
+            ],
+            "rating": 4.6,
+            "stock": 14,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "vd2I6OWvxDg"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": true,
+        "userId": "0mPkwoieYDc",
+        "id": "ELbV9CdiyaE"
+      },
+      "paymentMethod": "cod",
+      "total": 2898,
+      "status": "placed",
+      "createdAt": "2026-09-26T07:37:44.014Z",
+      "id": "jiRgvuwGnps"
+    },
+    {
+      "userId": "0mPkwoieYDc",
+      "items": [
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 5,
+          "userId": "0mPkwoieYDc",
+          "id": "SCAviibDaVc"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": true,
+        "userId": "0mPkwoieYDc",
+        "id": "ELbV9CdiyaE"
+      },
+      "paymentMethod": "cod",
+      "total": 9495,
+      "status": "shipped",
+      "createdAt": "2026-09-26T13:03:47.545Z",
+      "id": "ZlcX7RPSVBY"
+    },
+    {
+      "userId": "0mPkwoieYDc",
+      "items": [
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 5,
+          "userId": "0mPkwoieYDc",
+          "id": "zKkp19csx1k"
+        },
+        {
+          "product": {
+            "id": "11",
+            "name": "Elephant cuddle plush",
+            "price": 999,
+            "category": "Plush & Cuddly",
+            "description": "A colorful unicorn plush for magical imaginary adventures.",
+            "images": [
+              "images/plushy/ele.png"
+            ],
+            "rating": 4.6,
+            "stock": 14,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "0mPkwoieYDc",
+          "id": "Xgfocdt5A8M"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": true,
+        "userId": "0mPkwoieYDc",
+        "id": "ELbV9CdiyaE"
+      },
+      "paymentMethod": "cod",
+      "total": 10494,
+      "status": "placed",
+      "createdAt": "2026-09-28T07:04:29.993Z",
+      "id": "uMG6dQcKf14"
+    },
+    {
+      "userId": "bR0OACKgvps",
+      "items": [
+        {
+          "product": {
+            "id": "3",
+            "name": "Remote Control Defender",
+            "price": 2199,
+            "category": "Remote Control",
+            "description": "A powerful stylish Green Defender with remote conroler.Aa perfect Gift For the loved once.",
+            "images": [
+              "images/rc/defender.jpg",
+              "images/rc/defend.png",
+              "images/rc/defend2.png"
+            ],
+            "rating": 4.4,
+            "stock": 10,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "5wC7cwnLXSw"
+        },
+        {
+          "product": {
+            "id": "4",
+            "name": "RC Helicopter",
+            "price": 1699,
+            "category": "Remote Control",
+            "description": "A lightweight military shade helicopter for flying Fun.",
+            "images": [
+              "images/rc/rc heli4.png",
+              "images/rc/rc heli2.png",
+              "images/rc/rc heli3.png"
+            ],
+            "rating": 4.8,
+            "stock": 7,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "ZufpvI6DQG4"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur kannur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "bR0OACKgvps",
+        "id": "yf6AQOvD6l8"
+      },
+      "paymentMethod": "cod",
+      "total": 3898,
+      "status": "placed",
+      "createdAt": "2026-09-28T14:30:59.256Z",
+      "id": "RjQU1GNo8_E"
+    },
+    {
+      "userId": "bR0OACKgvps",
+      "items": [
+        {
+          "product": {
+            "id": "3",
+            "name": "Remote Control Defender",
+            "price": 2199,
+            "category": "Remote Control",
+            "description": "A powerful stylish Green Defender with remote conroler.Aa perfect Gift For the loved once.",
+            "images": [
+              "images/rc/defender.jpg",
+              "images/rc/defend.png",
+              "images/rc/defend2.png"
+            ],
+            "rating": 4.4,
+            "stock": 10,
+            "maxQuantity": 5
+          },
+          "quantity": 2,
+          "userId": "bR0OACKgvps",
+          "id": "CMFw5GKH9Ew"
+        },
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "yEUUZATYLP4"
+        },
+        {
+          "product": {
+            "id": "1",
+            "name": "RC Red BMW",
+            "price": 1499,
+            "category": "Remote Control",
+            "description": "Premium fast remote control racing BMW for exciting indoor and outdoor play.",
+            "images": [
+              "images/rc/red bmw.png",
+              "images/rc/bmw2.png"
+            ],
+            "rating": 4.5,
+            "stock": 12,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "LqEDqfyUGwc"
+        },
+        {
+          "product": {
+            "id": "4",
+            "name": "RC Helicopter",
+            "price": 1699,
+            "category": "Remote Control",
+            "description": "A lightweight military shade helicopter for flying Fun.",
+            "images": [
+              "images/rc/rc heli4.png",
+              "images/rc/rc heli2.png",
+              "images/rc/rc heli3.png"
+            ],
+            "rating": 4.8,
+            "stock": 7,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "TdzcS2QWFu0"
+        },
+        {
+          "product": {
+            "id": "5",
+            "name": "F1 Stunt Car",
+            "price": 1599,
+            "category": "Remote Control",
+            "description": "Perform spins and stunts with this exciting remote control car.perfect for indoor and outdoor play.",
+            "images": [
+              "images/rc/w1.jpg",
+              "images/rc/f1 red3.png",
+              "images/rc/f1 red2.png",
+              "images/rc/f1 red.png"
+            ],
+            "rating": 4.8,
+            "stock": 15,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "tUxqeh36Z2E"
+        },
+        {
+          "product": {
+            "id": "11",
+            "name": "Elephant cuddle plush",
+            "price": 999,
+            "category": "Plush & Cuddly",
+            "description": "A colorful unicorn plush for magical imaginary adventures.",
+            "images": [
+              "images/plushy/pengu.jpg"
+            ],
+            "rating": 4.9,
+            "stock": 14,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "YdjPe0YCrTE"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur kannur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "bR0OACKgvps",
+        "id": "yf6AQOvD6l8"
+      },
+      "paymentMethod": "cod",
+      "total": 12093,
+      "status": "delivered",
+      "createdAt": "2026-09-29T07:18:03.179Z",
+      "id": "zD6-WKKmUoY"
+    },
+    {
+      "userId": "bR0OACKgvps",
+      "items": [
+        {
+          "product": {
+            "id": "2",
+            "name": "RC Police Car",
+            "price": 1899,
+            "category": "Remote Control",
+            "description": "Classic police car with detailed body styling,police graphics,sporty wheels with openable doors.",
+            "images": [
+              "images/rc/rc police4.png",
+              "images/rc/rc police2.png",
+              "images/rc/rc police3.png",
+              "images/rc/rc police.png"
+            ],
+            "rating": 4.7,
+            "stock": 8,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "6W9VizHaHao"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur kannur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "bR0OACKgvps",
+        "id": "yf6AQOvD6l8"
+      },
+      "paymentMethod": "cod",
+      "total": 1899,
+      "status": "cancelled",
+      "createdAt": "2026-09-29T07:18:22.119Z",
+      "id": "eygN8Up6HB0"
+    },
+    {
+      "userId": "bR0OACKgvps",
+      "items": [
+        {
+          "product": {
+            "id": "1",
+            "name": "RC Red BMW",
+            "price": 1499,
+            "category": "Remote Control",
+            "description": "Premium fast remote control racing BMW for exciting indoor and outdoor play.",
+            "images": [
+              "images/rc/red bmw.png",
+              "images/rc/bmw2.png"
+            ],
+            "rating": 4.5,
+            "stock": 12,
+            "maxQuantity": 5
+          },
+          "quantity": 1,
+          "userId": "bR0OACKgvps",
+          "id": "69VKcf_fkWs"
+        }
+      ],
+      "address": {
+        "fullName": "Fathima Fathah",
+        "phone": "9038393983",
+        "line1": "35GJ+MV3",
+        "line2": "payyanur kannur",
+        "city": "Vadakkumbad-Ramanthali",
+        "state": "Kerala",
+        "pincode": "670307",
+        "isDefault": false,
+        "userId": "bR0OACKgvps",
+        "id": "yf6AQOvD6l8"
+      },
+      "paymentMethod": "cod",
+      "total": 1499,
+      "status": "placed",
+      "createdAt": "2026-09-30T05:20:43.305Z",
+      "id": "ug3lDurxeOQ"
     }
   ],
   "addresses": [
@@ -1243,6 +1884,30 @@
       "isDefault": false,
       "userId": "bR0OACKgvps",
       "id": "yf6AQOvD6l8"
+    },
+    {
+      "fullName": "Fathima Fathah",
+      "phone": "9038393983",
+      "line1": "35GJ+MV3",
+      "line2": "payyanur",
+      "city": "Vadakkumbad-Ramanthali",
+      "state": "Kerala",
+      "pincode": "670307",
+      "isDefault": true,
+      "userId": "0mPkwoieYDc",
+      "id": "ELbV9CdiyaE"
+    },
+    {
+      "fullName": "arun",
+      "phone": "6037485657",
+      "line1": "35GJ+MV3",
+      "line2": "payyanur",
+      "city": "Vadakkumbad-Ramanthali",
+      "state": "Kerala",
+      "pincode": "670307",
+      "isDefault": false,
+      "userId": "0mPkwoieYDc",
+      "id": "ojSUZXeGiVI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

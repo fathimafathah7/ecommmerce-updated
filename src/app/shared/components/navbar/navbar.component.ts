@@ -76,6 +76,6 @@ export class NavbarComponent {
     this.authService.logout();
     this.snackbar.info(name ? `Goodbye, ${name}!` : 'You have been logged out.');
     this.accountMenuOpen = false;
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/auth'],{replaceUrl:true});
   }
 }

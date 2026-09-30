@@ -24,7 +24,9 @@
     "@ngrx/effects": "^18.1.1",
     "@ngrx/entity": "^18.1.1",
     "@ngrx/store": "^18.1.1",
+    "chart.js": "^4.5.1",
     "json-server": "^1.0.0-beta.15",
+    "ng2-charts": "^6.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

@@ -1,491 +1,598 @@
-<section class="min-h-screen bg-[#F7F5F0] py-12 md:py-16">
 
-<div class="mx-auto max-w-6xl px-6">
+<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
 
-<div class="mb-10">
-  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9A8063]">
-    Secure Checkout
-  </p>
+  <div class="mx-auto max-w-6xl px-6">
 
-  <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#292723] md:text-4xl">
-    Checkout
-  </h1>
-
-  <p class="mt-2 text-sm text-[#817B72]">
-    Review your order and complete your purchase.
-  </p>
-</div>
-
-
-@if (items$ | async; as items) {
-
-  @if (items.length === 0) {
-
-    <div class="rounded-3xl border border-[#E5E0D7] bg-white px-6 py-20 text-center">
-
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#F1EEE8]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="h-6 w-6 text-[#8B6F52]">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25" />
-          <circle cx="9" cy="20" r="1" />
-          <circle cx="18" cy="20" r="1" />
-        </svg>
-      </div>
-
-      <h2 class="mt-5 text-xl font-semibold text-[#292723]">
-        Your cart is empty
-      </h2>
-
-      <p class="mt-2 text-sm text-[#817B72]">
-        Add some products before checking out.
+    <!-- Page Header -->
+    <div class="mb-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9D174D]">
+        Secure Checkout
       </p>
 
-      <a
-        routerLink="/products"
-        class="mt-7 inline-flex rounded-full bg-[#292723] px-7 py-3 text-sm font-medium text-white
-               transition hover:bg-[#8B6F52]"
-      >
-        Browse Products
-      </a>
+      <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#7A123D] md:text-4xl">
+        Checkout
+      </h1>
 
+      <p class="mt-2 text-sm text-[#765662]">
+        Review your order and complete your purchase.
+      </p>
     </div>
 
-  } @else {
 
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+    @if (items$ | async; as items) {
 
-      <!-- Address + Payment -->
-      <div class="space-y-6 lg:col-span-2">
+      @if (items.length === 0) {
 
-        <!-- Address -->
-        <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 md:p-7">
+        <!-- Empty Cart -->
+        <div class="rounded-3xl border border-[#F3C4D3] bg-white px-6 py-20 text-center">
 
-          <div class="mb-5 flex items-center justify-between gap-4">
-
-            <div>
-              <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
-                Step 01
-              </p>
-
-              <h2 class="mt-1 text-lg font-semibold text-[#292723]">
-                Delivery Address
-              </h2>
-            </div>
-
-            <button
-              type="button"
-              (click)="openAddAddress()"
-              class="text-sm font-medium text-[#8B6F52] transition hover:text-[#6F543B]"
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FCE7EF]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6 text-[#BE185D]"
             >
-              + Add New Address
-            </button>
-
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.75 3.75h2.1l1.45 11.1a2 2 0 0 0 1.98 1.74h8.95a2 2 0 0 0 1.95-1.57L20.7 7H5.25"
+              />
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+            </svg>
           </div>
 
+          <h2 class="mt-5 text-xl font-semibold text-[#7A123D]">
+            Your cart is empty
+          </h2>
 
-          @if (loadingAddresses) {
+          <p class="mt-2 text-sm text-[#765662]">
+            Add some products before checking out.
+          </p>
 
-            <p class="text-sm text-[#817B72]">
-              Loading addresses...
-            </p>
+          <a
+            routerLink="/products"
+            class="mt-7 inline-flex rounded-full bg-[#BE185D] px-7 py-3
+                   text-sm font-medium text-white transition hover:bg-[#9D174D]"
+          >
+            Browse Products
+          </a>
 
-          } @else if (addresses.length === 0) {
+        </div>
 
-            <div class="rounded-xl border border-dashed border-[#D9D3C9] px-5 py-9 text-center">
+      } @else {
 
-              <p class="text-sm text-[#817B72]">
-                You have no saved addresses yet.
-              </p>
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 
-              <button
-                type="button"
-                (click)="openAddAddress()"
-                class="mt-3 text-sm font-medium text-[#8B6F52] hover:underline"
-              >
-                Add your first address
-              </button>
+          <!-- Address + Payment -->
+          <div class="space-y-6 lg:col-span-2">
 
-            </div>
+            <!-- Delivery Address -->
+            <div class="rounded-2xl border border-[#F3C4D3] bg-white p-6 md:p-7">
 
-          } @else {
+              <div class="mb-5 flex items-center justify-between gap-4">
 
-            <div class="space-y-3">
+                <div>
+                  <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9D174D]">
+                    Step 01
+                  </p>
 
-              @for (address of addresses; track address.id) {
+                  <h2 class="mt-1 text-lg font-semibold text-[#7A123D]">
+                    Delivery Address
+                  </h2>
+                </div>
 
-                <label
-                  (click)="selectAddress(address.id!)"
-                  [class.border-[#8B6F52]]="selectedAddressId === address.id"
-                  [class.bg-[#FBF9F5]]="selectedAddressId === address.id"
-                  [class.ring-1]="selectedAddressId === address.id"
-                  [class.ring-[#8B6F52]]="selectedAddressId === address.id"
-                  class="block cursor-pointer rounded-xl border border-[#E5E0D7] p-4 transition
-                         hover:border-[#CFC4B4]"
+                <button
+                  type="button"
+                  (click)="openAddAddress()"
+                  class="text-sm font-medium text-[#BE185D]
+                         transition hover:text-[#9D174D]"
                 >
+                  + Add New Address
+                </button>
 
-                  <div class="flex items-start gap-3">
+              </div>
 
-                    <input
-                      type="radio"
-                      name="selectedAddress"
-                      [checked]="selectedAddressId === address.id"
-                      class="mt-1 accent-[#8B6F52]"
+
+              @if (loadingAddresses) {
+
+                <p class="text-sm text-[#765662]">
+                  Loading addresses...
+                </p>
+
+              } @else if (addresses.length === 0) {
+
+                <div class="rounded-xl border border-dashed border-[#F3C4D3]
+                            bg-[#FFFBFC] px-5 py-9 text-center">
+
+                  <p class="text-sm text-[#765662]">
+                    You have no saved addresses yet.
+                  </p>
+
+                  <button
+                    type="button"
+                    (click)="openAddAddress()"
+                    class="mt-3 text-sm font-medium text-[#BE185D]
+                           hover:text-[#9D174D] hover:underline"
+                  >
+                    Add your first address
+                  </button>
+
+                </div>
+
+              } @else {
+
+                <div class="space-y-3">
+
+                  @for (address of addresses; track address.id) {
+
+                    <label
+                      (click)="selectAddress(address.id!)"
+                      [class.border-[#BE185D]]="selectedAddressId === address.id"
+                      [class.bg-[#FCE7EF]]="selectedAddressId === address.id"
+                      [class.ring-1]="selectedAddressId === address.id"
+                      [class.ring-[#E28DAA]]="selectedAddressId === address.id"
+                      class="block cursor-pointer rounded-xl border border-[#F3C4D3]
+                             p-4 transition hover:border-[#E28DAA]"
                     >
 
-                    <div class="min-w-0 flex-1">
+                      <div class="flex items-start gap-3">
 
-                      <div class="flex flex-wrap items-center gap-2">
+                        <input
+                          type="radio"
+                          name="selectedAddress"
+                          [checked]="selectedAddressId === address.id"
+                          class="mt-1 accent-[#BE185D]"
+                        >
 
-                        <p class="font-medium text-[#292723]">
-                          {{ address.fullName }}
-                        </p>
+                        <div class="min-w-0 flex-1">
 
-                        @if (address.isDefault) {
+                          <div class="flex flex-wrap items-center gap-2">
 
-                          <span class="rounded-full bg-[#F1EEE8] px-2.5 py-1 text-[10px] font-semibold text-[#8B6F52]">
-                            Default
-                          </span>
+                            <p class="font-medium text-[#7A123D]">
+                              {{ address.fullName }}
+                            </p>
 
-                        }
+                            @if (address.isDefault) {
+
+                              <span
+                                class="rounded-full bg-[#FCE7EF] px-2.5 py-1
+                                       text-[10px] font-semibold text-[#9D174D]"
+                              >
+                                Default
+                              </span>
+
+                            }
+
+                          </div>
+
+                          <p class="mt-1.5 text-sm leading-6 text-[#765662]">
+                            {{ address.line1 }}
+                            @if (address.line2) {
+                              , {{ address.line2 }},
+                            }
+                            {{ address.city }}, {{ address.state }} -
+                            {{ address.pincode }}
+                          </p>
+
+                          <p class="mt-1 text-xs text-[#B58E9B]">
+                            {{ address.phone }}
+                          </p>
+
+                        </div>
+
+
+                        <!-- Address Actions -->
+                        <div class="flex shrink-0 gap-3">
+
+                          <button
+                            type="button"
+                            (click)="openEditAddress(address, $event)"
+                            class="text-xs font-medium text-[#765662]
+                                   hover:text-[#BE185D]"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            (click)="askDeleteAddress(address, $event)"
+                            class="text-xs font-medium text-[#765662]
+                                   hover:text-[#C6284F]"
+                          >
+                            Delete
+                          </button>
+
+                        </div>
 
                       </div>
 
-                      <p class="mt-1.5 text-sm leading-6 text-[#716C64]">
-                        {{ address.line1 }}@if (address.line2) {, {{ address.line2 }}, }{{ address.city }}, {{ address.state }} - {{ address.pincode }}
-                      </p>
+                    </label>
 
-                      <p class="mt-1 text-xs text-[#817B72]">
-                        {{ address.phone }}
-                      </p>
+                  }
 
-                    </div>
-
-
-                    <div class="flex shrink-0 gap-3">
-
-                      <button
-                        type="button"
-                        (click)="openEditAddress(address, $event)"
-                        class="text-xs font-medium text-[#817B72] hover:text-[#8B6F52]"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        (click)="askDeleteAddress(address, $event)"
-                        class="text-xs font-medium text-[#817B72] hover:text-[#9A5B52]"
-                      >
-                        Delete
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                </label>
+                </div>
 
               }
 
             </div>
 
-          }
 
-        </div>
+            <!-- Payment -->
+            <div class="rounded-2xl border border-[#F3C4D3] bg-white p-6 md:p-7">
 
+              <div class="mb-5">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9D174D]">
+                  Step 02
+                </p>
 
-        <!-- Payment -->
-        <div class="rounded-2xl border border-[#E5E0D7] bg-white p-6 md:p-7">
-
-          <div class="mb-5">
-            <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
-              Step 02
-            </p>
-
-            <h2 class="mt-1 text-lg font-semibold text-[#292723]">
-              Payment Method
-            </h2>
-          </div>
-
-
-          <form [formGroup]="paymentForm" class="space-y-5">
-
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-
-              <label
-                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
-                [class.border-[#8B6F52]]="selectedPaymentMethod === 'cod'"
-                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'cod'"
-                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'cod'"
-              >
-                <input type="radio" formControlName="method" value="cod" class="accent-[#8B6F52]">
-                <span class="text-sm font-medium text-[#4E4942]">
-                  Cash on Delivery
-                </span>
-              </label>
-
-
-              <label
-                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
-                [class.border-[#8B6F52]]="selectedPaymentMethod === 'card'"
-                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'card'"
-                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'card'"
-              >
-                <input type="radio" formControlName="method" value="card" class="accent-[#8B6F52]">
-                <span class="text-sm font-medium text-[#4E4942]">
-                  Credit / Debit Card
-                </span>
-              </label>
-
-
-              <label
-                class="flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 transition"
-                [class.border-[#8B6F52]]="selectedPaymentMethod === 'upi'"
-                [class.bg-[#FBF9F5]]="selectedPaymentMethod === 'upi'"
-                [class.border-[#E5E0D7]]="selectedPaymentMethod !== 'upi'"
-              >
-                <input type="radio" formControlName="method" value="upi" class="accent-[#8B6F52]">
-                <span class="text-sm font-medium text-[#4E4942]">
-                  UPI
-                </span>
-              </label>
-
-            </div>
-
-
-            @if (selectedPaymentMethod === 'card') {
-
-              <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-
-                <div class="sm:col-span-3">
-
-                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
-                    Card Number
-                  </label>
-
-                  <input
-                    type="text"
-                    formControlName="cardNumber"
-                    maxlength="16"
-                    placeholder="1234 5678 9012 3456"
-                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-                           text-[#292723] outline-none transition
-                           focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-                  >
-
-                  @if (paymentForm.controls.cardNumber.touched && paymentForm.controls.cardNumber.invalid) {
-                    <p class="mt-1 text-xs text-[#9A5B52]">
-                      Enter a valid 16-digit card number.
-                    </p>
-                  }
-
-                </div>
-
-
-                <div>
-
-                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
-                    Expiry (MM/YY)
-                  </label>
-
-                  <input
-                    type="text"
-                    formControlName="cardExpiry"
-                    placeholder="MM/YY"
-                    maxlength="5"
-                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-                           outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-                  >
-
-                  @if (paymentForm.controls.cardExpiry.touched && paymentForm.controls.cardExpiry.invalid) {
-                    <p class="mt-1 text-xs text-[#9A5B52]">
-                      Use MM/YY format.
-                    </p>
-                  }
-
-                </div>
-
-
-                <div class="sm:col-span-2">
-
-                  <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
-                    CVV
-                  </label>
-
-                  <input
-                    type="password"
-                    formControlName="cardCvv"
-                    maxlength="3"
-                    placeholder="•••"
-                    class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-                           outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-                  >
-
-                  @if (paymentForm.controls.cardCvv.touched && paymentForm.controls.cardCvv.invalid) {
-                    <p class="mt-1 text-xs text-[#9A5B52]">
-                      Enter a valid 3-digit CVV.
-                    </p>
-                  }
-
-                </div>
-
+                <h2 class="mt-1 text-lg font-semibold text-[#7A123D]">
+                  Payment Method
+                </h2>
               </div>
 
-            }
+
+              <form [formGroup]="paymentForm" class="space-y-5">
+
+                <!-- Payment Methods -->
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+                  <!-- COD -->
+                  <label
+                    class="flex cursor-pointer items-center gap-2 rounded-xl
+                           border px-4 py-3 transition"
+                    [class.border-[#BE185D]]="selectedPaymentMethod === 'cod'"
+                    [class.bg-[#FCE7EF]]="selectedPaymentMethod === 'cod'"
+                    [class.border-[#F3C4D3]]="selectedPaymentMethod !== 'cod'"
+                  >
+
+                    <input
+                      type="radio"
+                      formControlName="method"
+                      value="cod"
+                      class="accent-[#BE185D]"
+                    >
+
+                    <span class="text-sm font-medium text-[#4A3039]">
+                      Cash on Delivery
+                    </span>
+
+                  </label>
 
 
-            @if (selectedPaymentMethod === 'upi') {
+                  <!-- Card -->
+                  <label
+                    class="flex cursor-pointer items-center gap-2 rounded-xl
+                           border px-4 py-3 transition"
+                    [class.border-[#BE185D]]="selectedPaymentMethod === 'card'"
+                    [class.bg-[#FCE7EF]]="selectedPaymentMethod === 'card'"
+                    [class.border-[#F3C4D3]]="selectedPaymentMethod !== 'card'"
+                  >
 
-              <div>
+                    <input
+                      type="radio"
+                      formControlName="method"
+                      value="card"
+                      class="accent-[#BE185D]"
+                    >
 
-                <label class="mb-1.5 block text-sm font-medium text-[#5F5A52]">
-                  UPI ID
-                </label>
+                    <span class="text-sm font-medium text-[#4A3039]">
+                      Credit / Debit Card
+                    </span>
 
-                <input
-                  type="text"
-                  formControlName="upiId"
-                  placeholder="yourname@upi"
-                  class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9] px-3.5 py-3 text-sm
-                         outline-none transition focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-                >
+                  </label>
 
-                @if (paymentForm.controls.upiId.touched && paymentForm.controls.upiId.invalid) {
-                  <p class="mt-1 text-xs text-[#9A5B52]">
-                    Enter a valid UPI ID (e.g. name&#64;bank).
-                  </p>
+
+                  <!-- UPI -->
+                  <label
+                    class="flex cursor-pointer items-center gap-2 rounded-xl
+                           border px-4 py-3 transition"
+                    [class.border-[#BE185D]]="selectedPaymentMethod === 'upi'"
+                    [class.bg-[#FCE7EF]]="selectedPaymentMethod === 'upi'"
+                    [class.border-[#F3C4D3]]="selectedPaymentMethod !== 'upi'"
+                  >
+
+                    <input
+                      type="radio"
+                      formControlName="method"
+                      value="upi"
+                      class="accent-[#BE185D]"
+                    >
+
+                    <span class="text-sm font-medium text-[#4A3039]">
+                      UPI
+                    </span>
+
+                  </label>
+
+                </div>
+
+
+                <!-- Card Details -->
+                @if (selectedPaymentMethod === 'card') {
+
+                  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+                    <!-- Card Number -->
+                    <div class="sm:col-span-3">
+
+                      <label class="mb-1.5 block text-sm font-medium text-[#765662]">
+                        Card Number
+                      </label>
+
+                      <input
+                        type="text"
+                        formControlName="cardNumber"
+                        maxlength="16"
+                        placeholder="1234 5678 9012 3456"
+                        class="w-full rounded-xl border border-[#F3C4D3]
+                               bg-[#FFFBFC] px-3.5 py-3 text-sm
+                               text-[#4A3039] outline-none transition
+                               placeholder:text-[#B58E9B]
+                               focus:border-[#BE185D]
+                               focus:ring-2 focus:ring-[#E28DAA]/30"
+                      >
+
+                      @if (
+                        paymentForm.controls.cardNumber.touched &&
+                        paymentForm.controls.cardNumber.invalid
+                      ) {
+
+                        <p class="mt-1 text-xs text-[#C6284F]">
+                          Enter a valid 16-digit card number.
+                        </p>
+
+                      }
+
+                    </div>
+
+
+                    <!-- Expiry -->
+                    <div>
+
+                      <label class="mb-1.5 block text-sm font-medium text-[#765662]">
+                        Expiry (MM/YY)
+                      </label>
+
+                      <input
+                        type="text"
+                        formControlName="cardExpiry"
+                        placeholder="MM/YY"
+                        maxlength="5"
+                        class="w-full rounded-xl border border-[#F3C4D3]
+                               bg-[#FFFBFC] px-3.5 py-3 text-sm
+                               text-[#4A3039] outline-none transition
+                               placeholder:text-[#B58E9B]
+                               focus:border-[#BE185D]
+                               focus:ring-2 focus:ring-[#E28DAA]/30"
+                      >
+
+                      @if (
+                        paymentForm.controls.cardExpiry.touched &&
+                        paymentForm.controls.cardExpiry.invalid
+                      ) {
+
+                        <p class="mt-1 text-xs text-[#C6284F]">
+                          Use MM/YY format.
+                        </p>
+
+                      }
+
+                    </div>
+
+
+                    <!-- CVV -->
+                    <div class="sm:col-span-2">
+
+                      <label class="mb-1.5 block text-sm font-medium text-[#765662]">
+                        CVV
+                      </label>
+
+                      <input
+                        type="password"
+                        formControlName="cardCvv"
+                        maxlength="3"
+                        placeholder="•••"
+                        class="w-full rounded-xl border border-[#F3C4D3]
+                               bg-[#FFFBFC] px-3.5 py-3 text-sm
+                               text-[#4A3039] outline-none transition
+                               placeholder:text-[#B58E9B]
+                               focus:border-[#BE185D]
+                               focus:ring-2 focus:ring-[#E28DAA]/30"
+                      >
+
+                      @if (
+                        paymentForm.controls.cardCvv.touched &&
+                        paymentForm.controls.cardCvv.invalid
+                      ) {
+
+                        <p class="mt-1 text-xs text-[#C6284F]">
+                          Enter a valid 3-digit CVV.
+                        </p>
+
+                      }
+
+                    </div>
+
+                  </div>
+
                 }
 
-              </div>
 
-            }
+                <!-- UPI Details -->
+                @if (selectedPaymentMethod === 'upi') {
 
-          </form>
+                  <div>
 
-        </div>
+                    <label class="mb-1.5 block text-sm font-medium text-[#765662]">
+                      UPI ID
+                    </label>
 
-      </div>
+                    <input
+                      type="text"
+                      formControlName="upiId"
+                      placeholder="yourname&#64;upi"
+                      class="w-full rounded-xl border border-[#F3C4D3]
+                             bg-[#FFFBFC] px-3.5 py-3 text-sm
+                             text-[#4A3039] outline-none transition
+                             placeholder:text-[#B58E9B]
+                             focus:border-[#BE185D]
+                             focus:ring-2 focus:ring-[#E28DAA]/30"
+                    >
 
+                    @if (
+                      paymentForm.controls.upiId.touched &&
+                      paymentForm.controls.upiId.invalid
+                    ) {
 
-      <!-- Summary -->
-      <div
-        class="h-fit rounded-2xl border border-[#E5E0D7] bg-white p-6
-               lg:sticky lg:top-24"
-      >
+                      <p class="mt-1 text-xs text-[#C6284F]">
+                        Enter a valid UPI ID (e.g. name&#64;bank).
+                      </p>
 
-        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9A8063]">
-          Your Order
-        </p>
+                    }
 
-        <h2 class="mt-2 text-xl font-semibold text-[#292723]">
-          Order Summary
-        </h2>
+                  </div>
 
+                }
 
-        <div class="mt-6 max-h-64 space-y-4 overflow-y-auto pr-1">
-
-          @for (item of items; track item.product.id) {
-
-            <div class="flex items-center gap-3">
-
-              <div class="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#F4F1EB]">
-                <img
-                  [src]="item.product.images"
-                  [alt]="item.product.name"
-                  class="h-full w-full object-contain p-1"
-                >
-              </div>
-
-              <div class="min-w-0 flex-1">
-
-                <p class="truncate text-sm font-medium text-[#292723]">
-                  {{ item.product.name }}
-                </p>
-
-                <p class="mt-0.5 text-xs text-[#817B72]">
-                  Qty {{ item.quantity }}
-                </p>
-
-              </div>
-
-              <p class="shrink-0 text-sm font-semibold text-[#292723]">
-                {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
-              </p>
+              </form>
 
             </div>
 
-          }
+          </div>
+
+
+          <!-- Order Summary -->
+          <div
+            class="h-fit rounded-2xl border border-[#F3C4D3] bg-white p-6
+                   lg:sticky lg:top-24"
+          >
+
+            <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#9D174D]">
+              Your Order
+            </p>
+
+            <h2 class="mt-2 text-xl font-semibold text-[#7A123D]">
+              Order Summary
+            </h2>
+
+
+            <!-- Items -->
+            <div class="mt-6 max-h-64 space-y-4 overflow-y-auto pr-1">
+
+              @for (item of items; track item.product.id) {
+
+                <div class="flex items-center gap-3">
+
+                  <div class="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#FFF5F7]">
+                    <img
+                      [src]="item.product.images[0]"
+                      [alt]="item.product.name"
+                      class="h-full w-full object-contain p-1"
+                    >
+                  </div>
+
+                  <div class="min-w-0 flex-1">
+
+                    <p class="truncate text-sm font-medium text-[#7A123D]">
+                      {{ item.product.name }}
+                    </p>
+
+                    <p class="mt-0.5 text-xs text-[#B58E9B]">
+                      Qty {{ item.quantity }}
+                    </p>
+
+                  </div>
+
+                  <p class="shrink-0 text-sm font-semibold text-[#7A123D]">
+                    {{
+                      item.product.price * item.quantity
+                        | currency:'INR':'symbol':'1.0-0'
+                    }}
+                  </p>
+
+                </div>
+
+              }
+
+            </div>
+
+
+            <div class="my-5 border-t border-[#F3C4D3]"></div>
+
+
+            @if (total$ | async; as total) {
+
+              <div class="flex justify-between text-sm text-[#765662]">
+                <span>Items</span>
+                <span>{{ items.length }}</span>
+              </div>
+
+              <div class="mt-4 flex items-center justify-between">
+
+                <span class="font-medium text-[#765662]">
+                  Total
+                </span>
+
+                <span class="text-xl font-semibold text-[#7A123D]">
+                  {{ total | currency:'INR':'symbol':'1.0-0' }}
+                </span>
+
+              </div>
+
+
+              <button
+                type="button"
+                [disabled]="placingOrder"
+                (click)="placeOrder(items, total)"
+                class="mt-7 w-full rounded-full bg-[#BE185D] py-3.5
+                       text-sm font-semibold text-white
+                       transition hover:bg-[#9D174D]
+                       disabled:cursor-not-allowed
+                       disabled:bg-[#E28DAA]"
+              >
+                {{ placingOrder ? 'Placing Order...' : 'Place Order' }}
+              </button>
+
+            }
+
+          </div>
 
         </div>
 
+      }
 
-        <div class="my-5 border-t border-[#EAE6DE]"></div>
+    }
 
-
-        @if (total$ | async; as total) {
-
-          <div class="flex justify-between text-sm text-[#716C64]">
-            <span>Items</span>
-            <span>{{ items.length }}</span>
-          </div>
-
-          <div class="mt-4 flex items-center justify-between">
-
-            <span class="font-medium text-[#5F5A52]">
-              Total
-            </span>
-
-            <span class="text-xl font-semibold text-[#292723]">
-              {{ total | currency:'INR':'symbol':'1.0-0' }}
-            </span>
-
-          </div>
-
-
-          <button
-            type="button"
-            [disabled]="placingOrder"
-            (click)="placeOrder(items, total)"
-            class="mt-7 w-full rounded-full bg-[#292723] py-3.5 text-sm font-semibold text-white
-                   transition hover:bg-[#8B6F52]
-                   disabled:cursor-not-allowed disabled:bg-[#D7D3CB]"
-          >
-            {{ placingOrder ? 'Placing Order...' : 'Place Order' }}
-          </button>
-
-        }
-
-      </div>
-
-    </div>
-
-  }
-
-}
-
-</div>
+  </div>
 
 </section>
 
+
+<!-- Address Form -->
 @if (showAddressForm) {
 
-<app-address-form
-[editingAddress]="editingAddress"
-(saved)="saveAddress($event)"
-(cancelled)="closeAddressForm()"
-/>
+  <app-address-form
+    [editingAddress]="editingAddress"
+    (saved)="saveAddress($event)"
+    (cancelled)="closeAddressForm()"
+  />
 
 }
 
+
+<!-- Delete Address Confirmation -->
 @if (addressPendingDelete) {
 
-<app-confirm-dialog
-title="Remove this address?"
-[message]="'This will permanently delete the address for  + addressPendingDelete.fullName + .'"
-(confirmed)="confirmDeleteAddress()"
-(cancelled)="cancelDeleteAddress()"
-/>
+  <app-confirm-dialog
+    title="Remove this address?"
+    [message]="'This will permanently delete the address for ' + addressPendingDelete.fullName + '.'"
+    (confirmed)="confirmDeleteAddress()"
+    (cancelled)="cancelDeleteAddress()"
+  />
 
 }
+

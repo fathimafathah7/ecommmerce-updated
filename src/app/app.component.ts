@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-private noChromeRoutes = ['/auth'];
+private noChromeRoutes = ['/auth','/admin'];
 
 showChrome$ = this.router.events.pipe(
   filter(event => event instanceof NavigationEnd),

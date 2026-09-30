@@ -5,11 +5,7 @@ import { OrderService } from '../../core/services/order.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { Order } from '../../core/models/order.model';
 
-/**
- * Lists the signed-in user's own orders only — OrderService always
- * scopes the request by the current userId, so another user's orders
- * can never appear here.
- */
+
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -55,11 +51,11 @@ export class OrdersComponent implements OnInit {
 
   statusBadgeClass(status: Order['status']): string {
     switch (status) {
-      case 'delivered': return 'bg-green-50 text-green-700';
-      case 'shipped': return 'bg-blue-50 text-blue-700';
-      case 'processing': return 'bg-amber-50 text-amber-700';
-      case 'cancelled': return 'bg-red-50 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'delivered': return 'bg-[#FCE7EF] text-[#9D174D]';
+      case 'shipped': return 'bg-[#FCE7EF] text-[#BE185D]';
+      case 'processing': return 'bg-[#FFF5F7] text-[#D24F82]';
+      case 'cancelled': return 'bg-[#FFF1F3] text-[#C6284F]';
+      default: return 'bg-[#FCE7EF] text-[#765662]';
     }
   }
 }

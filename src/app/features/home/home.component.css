@@ -2,16 +2,24 @@
   position: relative;
   background: #f7f5f0;
 }
+/* Hides the scrollbar but keeps the row scrollable (touch, trackpad, arrows). */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 /* -------------------------------- */
 /* Animated Hero Background */
 /* -------------------------------- */
 
 .hero-background {
   position: absolute;
-  inset: -6%;
+  inset: 0%;
 
-  background-image: url('/images/09ce03cd-efbc-4d45-8f45-245b72dc6520.png');
+  background-image: url('/images/bun.png');
   background-size: cover;
   background-position: 60% center;
 
@@ -55,9 +63,9 @@
     linear-gradient(
       90deg,
       rgba(247, 245, 240, 0.94) 0%,
-      rgba(247, 245, 240, 0.78) 38%,
-      rgba(247, 245, 240, 0.25) 70%,
-      rgba(247, 245, 240, 0.05) 100%
+      rgba(231, 224, 209, 0.78) 38%,
+      rgba(203, 191, 160, 0.25) 70%,
+      rgba(103, 85, 42, 0.05) 100%
     );
 
   z-index: 1;

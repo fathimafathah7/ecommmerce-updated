@@ -14,16 +14,25 @@ export class OrderService {
 
   private apiUrl = 'http://localhost:3000/orders';
 
-  /** Only ever returns orders that belong to the signed-in user. */
+  
   getOrders(): Observable<Order[]> {
   const userId = this.authService.getCurrentUserId();
-  // json-server v1 dropped `_order` — descending sort is now expressed
-  // with a leading "-" directly on the _sort field.
+  
   return this.http.get<Order[]>(`${this.apiUrl}?userId=${userId}&_sort=-createdAt`);
 }
 
   placeOrder(order: Order): Observable<Order> {
     const userId = this.authService.getCurrentUserId();
     return this.http.post<Order>(this.apiUrl, { ...order, userId });
+  }
+  // --- Admin-only ---
+ 
+  /** Every order, across every user — for the admin orders page. */
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}?_sort=-createdAt`);
+  }
+ 
+  updateOrderStatus(id: number | string, status: Order['status']): Observable<Order> {
+    return this.http.patch<Order>(`${this.apiUrl}/${id}`, { status });
   }
 }

@@ -27,9 +27,9 @@ export class AddressFormComponent implements OnInit {
   cancelled = output<void>();
 
   private fb = inject(FormBuilder);
-
+  namepattern=/^[A-Za-z\s]+$/
   form = this.fb.group({
-    fullName: ['', [Validators.required, Validators.minLength(3)]],
+    fullName: ['', [Validators.required, Validators.minLength(3),Validators.pattern(this.namepattern)]],
     phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
     line1: ['', [Validators.required, Validators.minLength(5)]],
     line2: [''],

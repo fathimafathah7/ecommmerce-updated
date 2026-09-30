@@ -1,14 +1,15 @@
+
 @if (product) {
 
-<section class="min-h-screen bg-[#F7F5F0] py-10 md:py-16">
+<section class="min-h-screen bg-[#FFF8FA] py-10 md:py-16">
 
   <div class="mx-auto max-w-6xl px-6">
 
     <!-- Back -->
     <a
       routerLink="/products"
-      class="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#716C64]
-             transition hover:text-[#8B6F52]"
+      class="mb-8 inline-flex items-center gap-2 text-sm font-medium
+             text-[#765662] transition hover:text-[#BE185D]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +30,15 @@
     </a>
 
 
-    <div class="overflow-hidden rounded-3xl border border-[#E5E0D7] bg-white">
+    <!-- =========================
+         PRODUCT DETAILS
+    ========================== -->
+
+    <div
+      class="overflow-hidden rounded-3xl
+             border border-[#F3C4D3]
+             bg-white"
+    >
 
       <div class="grid grid-cols-1 md:grid-cols-2">
 
@@ -38,7 +47,7 @@
              PRODUCT IMAGES
         ========================== -->
 
-        <div class="bg-[#F4F1EB] p-6 md:p-8">
+        <div class="bg-[#FFF5F7] p-6 md:p-8">
 
           <div class="flex flex-col gap-5 md:flex-row">
 
@@ -48,7 +57,8 @@
             @if (product.images.length > 1) {
 
               <div
-                class="flex gap-3 overflow-x-auto md:w-20 md:flex-col md:overflow-visible"
+                class="flex gap-3 overflow-x-auto
+                       md:w-20 md:flex-col md:overflow-visible"
               >
 
                 @for (image of product.images; track image) {
@@ -56,9 +66,10 @@
                   <button
                     type="button"
                     (click)="changeImage(image)"
-                    class="shrink-0 overflow-hidden rounded-xl border bg-white transition-all duration-200"
-                    [class.border-[#8B6F52]]="selectedImage === image"
-                    [class.border-[#E5E0D7]]="selectedImage !== image"
+                    class="shrink-0 overflow-hidden rounded-xl
+                           border bg-white transition-all duration-200"
+                    [class.border-[#BE185D]]="selectedImage === image"
+                    [class.border-[#F3C4D3]]="selectedImage !== image"
                     [class.opacity-60]="selectedImage !== image"
                     [class.opacity-100]="selectedImage === image"
                   >
@@ -66,7 +77,8 @@
                     <img
                       [src]="image"
                       [alt]="product.name"
-                      class="h-16 w-16 object-cover md:h-20 md:w-20"
+                      class="h-16 w-16 object-cover
+                             md:h-20 md:w-20"
                     >
 
                   </button>
@@ -81,7 +93,9 @@
             <!-- Main Image -->
 
             <div
-              class="relative min-h-[380px] flex-1 overflow-hidden rounded-2xl
+              class="relative min-h-[380px] flex-1
+                     overflow-hidden rounded-2xl
+                     border border-[#F3C4D3]
                      bg-white md:min-h-[520px]"
               (mouseenter)="onZoomEnter()"
               (mouseleave)="onZoomLeave()"
@@ -92,8 +106,10 @@
                 #zoomImage
                 [src]="selectedImage"
                 [alt]="product.name"
-                class="h-full max-h-[520px] w-full cursor-zoom-in object-contain
-                       p-8 transition-transform duration-150 md:p-12"
+                class="h-full max-h-[520px] w-full
+                       cursor-zoom-in object-contain
+                       p-8 transition-transform
+                       duration-150 md:p-12"
               >
 
 
@@ -102,10 +118,12 @@
               @if (zoomActive) {
 
                 <span
-                  class="pointer-events-none absolute bottom-4 right-4 hidden
-                         rounded-full border border-[#E5E0D7]
-                         bg-white/90 px-3 py-1.5 text-[10px]
-                         font-medium text-[#716C64] md:block"
+                  class="pointer-events-none absolute bottom-4 right-4
+                         hidden rounded-full
+                         border border-[#F3C4D3]
+                         bg-white/90 px-3 py-1.5
+                         text-[10px] font-medium
+                         text-[#765662] md:block"
                 >
                   Zoomed view
                 </span>
@@ -129,7 +147,8 @@
           <!-- Category -->
 
           <p
-            class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#9A8063]"
+            class="text-[11px] font-semibold uppercase
+                   tracking-[0.2em] text-[#9D174D]"
           >
             {{ product.category }}
           </p>
@@ -138,8 +157,9 @@
           <!-- Product name -->
 
           <h1
-            class="mt-4 text-3xl font-semibold leading-tight tracking-[-0.03em]
-                   text-[#292723] md:text-4xl"
+            class="mt-4 text-3xl font-semibold leading-tight
+                   tracking-[-0.03em] text-[#7A123D]
+                   md:text-4xl"
           >
             {{ product.name }}
           </h1>
@@ -149,15 +169,17 @@
 
           <div class="mt-5 flex items-center gap-2">
 
-            <span class="text-[#A07C4D]">
+            <span class="text-[#D24F82]">
               ★
             </span>
 
-            <span class="text-sm font-medium text-[#4E4942]">
+            <span
+              class="text-sm font-medium text-[#4A3039]"
+            >
               {{ product.rating }}
             </span>
 
-            <span class="text-sm text-[#A09A91]">
+            <span class="text-sm text-[#B58E9B]">
               / 5
             </span>
 
@@ -167,7 +189,8 @@
           <!-- Price -->
 
           <p
-            class="mt-7 text-3xl font-semibold tracking-tight text-[#292723]"
+            class="mt-7 text-3xl font-semibold
+                   tracking-tight text-[#7A123D]"
           >
             ₹{{ product.price }}
           </p>
@@ -175,17 +198,19 @@
 
           <!-- Description -->
 
-          <div class="mt-7 border-t border-[#EAE6DE] pt-7">
+          <div
+            class="mt-7 border-t border-[#F3C4D3] pt-7"
+          >
 
             <h2
-              class="text-sm font-semibold uppercase tracking-[0.14em]
-                     text-[#5F5A52]"
+              class="text-sm font-semibold uppercase
+                     tracking-[0.14em] text-[#9D174D]"
             >
               Description
             </h2>
 
             <p
-              class="mt-3 text-sm leading-7 text-[#716C64]"
+              class="mt-3 text-sm leading-7 text-[#765662]"
             >
               {{ product.description }}
             </p>
@@ -200,13 +225,15 @@
             @if (product.stock > 0) {
 
               <div
-                class="inline-flex items-center gap-2 rounded-full
-                       bg-[#EEF3EC] px-3 py-1.5 text-xs
-                       font-medium text-[#62735D]"
+                class="inline-flex items-center gap-2
+                       rounded-full bg-[#FCE7EF]
+                       px-3 py-1.5 text-xs
+                       font-medium text-[#9D174D]"
               >
 
                 <span
-                  class="h-1.5 w-1.5 rounded-full bg-[#70836A]"
+                  class="h-1.5 w-1.5 rounded-full
+                         bg-[#BE185D]"
                 ></span>
 
                 In stock
@@ -216,13 +243,15 @@
             } @else {
 
               <div
-                class="inline-flex items-center gap-2 rounded-full
-                       bg-[#FAF0EE] px-3 py-1.5 text-xs
-                       font-medium text-[#9A5B52]"
+                class="inline-flex items-center gap-2
+                       rounded-full bg-[#FFF1F3]
+                       px-3 py-1.5 text-xs
+                       font-medium text-[#C6284F]"
               >
 
                 <span
-                  class="h-1.5 w-1.5 rounded-full bg-[#9A5B52]"
+                  class="h-1.5 w-1.5 rounded-full
+                         bg-[#C6284F]"
                 ></span>
 
                 Out of stock
@@ -232,7 +261,9 @@
             }
 
 
-            <p class="mt-3 text-xs text-[#817B72]">
+            <p
+              class="mt-3 text-xs text-[#B58E9B]"
+            >
               Maximum {{ product.maxQuantity }} per customer
             </p>
 
@@ -242,7 +273,8 @@
           <!-- Actions -->
 
           <div
-            class="mt-auto flex flex-col gap-3 pt-9 sm:flex-row"
+            class="mt-auto flex flex-col gap-3 pt-9
+                   sm:flex-row"
           >
 
             <!-- Add to Cart -->
@@ -251,12 +283,16 @@
               type="button"
               (click)="addProductToCart()"
               [disabled]="product.stock === 0"
-              class="flex-1 rounded-full border border-[#292723]
-                     px-6 py-3.5 text-sm font-semibold text-[#292723]
-                     transition hover:bg-[#F7F5F0]
+              class="flex-1 rounded-full
+                     border border-[#F3C4D3]
+                     px-6 py-3.5 text-sm font-semibold
+                     text-[#9D174D] transition
+                     hover:border-[#BE185D]
+                     hover:bg-[#FCE7EF]
+                     hover:text-[#BE185D]
                      disabled:cursor-not-allowed
-                     disabled:border-[#D7D3CB]
-                     disabled:text-[#AAA59D]"
+                     disabled:border-[#E28DAA]
+                     disabled:text-[#E28DAA]"
             >
               Add to Cart
             </button>
@@ -268,11 +304,13 @@
               type="button"
               (click)="buyNow()"
               [disabled]="product.stock === 0"
-              class="flex-1 rounded-full bg-[#292723]
-                     px-6 py-3.5 text-sm font-semibold text-white
-                     transition hover:bg-[#8B6F52]
+              class="flex-1 rounded-full
+                     bg-[#BE185D]
+                     px-6 py-3.5 text-sm font-semibold
+                     text-white transition
+                     hover:bg-[#9D174D]
                      disabled:cursor-not-allowed
-                     disabled:bg-[#D7D3CB]"
+                     disabled:bg-[#E28DAA]"
             >
               Buy Now
             </button>
@@ -281,8 +319,10 @@
             <!-- Wishlist -->
 
             <div
-              class="flex items-center justify-center rounded-full
-                     border border-[#D9D3C9] px-5"
+              class="flex items-center justify-center
+                     rounded-full border border-[#F3C4D3]
+                     bg-white px-5
+                     transition hover:bg-[#FCE7EF]"
             >
 
               <app-wishlist-button
@@ -306,19 +346,270 @@
 
 
 <!-- =========================
+     PRODUCT SPECIFICATIONS
+========================== -->
+
+<section class="bg-white py-16 md:py-20">
+
+  <div class="mx-auto max-w-6xl px-6">
+
+    <!-- Section Heading -->
+
+    <div class="mb-10">
+
+      <p
+        class="text-xs font-semibold uppercase
+               tracking-[0.22em] text-[#9D174D]"
+      >
+        Product Information
+      </p>
+
+      <h2
+        class="mt-3 text-3xl font-semibold
+               tracking-[-0.03em] text-[#7A123D]
+               md:text-4xl"
+      >
+        Specifications
+      </h2>
+
+      <p class="mt-3 text-[#765662]">
+        Everything you need to know about this product.
+      </p>
+
+    </div>
+
+
+    <!-- Specification Card -->
+
+    <div
+      class="overflow-hidden rounded-2xl
+             border border-[#F3C4D3]
+             bg-[#FFF5F7]"
+    >
+
+      <div class="divide-y divide-[#F3C4D3]">
+
+
+        <!-- Category -->
+
+        <div
+          class="grid grid-cols-1 gap-2 px-6 py-5
+                 sm:grid-cols-2 sm:gap-6"
+        >
+
+          <p
+            class="text-sm font-medium text-[#765662]"
+          >
+            Category
+          </p>
+
+          <p
+            class="text-sm font-semibold text-[#7A123D]
+                   sm:text-right"
+          >
+            {{ product.category }}
+          </p>
+
+        </div>
+
+
+        <!-- Rating -->
+
+        <div
+          class="grid grid-cols-1 gap-2 px-6 py-5
+                 sm:grid-cols-2 sm:gap-6"
+        >
+
+          <p
+            class="text-sm font-medium text-[#765662]"
+          >
+            Rating
+          </p>
+
+          <p
+            class="text-sm font-semibold text-[#7A123D]
+                   sm:text-right"
+          >
+            <span class="text-[#D24F82]">★</span>
+            {{ product.rating }} / 5
+          </p>
+
+        </div>
+
+
+        <!-- Availability -->
+
+        <div
+          class="grid grid-cols-1 gap-2 px-6 py-5
+                 sm:grid-cols-2 sm:gap-6"
+        >
+
+          <p
+            class="text-sm font-medium text-[#765662]"
+          >
+            Availability
+          </p>
+
+          @if (product.stock > 0) {
+
+            <p
+              class="text-sm font-semibold text-[#9D174D]
+                     sm:text-right"
+            >
+              In Stock
+            </p>
+
+          } @else {
+
+            <p
+              class="text-sm font-semibold text-[#C6284F]
+                     sm:text-right"
+            >
+              Out of Stock
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Maximum Quantity -->
+
+        <div
+          class="grid grid-cols-1 gap-2 px-6 py-5
+                 sm:grid-cols-2 sm:gap-6"
+        >
+
+          <p
+            class="text-sm font-medium text-[#765662]"
+          >
+            Maximum Quantity
+          </p>
+
+          <p
+            class="text-sm font-semibold text-[#7A123D]
+                   sm:text-right"
+          >
+            {{ product.maxQuantity }} per customer
+          </p>
+
+        </div>
+
+
+        <!-- Product ID -->
+
+        <div
+          class="grid grid-cols-1 gap-2 px-6 py-5
+                 sm:grid-cols-2 sm:gap-6"
+        >
+
+          <p
+            class="text-sm font-medium text-[#765662]"
+          >
+            Product ID
+          </p>
+
+          <p
+            class="text-sm font-semibold text-[#7A123D]
+                   sm:text-right"
+          >
+            #{{ product.id }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     RELATED PRODUCTS
+========================== -->
+
+@if (relatedProducts$ | async; as relatedProducts) {
+
+  @if (relatedProducts.length > 0) {
+
+    <section class="bg-[#FFF8FA] py-16 md:py-20">
+
+      <div class="mx-auto max-w-6xl px-6">
+
+        <!-- Heading -->
+
+        <div class="mb-10">
+
+          <p
+            class="text-xs font-semibold uppercase
+                   tracking-[0.22em] text-[#9D174D]"
+          >
+            More to Explore
+          </p>
+
+          <h2
+            class="mt-3 text-3xl font-semibold
+                   tracking-[-0.03em] text-[#7A123D]
+                   md:text-4xl"
+          >
+            You May Also Like
+          </h2>
+
+          <p class="mt-3 text-[#765662]">
+            Discover more toys from the same collection.
+          </p>
+
+        </div>
+
+
+        <!-- Related Product Grid -->
+
+        <div
+          class="grid grid-cols-1 gap-5
+                 sm:grid-cols-2
+                 lg:grid-cols-4"
+        >
+
+          @for (
+            relatedProduct of relatedProducts;
+            track relatedProduct.id
+          ) {
+
+            <app-product-card
+              [product]="relatedProduct"
+            />
+
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+}
+
+
+<!-- =========================
      PRODUCT NOT FOUND
 ========================== -->
 
 } @else if (notFound) {
 
 <section
-  class="flex min-h-screen flex-col items-center justify-center
-         gap-5 bg-[#F7F5F0] px-6"
+  class="flex min-h-screen flex-col
+         items-center justify-center gap-5
+         bg-[#FFF5F7] px-6"
 >
 
   <div
     class="flex h-14 w-14 items-center justify-center
-           rounded-full bg-[#F1EEE8]"
+           rounded-full bg-[#FCE7EF]"
   >
 
     <svg
@@ -327,7 +618,7 @@
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="currentColor"
-      class="h-6 w-6 text-[#8B6F52]"
+      class="h-6 w-6 text-[#BE185D]"
     >
 
       <path
@@ -341,16 +632,19 @@
   </div>
 
 
-  <p class="text-lg font-medium text-[#4E4942]">
+  <p
+    class="text-lg font-medium text-[#7A123D]"
+  >
     We couldn't find that product.
   </p>
 
 
   <a
     routerLink="/products"
-    class="rounded-full bg-[#292723] px-6 py-2.5
-           text-sm font-medium text-white transition
-           hover:bg-[#8B6F52]"
+    class="rounded-full bg-[#BE185D]
+           px-6 py-2.5 text-sm font-medium
+           text-white transition
+           hover:bg-[#9D174D]"
   >
     Back to Products
   </a>
@@ -365,14 +659,28 @@
 } @else {
 
 <section
-  class="flex min-h-screen items-center justify-center
-         bg-[#F7F5F0]"
+  class="flex min-h-screen items-center
+         justify-center bg-[#FFF5F7]"
 >
 
-  <p class="text-sm text-[#817B72]">
-    Loading product...
-  </p>
+  <div class="text-center">
+
+    <div
+      class="mx-auto h-8 w-8 animate-spin
+             rounded-full border-4
+             border-[#F3C4D3]
+             border-t-[#BE185D]"
+    ></div>
+
+    <p
+      class="mt-4 text-sm text-[#765662]"
+    >
+      Loading product...
+    </p>
+
+  </div>
 
 </section>
 
 }
+

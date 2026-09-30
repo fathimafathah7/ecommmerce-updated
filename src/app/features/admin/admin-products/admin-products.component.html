@@ -1,0 +1,213 @@
+<p>admin-products works!</p>
+<div>
+
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+    <div>
+      <h1 class="text-2xl font-semibold tracking-[-0.02em] text-[#292723]">
+        Products
+      </h1>
+      <p class="mt-1 text-sm text-[#817B72]">
+        Add, edit, or remove products from the catalog.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="openAddForm()"
+      class="inline-flex items-center justify-center rounded-full bg-[#292723] px-5 py-2.5
+             text-sm font-semibold text-white transition hover:bg-[#8B6F52]"
+    >
+      + Add Product
+    </button>
+
+  </div>
+
+
+  <div class="mt-6">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Search products..."
+      class="w-full max-w-sm rounded-full border border-[#D9D3C9] bg-white px-4 py-2.5
+             text-sm outline-none transition focus:border-[#8B6F52]"
+    >
+  </div>
+
+
+  @if (loading) {
+
+    <p class="mt-8 text-sm text-[#817B72]">Loading products...</p>
+
+  } @else if (filteredProducts.length === 0) {
+
+    <p class="mt-8 text-sm text-[#817B72]">No products found.</p>
+
+  } @else {
+
+    <div class="mt-6 overflow-x-auto rounded-2xl border border-[#E5E0D7] bg-white">
+      <table class="w-full text-left text-sm">
+        <thead>
+          <tr class="border-b border-[#EAE6DE] text-xs uppercase tracking-wide text-[#9A8063]">
+            <th class="px-5 py-3 font-medium">Product</th>
+            <th class="px-5 py-3 font-medium">Category</th>
+            <th class="px-5 py-3 font-medium">Price</th>
+            <th class="px-5 py-3 font-medium">Stock</th>
+            <th class="px-5 py-3 font-medium">Rating</th>
+            <th class="px-5 py-3 font-medium text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of filteredProducts; track product.id) {
+            <tr class="border-b border-[#F1EEE8] last:border-0">
+              <td class="px-5 py-3">
+                <div class="flex items-center gap-3">
+                  <img [src]="product.images[0]" [alt]="product.name" class="h-10 w-10 rounded-lg bg-[#F4F1EB] object-contain p-1">
+                  <span class="font-medium text-[#292723]">{{ product.name }}</span>
+                </div>
+              </td>
+              <td class="px-5 py-3 text-[#5F5A52]">{{ product.category }}</td>
+              <td class="px-5 py-3 text-[#292723]">{{ product.price | currency:'INR':'symbol':'1.0-0' }}</td>
+              <td class="px-5 py-3">
+                @if (product.stock <= 5) {
+                  <span class="font-medium text-[#9A5B52]">{{ product.stock }}</span>
+                } @else {
+                  <span class="text-[#5F5A52]">{{ product.stock }}</span>
+                }
+              </td>
+              <td class="px-5 py-3 text-[#5F5A52]">★ {{ product.rating }}</td>
+              <td class="px-5 py-3 text-right">
+                <button type="button" (click)="openEditForm(product)" class="text-xs font-medium text-[#8B6F52] hover:underline">
+                  Edit
+                </button>
+                <button type="button" (click)="askDelete(product)" class="ml-4 text-xs font-medium text-[#9A5B52] hover:underline">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  }
+
+</div>
+
+
+<!-- Add / Edit slide-over form -->
+@if (showForm) {
+
+  <div class="fixed inset-0 z-50 flex justify-end">
+
+    <div class="absolute inset-0 bg-[#292723]/40" (click)="closeForm()"></div>
+
+    <div class="relative flex h-full w-full max-w-md flex-col overflow-y-auto bg-white p-6 shadow-2xl sm:p-8">
+
+      <h2 class="text-xl font-semibold text-[#292723]">
+        {{ editingProduct ? 'Edit Product' : 'Add Product' }}
+      </h2>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="mt-6 space-y-4">
+
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Name</label>
+          <input type="text" formControlName="name"
+            class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <p class="mt-1 text-xs text-[#9A5B52]">Name must be at least 2 characters.</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Category</label>
+          <input type="text" formControlName="category"
+            class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+          @if (form.controls.category.touched && form.controls.category.invalid) {
+            <p class="mt-1 text-xs text-[#9A5B52]">Category is required.</p>
+          }
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Price (₹)</label>
+            <input type="number" formControlName="price"
+              class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+            @if (form.controls.price.touched && form.controls.price.invalid) {
+              <p class="mt-1 text-xs text-[#9A5B52]">Enter a valid price.</p>
+            }
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Stock</label>
+            <input type="number" formControlName="stock"
+              class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+            @if (form.controls.stock.touched && form.controls.stock.invalid) {
+              <p class="mt-1 text-xs text-[#9A5B52]">Enter a valid stock count.</p>
+            }
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Max Qty / Order</label>
+            <input type="number" formControlName="maxQuantity"
+              class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+          </div>
+
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Rating (0-5)</label>
+            <input type="number" step="0.1" formControlName="rating"
+              class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]">
+          </div>
+
+        </div>
+
+        <div>
+  <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Image URLs</label>
+  <textarea formControlName="imagesText" rows="3" placeholder="One URL per line"
+    class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]"></textarea>
+  <p class="mt-1 text-xs text-[#A09A91]">Paste one image URL per line. The first one is used as the main thumbnail.</p>
+  @if (form.controls.imagesText.touched && form.controls.imagesText.invalid) {
+    <p class="mt-1 text-xs text-[#9A5B52]">At least one image URL is required.</p>
+  }
+</div>
+
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-[#4E4942]">Description</label>
+          <textarea formControlName="description" rows="4"
+            class="w-full rounded-lg border border-[#D9D3C9] px-3.5 py-2.5 text-sm outline-none focus:border-[#8B6F52]"></textarea>
+          @if (form.controls.description.touched && form.controls.description.invalid) {
+            <p class="mt-1 text-xs text-[#9A5B52]">Description must be at least 10 characters.</p>
+          }
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="closeForm()"
+            class="flex-1 rounded-full border border-[#D9D3C9] py-3 text-sm font-medium text-[#5F5A52] transition hover:bg-[#F7F5F0]">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="saving"
+            class="flex-1 rounded-full bg-[#292723] py-3 text-sm font-semibold text-white transition hover:bg-[#8B6F52] disabled:opacity-50">
+            {{ saving ? 'Saving...' : (editingProduct ? 'Save Changes' : 'Add Product') }}
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+}
+
+
+@if (productPendingDelete) {
+  <app-confirm-dialog
+    title="Delete this product?"
+    [message]="'This will permanently remove &quot;' + productPendingDelete.name + '&quot; from the catalog.'"
+    confirmLabel="Delete"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()"
+  />
+}
