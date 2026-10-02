@@ -4,7 +4,7 @@ import { Address } from './address.model';
 export type PaymentMethod = 'cod' | 'card' | 'upi';
 
 export interface Order {
-  id?: number | string;
+  id?: number;
   userId: number | string;
   items: CartItem[];
   address: Address;

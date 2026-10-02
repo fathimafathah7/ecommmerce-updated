@@ -1,19 +1,21 @@
-
-<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
+<section class="min-h-screen bg-[#FFFDF8] py-12 md:py-16">
 
   <div class="mx-auto max-w-6xl px-6">
 
     <!-- Header -->
     <div class="mb-10">
-      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#9D174D]">
+      <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#6B574D]">
         Your Selection
       </p>
 
-      <h1 class="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#7A123D] md:text-4xl">
+      <h1
+        class="mt-3 text-3xl font-semibold tracking-[-0.03em]
+               text-[#2F2724] md:text-4xl"
+      >
         Shopping Cart
       </h1>
 
-      <p class="mt-2 text-sm text-[#765662]">
+      <p class="mt-2 text-sm text-[#6B625D]">
         {{ itemCount$ | async }} items in your cart
       </p>
     </div>
@@ -24,9 +26,15 @@
       @if (items.length === 0) {
 
         <!-- Empty Cart -->
-        <div class="rounded-3xl border border-[#F3C4D3] bg-white px-6 py-20 text-center">
+        <div
+          class="rounded-3xl border border-[#DCC8B8]
+                 bg-white px-6 py-20 text-center"
+        >
 
-          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FCE7EF] text-[#BE185D]">
+          <div
+            class="mx-auto flex h-14 w-14 items-center justify-center
+                   rounded-full bg-[#F5EFE6] text-[#6B574D]"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -45,18 +53,20 @@
             </svg>
           </div>
 
-          <h2 class="mt-5 text-xl font-semibold text-[#7A123D]">
+          <h2 class="mt-5 text-xl font-semibold text-[#2F2724]">
             Your cart is empty
           </h2>
 
-          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#765662]">
+          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#6B625D]">
             Looks like you haven't added any toys yet.
           </p>
 
           <a
             routerLink="/products"
-            class="mt-7 inline-flex rounded-full bg-[#BE185D] px-7 py-3 text-sm font-medium text-white
-                   transition hover:bg-[#9D174D]"
+            class="mt-7 inline-flex rounded-full
+                   bg-[#3B302C] px-7 py-3
+                   text-sm font-medium text-[#FFFDF8]
+                   transition hover:bg-[#2F2724]"
           >
             Browse Products
           </a>
@@ -73,15 +83,19 @@
             @for (item of items; track item.product.id) {
 
               <div
-                class="rounded-2xl border border-[#F3C4D3] bg-white p-5
-                       transition hover:border-[#E28DAA]
+                class="rounded-2xl border border-[#DCC8B8]
+                       bg-white p-5
+                       transition hover:border-[#6B574D]
                        sm:p-6"
               >
 
                 <div class="flex flex-col gap-5 sm:flex-row">
 
                   <!-- Product Image -->
-                  <div class="h-32 w-full shrink-0 overflow-hidden rounded-xl bg-[#FFF5F7] sm:w-32">
+                  <div
+                    class="h-32 w-full shrink-0 overflow-hidden
+                           rounded-xl bg-[#F5EFE6] sm:w-32"
+                  >
                     <img
                       [src]="item.product.images[0]"
                       [alt]="item.product.name"
@@ -95,11 +109,14 @@
                     <div class="flex items-start justify-between gap-4">
 
                       <div>
-                        <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9D174D]">
+                        <p
+                          class="text-[10px] font-semibold uppercase
+                                 tracking-[0.15em] text-[#6B574D]"
+                        >
                           {{ item.product.category }}
                         </p>
 
-                        <h2 class="mt-1 text-lg font-semibold text-[#7A123D]">
+                        <h2 class="mt-1 text-lg font-semibold text-[#2F2724]">
                           {{ item.product.name }}
                         </h2>
                       </div>
@@ -113,7 +130,7 @@
 
 
                     <!-- Unit Price -->
-                    <p class="mt-3 text-lg font-semibold text-[#7A123D]">
+                    <p class="mt-3 text-lg font-semibold text-[#3B302C]">
                       {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
                     </p>
 
@@ -121,21 +138,30 @@
                     <!-- Quantity Controls -->
                     <div class="mt-5 flex items-center gap-3">
 
-                      <span class="text-xs font-medium uppercase tracking-wide text-[#765662]">
+                      <span
+                        class="text-xs font-medium uppercase
+                               tracking-wide text-[#6B625D]"
+                      >
                         Quantity
                       </span>
 
                       <button
                         type="button"
                         (click)="decrease(item)"
-                        class="flex h-8 w-8 items-center justify-center rounded-full
-                               border border-[#F3C4D3] text-[#9D174D]
-                               transition hover:border-[#BE185D] hover:bg-[#FCE7EF]"
+                        class="flex h-8 w-8 items-center justify-center
+                               rounded-full border border-[#DCC8B8]
+                               text-[#6B574D]
+                               transition
+                               hover:border-[#3B302C]
+                               hover:bg-[#F5EFE6]"
                       >
                         −
                       </button>
 
-                      <span class="w-7 text-center text-sm font-semibold text-[#7A123D]">
+                      <span
+                        class="w-7 text-center text-sm
+                               font-semibold text-[#2F2724]"
+                      >
                         {{ item.quantity }}
                       </span>
 
@@ -143,10 +169,14 @@
                         type="button"
                         (click)="increase(item)"
                         [disabled]="item.quantity >= item.product.maxQuantity"
-                        class="flex h-8 w-8 items-center justify-center rounded-full
-                               border border-[#F3C4D3] text-[#9D174D]
-                               transition hover:border-[#BE185D] hover:bg-[#FCE7EF]
-                               disabled:cursor-not-allowed disabled:opacity-30"
+                        class="flex h-8 w-8 items-center justify-center
+                               rounded-full border border-[#DCC8B8]
+                               text-[#6B574D]
+                               transition
+                               hover:border-[#3B302C]
+                               hover:bg-[#F5EFE6]
+                               disabled:cursor-not-allowed
+                               disabled:opacity-30"
                       >
                         +
                       </button>
@@ -158,8 +188,9 @@
                     <button
                       type="button"
                       (click)="askRemove(item)"
-                      class="mt-4 text-xs font-medium text-[#C6284F]
-                             transition hover:text-[#9D174D]"
+                      class="mt-4 text-xs font-medium
+                             text-[#6B574D]
+                             transition hover:text-[#2F2724]"
                     >
                       Remove
                     </button>
@@ -170,7 +201,7 @@
                   <!-- Item Subtotal -->
                   <div class="text-left sm:text-right">
 
-                    <p class="text-sm font-semibold text-[#7A123D]">
+                    <p class="text-sm font-semibold text-[#3B302C]">
                       {{
                         item.product.price * item.quantity
                           | currency:'INR':'symbol':'1.0-0'
@@ -190,34 +221,38 @@
 
           <!-- Order Summary -->
           <div
-            class="h-fit rounded-2xl border border-[#F3C4D3] bg-white p-6
+            class="h-fit rounded-2xl border border-[#DCC8B8]
+                   bg-white p-6
                    lg:sticky lg:top-24"
           >
 
-            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9D174D]">
+            <p
+              class="text-xs font-semibold uppercase
+                     tracking-[0.18em] text-[#6B574D]"
+            >
               Summary
             </p>
 
-            <h2 class="mt-2 text-xl font-semibold text-[#7A123D]">
+            <h2 class="mt-2 text-xl font-semibold text-[#2F2724]">
               Order Summary
             </h2>
 
 
-            <div class="mt-7 flex justify-between text-sm text-[#765662]">
+            <div class="mt-7 flex justify-between text-sm text-[#6B625D]">
               <span>Items</span>
               <span>{{ itemCount$ | async }}</span>
             </div>
 
 
-            <div class="my-5 border-t border-[#F3C4D3]"></div>
+            <div class="my-5 border-t border-[#DCC8B8]"></div>
 
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-[#765662]">
+              <span class="font-medium text-[#6B625D]">
                 Total
               </span>
 
-              <span class="text-xl font-semibold text-[#7A123D]">
+              <span class="text-xl font-semibold text-[#3B302C]">
                 {{
                   total$ | async
                     | currency:'INR':'symbol':'1.0-0'
@@ -229,10 +264,11 @@
             <button
               type="button"
               (click)="goToCheckout(items.length)"
-              class="mt-7 w-full rounded-full bg-[#BE185D] py-3.5
-                     text-sm font-semibold text-white
+              class="mt-7 w-full rounded-full
+                     bg-[#3B302C] py-3.5
+                     text-sm font-semibold text-[#FFFDF8]
                      transition duration-300
-                     hover:bg-[#9D174D]"
+                     hover:bg-[#2F2724]"
             >
               Proceed to Checkout
             </button>

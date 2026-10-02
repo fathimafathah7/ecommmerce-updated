@@ -26,7 +26,7 @@ import {
   updateQuantitySuccess,
   removeFromCartSuccess
 } from './cart.action';
-
+const MAX_CART_PRODUCT=8
 
 @Injectable()
 export class CartEffects {
@@ -81,6 +81,7 @@ export class CartEffects {
         if (!this.requireAuth()) {
           return [cartNoop()];
         }
+      
 
         return this.cartService.getCart().pipe(
 
@@ -98,6 +99,7 @@ export class CartEffects {
                 );
                 return [cartNoop()];
               }
+              
 
               return this.cartService
                 .updateQuantity(existingItem.id!, existingItem.quantity + 1)
@@ -107,6 +109,11 @@ export class CartEffects {
                   ),
                   map(updatedItem => addToCartSuccess({ item: updatedItem }))
                 );
+            }
+
+            if(items.length >= MAX_CART_PRODUCT){
+              this.snackbar.warning(`Your cart is full. Remove something first.`)
+              return [cartNoop()]
             }
 
             return this.cartService

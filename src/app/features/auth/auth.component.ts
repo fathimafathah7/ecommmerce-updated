@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,8 +7,13 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { Subscription, interval } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
+import { EmailOtpService } from '../../core/services/email-otp.service';
+import { User } from '../../core/models/user.model';
+
+const OTP_DURATION_SECONDS = 180; // 3 minutes
 
 @Component({
   selector: 'app-auth',
@@ -17,7 +22,7 @@ import { SnackbarService } from '../../core/services/snackbar.service';
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css'
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
 
   isLogin = true;
 
@@ -49,9 +54,26 @@ export class AuthComponent {
   private matchedUserId: number | string | null = null;
   emailTaken = false;
 
+  // --- OTP registration state ---
+  registerStep: 'form' | 'otp' = 'form';
+  sendingOtp = false;
+  verifyingOtp = false;
+  otpError = '';
+  otpTimeLeft = OTP_DURATION_SECONDS;
+
+  private generatedOtp: string | null = null;
+  private pendingUser: User | null = null;
+  private timerSubscription?: Subscription;
+
+  otpControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{6}$/)
+  ]);
+
   private router = inject(Router);
   private authService = inject(AuthService);
   private snackbar = inject(SnackbarService);
+  private emailOtpService = inject(EmailOtpService);
 
   passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -94,7 +116,7 @@ export class AuthComponent {
     ])
   }, { validators: passwordsMatchValidator });
 
- 
+
   forgotForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -102,7 +124,7 @@ export class AuthComponent {
     ])
   });
 
- 
+
   resetForm = new FormGroup({
     password: new FormControl('', [
       Validators.required,
@@ -119,7 +141,8 @@ export class AuthComponent {
     this.loginForm.reset();
     this.registerForm.reset();
     this.resetForgotPasswordState();
-     this.emailTaken = false;
+    this.resetOtpState();
+    this.emailTaken = false;
   }
 
   private resetForgotPasswordState() {
@@ -253,6 +276,7 @@ export class AuthComponent {
 
           this.authService.setCurrentUser(user);
           this.snackbar.success(`Welcome back, ${user.name}!`);
+
           const destination = user.role === 'admin' ? '/admin' : '/';
           this.router.navigate([destination], { replaceUrl: true });
 
@@ -266,48 +290,162 @@ export class AuthComponent {
     });
   }
 
+  // --- Registration, step 1: validate + check email, then send OTP ---
   register() {
 
-  if (this.registerForm.invalid) {
-    this.registerForm.markAllAsTouched();
-    return;
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const email = this.registerForm.controls.email.value!;
+
+    this.sendingOtp = true;
+
+    this.authService.findByEmail(email).subscribe({
+      next: existingUsers => {
+
+        if (existingUsers.length > 0) {
+          this.emailTaken = true;
+          this.sendingOtp = false;
+          return;
+        }
+
+        this.emailTaken = false;
+
+        this.pendingUser = {
+          name: this.registerForm.controls.name.value!,
+          email,
+          password: this.registerForm.controls.password.value!
+        };
+
+        this.sendOtpEmail(this.pendingUser);
+      },
+      error: () => {
+        this.sendingOtp = false;
+        this.snackbar.error('Something went wrong. Please try again.');
+      }
+    });
   }
 
-  const email = this.registerForm.controls.email.value!;
+  private sendOtpEmail(user: User) {
 
-  this.authService.findByEmail(email).subscribe({
-    next: existingUsers => {
+    const otp = this.emailOtpService.generateOtp();
 
-      if (existingUsers.length > 0) {
-        this.emailTaken = true;
-        return;
+    this.emailOtpService.sendOtp(user.email, user.name, otp).then(
+      () => {
+        this.generatedOtp = otp;
+        this.sendingOtp = false;
+        this.registerStep = 'otp';
+        this.otpControl.reset();
+        this.otpError = '';
+        this.startOtpTimer();
+        this.snackbar.success(`A verification code was sent to ${user.email}.`);
+      },
+      () => {
+        this.sendingOtp = false;
+        this.snackbar.error('Could not send the verification email. Please try again.');
       }
+    );
+  }
 
-      this.emailTaken = false;
-      const user = {
-        name: this.registerForm.controls.name.value!,
-        email,
-        password: this.registerForm.controls.password.value!
-      };
+  private startOtpTimer() {
 
-      this.authService.register(user).subscribe({
-        next: () => {
-          this.snackbar.success('Account created successfully! Please sign in.');
-          this.isLogin = true;
-          this.registerForm.reset();
-        },
-        error: () => {
-          this.snackbar.error('Could not create your account. Please try again.');
-        }
-      });
+    this.timerSubscription?.unsubscribe();
+    this.otpTimeLeft = OTP_DURATION_SECONDS;
 
-    },
-    error: () => {
-      this.snackbar.error('Something went wrong. Please try again.');
+    this.timerSubscription = interval(1000).subscribe(() => {
+
+      this.otpTimeLeft--;
+
+      if (this.otpTimeLeft <= 0) {
+        this.otpTimeLeft = 0;
+        this.timerSubscription?.unsubscribe();
+      }
+    });
+  }
+
+  get otpExpired(): boolean {
+    return this.otpTimeLeft <= 0;
+  }
+
+  /** Formats the remaining seconds as mm:ss for the countdown display. */
+  get otpTimerDisplay(): string {
+    const minutes = Math.floor(this.otpTimeLeft / 60);
+    const seconds = this.otpTimeLeft % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  // --- Registration, step 2: verify the code, then actually create the account ---
+  verifyOtp() {
+
+    if (this.otpControl.invalid) {
+      this.otpControl.markAsTouched();
+      return;
     }
-  });
-}
 
+    if (this.otpExpired) {
+      this.otpError = 'This code has expired. Please request a new one.';
+      return;
+    }
+
+    if (this.otpControl.value !== this.generatedOtp) {
+      this.otpError = 'Incorrect code. Please check and try again.';
+      return;
+    }
+
+    if (!this.pendingUser) {
+      this.snackbar.error('Something went wrong. Please start over.');
+      this.resetOtpState();
+      return;
+    }
+
+    this.otpError = '';
+    this.verifyingOtp = true;
+
+    this.authService.register(this.pendingUser).subscribe({
+      next: () => {
+        this.verifyingOtp = false;
+        this.snackbar.success('Account created successfully! Please sign in.');
+        this.isLogin = true;
+        this.registerForm.reset();
+        this.resetOtpState();
+      },
+      error: () => {
+        this.verifyingOtp = false;
+        this.snackbar.error('Could not create your account. Please try again.');
+      }
+    });
+  }
+
+  resendOtp() {
+
+    if (!this.otpExpired || !this.pendingUser) {
+      return;
+    }
+
+    this.sendingOtp = true;
+    this.sendOtpEmail(this.pendingUser);
+  }
+
+  /** "Back" from the OTP screen to the registration form, discarding the code. */
+  backToRegisterForm() {
+    this.resetOtpState();
+  }
+
+  private resetOtpState() {
+    this.registerStep = 'form';
+    this.generatedOtp = null;
+    this.pendingUser = null;
+    this.otpError = '';
+    this.otpControl.reset();
+    this.timerSubscription?.unsubscribe();
+    this.otpTimeLeft = OTP_DURATION_SECONDS;
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription?.unsubscribe();
+  }
 }
 
 function passwordsMatchValidator(group: AbstractControl) {

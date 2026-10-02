@@ -32,9 +32,7 @@ export class AdminLayoutComponent {
     { path: '/admin/users', label: 'Users' }
   ];
 
-  backToStore() {
-    this.router.navigate(['/']);
-  }
+ 
 
   logout() {
     this.authService.logout();

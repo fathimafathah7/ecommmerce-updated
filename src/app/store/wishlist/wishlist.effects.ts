@@ -23,7 +23,7 @@ import {
   removeFromWishlistSuccess,
   wishlistNoop
 } from './wishlist.action';
-
+const max_wishlist_items=8
 
 @Injectable()
 export class WishlistEffects {
@@ -33,6 +33,9 @@ export class WishlistEffects {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private authService = inject(AuthService);
+
+  
+  
 
   /** Same guard pattern as CartEffects.requireAuth(). */
   private requireAuth(): boolean {
@@ -98,13 +101,18 @@ export class WishlistEffects {
                   map(() => removeFromWishlistSuccess({ id: existingItem.id! }))
                 );
             }
-
+            else if (items.length>= max_wishlist_items){
+              this.snackbar.warning(`your wishlist is full (max ${max_wishlist_items}items).`)
+              return [wishlistNoop()]
+            }
+            else{
             return this.wishlistService
               .addToWishlist({ product })
               .pipe(
                 tap(() => this.snackbar.success(`"${product.name}" added to wishlist.`)),
                 map(createdItem => addToWishlistSuccess({ item: createdItem }))
               );
+            }
 
           })
 

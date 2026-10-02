@@ -1,19 +1,26 @@
-
-<div class="flex min-h-screen bg-[#F7F5F0]">
+<div class="flex h-screen overflow-hidden bg-[#F7F5F0]">
 
   <!-- Sidebar -->
-  <aside class="hidden w-64 shrink-0 flex-col border-r border-[#E5E0D7] bg-white md:flex">
+  <aside
+    class="fixed inset-y-0 left-0 hidden w-64 shrink-0 flex-col
+           border-r border-[#E5E0D7] bg-white md:flex"
+  >
 
     <div class="flex items-center gap-2 border-b border-[#EAE6DE] px-6 py-5">
       <span class="text-xl font-semibold tracking-[-0.03em] text-[#292723]">
         Toy<span class="text-[#8B6F52]">Store</span>
       </span>
-      <span class="rounded-full bg-[#292723] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+
+      <span
+        class="rounded-full bg-[#292723] px-2 py-0.5 text-[10px]
+               font-semibold uppercase tracking-wide text-white"
+      >
         Admin
       </span>
     </div>
 
-    <nav class="flex-1 space-y-1 px-3 py-5">
+
+    <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-5">
 
       @for (link of navLinks; track link.path) {
 
@@ -24,7 +31,6 @@
           class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium
                  text-[#716C64] transition hover:bg-[#F7F5F0] hover:text-[#292723]"
         >
-          
           {{ link.label }}
         </a>
 
@@ -32,17 +38,8 @@
 
     </nav>
 
-    <div class="border-t border-[#EAE6DE] p-3">
 
-      <button
-        type="button"
-        (click)="backToStore()"
-        class="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium
-               text-[#716C64] transition hover:bg-[#F7F5F0] hover:text-[#292723]"
-      >
-        
-        Back to Store
-      </button>
+    <div class="border-t border-[#EAE6DE] p-3">
 
       <button
         type="button"
@@ -50,7 +47,6 @@
         class="mt-1 flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium
                text-[#9A5B52] transition hover:bg-[#FBF4F2]"
       >
-        
         Logout
       </button>
 
@@ -60,32 +56,30 @@
 
 
   <!-- Main -->
-  <div class="flex flex-1 flex-col">
+  <div class="ml-0 flex min-w-0 flex-1 flex-col md:ml-64">
 
-    <!-- Top bar (also carries nav on mobile, since sidebar is hidden) -->
-    <header class="border-b border-[#E5E0D7] bg-white px-5 py-4 md:px-8">
+    <!-- Top bar -->
+    <header
+      class="sticky top-0 z-30 border-b border-[#E5E0D7]
+             bg-white px-5 py-4 md:px-8"
+    >
 
       <div class="flex items-center justify-between">
 
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9A8063]">
+          <p
+            class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9A8063]"
+          >
             Admin Panel
           </p>
+
           <p class="mt-0.5 text-sm text-[#716C64]">
             Signed in as {{ adminName }}
           </p>
         </div>
 
-        <button
-          type="button"
-          (click)="backToStore()"
-          class="rounded-full border border-[#D9D3C9] px-4 py-2 text-xs font-medium
-                 text-[#5F5A52] transition hover:border-[#8B6F52] md:hidden"
-        >
-          Store
-        </button>
-
       </div>
+
 
       <!-- Mobile nav row -->
       <nav class="mt-4 flex gap-2 overflow-x-auto md:hidden">
@@ -99,7 +93,7 @@
             class="whitespace-nowrap rounded-full border border-[#D9D3C9] px-4 py-1.5
                    text-xs font-medium text-[#5F5A52] transition"
           >
-           {{ link.label }}
+            {{ link.label }}
           </a>
 
         }
@@ -108,7 +102,9 @@
 
     </header>
 
-    <main class="flex-1 px-5 py-6 md:px-8 md:py-8">
+
+    <!-- Scrollable Admin Content -->
+    <main class="min-h-0 flex-1 overflow-y-auto px-5 py-6 md:px-8 md:py-8">
       <router-outlet></router-outlet>
     </main>
 

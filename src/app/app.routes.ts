@@ -7,65 +7,71 @@ import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders
 import { AdminUsersComponent } from './features/admin/admin-users/admin-users.component';
 import { adminGuard } from './core/guards/admin.guard';
 import { guestGuard } from './core/guards/guest.guard';
+import { noAdminGuard } from './core/guards/no-admin.guard';
 
 export const routes: Routes = [
     {
         path:'',
         loadComponent:()=>
             import('./features/home/home.component')
-        .then(m=>m.HomeComponent)
+        .then(m=>m.HomeComponent),
+        canActivate:[noAdminGuard]
 
     },
     {
         path:'products',
         loadComponent:()=>
             import('./features/products/product-list/product-list.component')
-        .then(m =>m.ProductListComponent)
+        .then(m =>m.ProductListComponent),
+        canActivate:[noAdminGuard]
     },
     {
         path:'products/:id',
         loadComponent:()=>
             import('./features/products/product-detail/product-detail.component')
-        .then(m=> m.ProductDetailComponent)
+        .then(m=> m.ProductDetailComponent),
+        canActivate:[noAdminGuard]
     },
     {
         path:'cart',
         loadComponent:()=>
             import('./features/cart/cart.component')
         .then(m =>m.CartComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard,noAdminGuard]
     },
     {
         path:'wishlist',
         loadComponent:() =>
             import('./features/wishlist/wishlist.component')
         .then(m=> m.WishlistComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard,noAdminGuard
+
+        ]
     },
     {
         path: 'checkout',
         loadComponent: () =>
             import('./features/checkout/checkout.component')
         .then(m => m.CheckoutComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard,noAdminGuard]
     },
     {
         path: 'profile',
         loadComponent: () =>
             import('./features/profile/profile.component')
         .then(m => m.ProfileComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard,noAdminGuard]
     },
     {
         path: 'orders',
         loadComponent: () =>
             import('./features/orders/orders.component')
         .then(m => m.OrdersComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard,noAdminGuard]
     },
     {
         path: 'auth',
-        canActivate:[guestGuard],
+        canActivate:[guestGuard,noAdminGuard],
         loadComponent: () =>
         import('./features/auth/auth.component')
       .then(m => m.AuthComponent)

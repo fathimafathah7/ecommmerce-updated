@@ -215,11 +215,11 @@ export class ProfileComponent implements OnInit {
 
   statusBadgeClass(status: Order['status']): string {
     switch (status) {
-      case 'delivered': return 'bg-[#FCE7EF] text-[#9D174D]';
-      case 'shipped': return 'bg-[#FCE7EF] text-[#BE185D]';
-      case 'processing': return 'bg-[#FFF5F7] text-[#D24F82]';
-      case 'cancelled': return 'bg-[#FFF1F3] text-[#C6284F]';
-      default: return 'bg-[#FCE7EF] text-[#765662]';
-    }
+  case 'delivered': return 'bg-green-100 text-green-700';
+  case 'shipped': return 'bg-blue-100 text-blue-700';
+  case 'processing': return 'bg-yellow-100 text-yellow-700';
+  case 'cancelled': return 'bg-red-100 text-red-700';
+  default: return 'bg-gray-100 text-gray-700';
+}
   }
 }

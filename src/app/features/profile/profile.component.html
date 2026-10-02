@@ -1,5 +1,4 @@
-
-<section class="min-h-screen bg-[#FFF5F7] py-12 md:py-16">
+<section class="min-h-screen bg-[#FFFDF8] py-12 md:py-16">
 
   <div class="mx-auto max-w-5xl px-6">
 
@@ -9,20 +8,20 @@
 
       <p
         class="text-xs font-semibold uppercase
-               tracking-[0.22em] text-[#9D174D]"
+               tracking-[0.22em] text-[#6B574D]"
       >
         Account
       </p>
 
       <h1
         class="mt-3 text-3xl font-semibold
-               tracking-[-0.03em] text-[#7A123D]
+               tracking-[-0.03em] text-[#2F2724]
                md:text-4xl"
       >
         My Profile
       </h1>
 
-      <p class="mt-2 text-sm text-[#765662]">
+      <p class="mt-2 text-sm text-[#6B625D]">
         Manage your account details and saved addresses.
       </p>
 
@@ -41,66 +40,81 @@
         @if (user) {
 
           <div
-            class="rounded-2xl border border-[#F3C4D3]
+            class="rounded-2xl border border-[#DCC8B8]
                    bg-white p-6 text-center"
           >
 
-                <div class="relative mx-auto h-20 w-20">
- 
+            <div class="relative mx-auto h-20 w-20">
+
               <button
                 type="button"
                 (click)="triggerPhotoUpload()"
                 [disabled]="uploadingPhoto"
                 class="group relative block h-20 w-20 overflow-hidden rounded-full
-                       ring-2 ring-transparent transition hover:ring-blue-200
+                       ring-2 ring-transparent transition hover:ring-[#DCC8B8]
                        disabled:cursor-not-allowed"
                 aria-label="Change profile photo"
               >
- 
+
                 @if (user.profilePhoto) {
- 
+
                   <img
                     [src]="user.profilePhoto"
                     alt="Profile photo"
                     class="h-full w-full object-cover"
                   >
- 
+
                 } @else {
- 
+
                   <div
                     class="flex h-full w-full items-center justify-center
-                           bg-blue-600 text-2xl font-bold text-white"
+                           bg-[#6B574D] text-2xl font-bold text-[#FFFDF8]"
                   >
                     {{ user.name.charAt(0).toUpperCase() }}
                   </div>
- 
+
                 }
- 
-                               <!-- Hover / uploading overlay -->
+
+
+                <!-- Hover / uploading overlay -->
+
                 <div
                   class="absolute inset-0 flex items-center justify-center
                          text-white transition
                          group-hover:bg-black/40 group-hover:opacity-100"
                   [class]="uploadingPhoto ? 'bg-black/40 opacity-100' : 'bg-black/0 opacity-0'"
                 >
+
                   @if (uploadingPhoto) {
-                    <span class="text-xs font-medium">Uploading...</span>
+
+                    <span class="text-xs font-medium">
+                      Uploading...
+                    </span>
+
                   } @else {
-                    <span class="text-lg">📷</span>
+
+                    <span class="text-lg">
+                      📷
+                    </span>
+
                   }
+
                 </div>
- 
+
               </button>
- 
+
+
               <!-- Small camera badge, always visible -->
+
               <div
                 class="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-7 w-7
                        items-center justify-center rounded-full border-2 border-white
-                       bg-gray-900 text-xs text-white"
+                       bg-[#2F2724] text-xs text-[#FFFDF8]"
               >
                 📷
               </div>
- 
+
+
               <input
                 #photoInput
                 type="file"
@@ -108,44 +122,57 @@
                 class="hidden"
                 (change)="onPhotoSelected($event)"
               >
- 
+
             </div>
- 
-            <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ user.name }}</h2>
-            <p class="text-sm text-gray-500">{{ user.email }}</p>
- 
+
+
+            <h2 class="mt-4 text-lg font-semibold text-[#2F2724]">
+              {{ user.name }}
+            </h2>
+
+            <p class="text-sm text-[#6B625D]">
+              {{ user.email }}
+            </p>
+
+
             <div class="mt-5 flex gap-3">
+
               <a
                 routerLink="/orders"
-                class="flex-1 text-sm font-medium text-blue-600 border border-blue-200
-                       bg-blue-50 rounded-lg py-2 hover:bg-blue-100 transition"
+                class="flex-1 rounded-lg border border-[#DCC8B8]
+                       bg-[#F5EFE6] py-2 text-sm font-medium
+                       text-[#6B574D] transition hover:bg-[#EDE3D6]"
               >
                 My Orders
               </a>
+
               <a
                 routerLink="/cart"
-                class="flex-1 text-sm font-medium text-gray-700 border border-gray-200
-                       rounded-lg py-2 hover:bg-gray-50 transition"
+                class="flex-1 rounded-lg border border-[#DCC8B8]
+                       py-2 text-sm font-medium text-[#6B625D]
+                       transition hover:bg-[#F5EFE6]"
               >
                 My Cart
               </a>
+
             </div>
- 
+
           </div>
         }
+
 
         <!-- =========================
              RECENT ACTIVITY
         ========================== -->
 
         <div
-          class="rounded-2xl border border-[#F3C4D3]
+          class="rounded-2xl border border-[#DCC8B8]
                  bg-white p-6"
         >
 
           <h3
             class="text-sm font-semibold uppercase
-                   tracking-[0.12em] text-[#9D174D]"
+                   tracking-[0.12em] text-[#6B574D]"
           >
             Recent Activity
           </h3>
@@ -153,13 +180,13 @@
 
           @if (loadingOrders) {
 
-            <p class="mt-5 text-sm text-[#765662]">
+            <p class="mt-5 text-sm text-[#6B625D]">
               Loading...
             </p>
 
           } @else if (recentOrders.length === 0) {
 
-            <p class="mt-5 text-sm text-[#765662]">
+            <p class="mt-5 text-sm text-[#6B625D]">
               No orders placed yet.
             </p>
 
@@ -178,13 +205,13 @@
 
                     <p
                       class="truncate text-sm font-medium
-                             text-[#7A123D]"
+                             text-[#2F2724]"
                     >
                       Order #{{ order.id?.toString()?.slice(-6) }}
                     </p>
 
                     <p
-                      class="mt-1 text-xs text-[#B58E9B]"
+                      class="mt-1 text-xs text-[#8A7D72]"
                     >
                       {{ order.createdAt | date:'mediumDate' }}
                       ·
@@ -212,8 +239,8 @@
             <a
               routerLink="/orders"
               class="mt-5 block text-center
-                     text-xs font-medium text-[#D24F82]
-                     transition hover:text-[#9D174D]
+                     text-xs font-medium text-[#6B574D]
+                     transition hover:text-[#2F2724]
                      hover:underline"
             >
               View all orders →
@@ -233,7 +260,7 @@
       <div class="lg:col-span-2">
 
         <div
-          class="rounded-2xl border border-[#F3C4D3]
+          class="rounded-2xl border border-[#DCC8B8]
                  bg-white p-6 md:p-7"
         >
 
@@ -248,14 +275,14 @@
 
               <p
                 class="text-[10px] font-semibold uppercase
-                       tracking-[0.16em] text-[#9D174D]"
+                       tracking-[0.16em] text-[#6B574D]"
               >
                 Delivery
               </p>
 
               <h2
                 class="mt-1 text-lg font-semibold
-                       text-[#7A123D]"
+                       text-[#2F2724]"
               >
                 Saved Addresses
               </h2>
@@ -269,10 +296,10 @@
               type="button"
               (click)="openAddAddress()"
               class="rounded-full
-                     bg-[#BE185D]
+                     bg-[#3B302C]
                      px-4 py-2.5 text-xs
-                     font-medium text-white
-                     transition hover:bg-[#9D174D]"
+                     font-medium text-[#FFFDF8]
+                     transition hover:bg-[#2F2724]"
             >
               + Add New
             </button>
@@ -284,7 +311,7 @@
 
           @if (loadingAddresses) {
 
-            <p class="text-sm text-[#765662]">
+            <p class="text-sm text-[#6B625D]">
               Loading addresses...
             </p>
 
@@ -297,12 +324,12 @@
 
             <div
               class="rounded-xl border border-dashed
-                     border-[#F3C4D3]
-                     bg-[#FFF5F7]
+                     border-[#DCC8B8]
+                     bg-[#F5EFE6]
                      px-5 py-10 text-center"
             >
 
-              <p class="text-sm text-[#765662]">
+              <p class="text-sm text-[#6B625D]">
                 You haven't saved any addresses yet.
               </p>
 
@@ -310,8 +337,8 @@
                 type="button"
                 (click)="openAddAddress()"
                 class="mt-3 text-sm font-medium
-                       text-[#D24F82]
-                       hover:text-[#9D174D]
+                       text-[#6B574D]
+                       hover:text-[#2F2724]
                        hover:underline"
               >
                 Add your first address
@@ -335,11 +362,11 @@
 
                 <div
                   class="rounded-xl border
-                         border-[#F3C4D3]
+                         border-[#DCC8B8]
                          bg-white p-5
                          transition
-                         hover:border-[#E28DAA]
-                         hover:bg-[#FFFBFC]"
+                         hover:border-[#B8A18F]
+                         hover:bg-[#FDFBF7]"
                 >
 
                   <!-- Name + Default -->
@@ -347,7 +374,7 @@
                   <div class="flex items-center gap-2">
 
                     <p
-                      class="font-medium text-[#7A123D]"
+                      class="font-medium text-[#2F2724]"
                     >
                       {{ address.fullName }}
                     </p>
@@ -357,9 +384,9 @@
 
                       <span
                         class="rounded-full
-                               bg-[#FCE7EF]
+                               bg-[#EDE3D6]
                                px-2.5 py-1 text-[10px]
-                               font-semibold text-[#9D174D]"
+                               font-semibold text-[#6B574D]"
                       >
                         Default
                       </span>
@@ -373,7 +400,7 @@
 
                   <p
                     class="mt-2 text-sm leading-6
-                           text-[#765662]"
+                           text-[#6B625D]"
                   >
                     {{ address.line1 }}
 
@@ -390,7 +417,7 @@
                   <!-- Phone -->
 
                   <p
-                    class="mt-2 text-xs text-[#B58E9B]"
+                    class="mt-2 text-xs text-[#8A7D72]"
                   >
                     {{ address.phone }}
                   </p>
@@ -404,8 +431,8 @@
                       type="button"
                       (click)="openEditAddress(address)"
                       class="text-xs font-medium
-                             text-[#765662]
-                             transition hover:text-[#BE185D]"
+                             text-[#6B625D]
+                             transition hover:text-[#6B574D]"
                     >
                       Edit
                     </button>
@@ -415,8 +442,8 @@
                       type="button"
                       (click)="askDeleteAddress(address)"
                       class="text-xs font-medium
-                             text-[#765662]
-                             transition hover:text-[#C6284F]"
+                             text-[#6B625D]
+                             transition hover:text-[#8A4F43]"
                     >
                       Delete
                     </button>
@@ -471,4 +498,3 @@
   />
 
 }
-

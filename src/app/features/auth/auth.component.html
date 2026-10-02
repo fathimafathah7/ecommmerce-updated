@@ -672,6 +672,7 @@
       <!-- ================================================= -->
 
       @else {
+        @if (registerStep === 'form') {
 
         <div class="mb-7">
 
@@ -1050,7 +1051,7 @@
                    disabled:cursor-not-allowed
                    disabled:opacity-50"
           >
-            Create account
+            {{ sendingOtp ? 'Sending code...' : 'Create account' }}
           </button>
 
         </form>
@@ -1076,6 +1077,115 @@
           </button>
 
         </div>
+
+      }
+      @else {
+
+          <!-- ================================================= -->
+          <!-- OTP VERIFICATION -->
+          <!-- ================================================= -->
+
+          <div class="mb-7">
+
+            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#9A8063]">
+              Verify Your Email
+            </p>
+
+            <h1 class="mt-2 text-2xl font-semibold tracking-[-0.02em] text-[#292723]">
+              Enter verification code
+            </h1>
+
+            <p class="mt-1 text-sm text-[#817B72]">
+              We sent a 6-digit code to your email. It expires in 3 minutes.
+            </p>
+
+          </div>
+
+          <div class="space-y-5">
+
+            <div>
+
+              <label for="otp-code" class="mb-2 block text-sm font-medium text-[#4E4942]">
+                Verification Code
+              </label>
+
+              <input
+                id="otp-code"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
+                [formControl]="otpControl"
+                placeholder="123456"
+                autocomplete="one-time-code"
+                class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9]
+                       px-4 py-3 text-center text-lg tracking-[0.4em] text-[#292723]
+                       outline-none transition placeholder:text-[#AAA59D]
+                       focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
+              >
+
+              @if (otpControl.touched && otpControl.invalid) {
+                <p class="mt-1.5 text-xs text-[#9A5B52]">
+                  Enter the 6-digit code exactly as sent.
+                </p>
+              } @else if (otpError) {
+                <p class="mt-1.5 text-xs text-[#9A5B52]">
+                  {{ otpError }}
+                </p>
+              }
+
+            </div>
+
+            <div class="flex items-center justify-between text-sm">
+
+              <span class="text-[#817B72]">
+                @if (!otpExpired) {
+                  Code expires in
+                  <span class="font-semibold text-[#292723]">{{ otpTimerDisplay }}</span>
+                } @else {
+                  <span class="font-medium text-[#9A5B52]">Code expired.</span>
+                }
+              </span>
+
+              <button
+                type="button"
+                (click)="resendOtp()"
+                [disabled]="!otpExpired || sendingOtp"
+                class="font-semibold text-[#8B6F52] transition
+                       hover:underline
+                       disabled:cursor-not-allowed disabled:text-[#AAA59D] disabled:hover:no-underline"
+              >
+                {{ sendingOtp ? 'Sending...' : 'Resend code' }}
+              </button>
+
+            </div>
+
+            <button
+              type="button"
+              (click)="verifyOtp()"
+              [disabled]="verifyingOtp || otpExpired"
+              class="w-full rounded-full bg-[#292723] py-3.5
+                     text-sm font-semibold text-white
+                     transition duration-300
+                     hover:bg-[#8B6F52]
+                     disabled:cursor-not-allowed
+                     disabled:opacity-50"
+            >
+              {{ verifyingOtp ? 'Verifying...' : 'Verify & Create Account' }}
+            </button>
+
+          </div>
+
+          <div class="mt-7 border-t border-[#EAE6DE] pt-6 text-center">
+            <button
+              type="button"
+              (click)="backToRegisterForm()"
+              class="text-sm font-semibold text-[#8B6F52] transition hover:underline"
+            >
+              ← Back to registration form
+            </button>
+          </div>
+
+        }
 
       }
 

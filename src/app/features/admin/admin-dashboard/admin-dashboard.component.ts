@@ -9,6 +9,8 @@ import { OrderService } from '../../../core/services/order.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Order } from '../../../core/models/order.model';
 
+type RevenuePeriod = 'week' | 'month' | 'year';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -32,7 +34,18 @@ export class AdminDashboardComponent implements OnInit {
 
   recentOrders: Order[] = [];
 
-  // --- Revenue trend (last 7 days) — line chart ---
+  // Cached so switching the revenue period doesn't need a refetch.
+  private allOrders: Order[] = [];
+
+  // --- Revenue trend — line chart, with a period selector ---
+  revenuePeriod: RevenuePeriod = 'week';
+
+  revenuePeriodOptions: { value: RevenuePeriod; label: string }[] = [
+    { value: 'week', label: 'Last 7 Days' },
+    { value: 'month', label: 'Last 30 Days' },
+    { value: 'year', label: 'Last 12 Months' }
+  ];
+
   revenueChartData: ChartData<'line'> = { labels: [], datasets: [] };
 
   revenueChartOptions: ChartConfiguration<'line'>['options'] = {
@@ -42,6 +55,9 @@ export class AdminDashboardComponent implements OnInit {
       legend: { display: false }
     },
     scales: {
+      x: {
+        ticks: { autoSkip: true, maxRotation: 0 }
+      },
       y: {
         beginAtZero: true,
         ticks: { callback: value => `₹${value}` }
@@ -49,14 +65,38 @@ export class AdminDashboardComponent implements OnInit {
     }
   };
 
-  // --- Orders by status — doughnut chart ---
-  statusChartData: ChartData<'doughnut'> = { labels: [], datasets: [] };
+  // --- Sales by category — doughnut chart ---
+  categoryChartData: ChartData<'doughnut'> = { labels: [], datasets: [] };
 
-  statusChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+  categoryChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom' }
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: context => `₹${context.parsed} in sales`
+        }
+      }
+    }
+  };
+
+  hasCategoryData = false;
+
+  // --- Orders by status — separate bar chart ---
+  statusChartData: ChartData<'bar'> = { labels: [], datasets: [] };
+
+  statusChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { stepSize: 1 }
+      }
     }
   };
 
@@ -69,6 +109,8 @@ export class AdminDashboardComponent implements OnInit {
     }).subscribe({
       next: ({ products, users, orders }) => {
 
+        this.allOrders = orders;
+
         this.productCount = products.length;
         this.userCount = users.length;
         this.orderCount = orders.length;
@@ -80,8 +122,9 @@ export class AdminDashboardComponent implements OnInit {
 
         this.recentOrders = orders.slice(0, 5);
 
-        this.buildRevenueChart(orders);
-        this.buildStatusChart(orders);
+        this.buildRevenueChart();
+        this.buildCategoryChart();
+        this.buildStatusChart();
 
         this.loading = false;
       },
@@ -91,57 +134,136 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  /** Sums revenue per day for the last 7 days (cancelled orders excluded). */
-  private buildRevenueChart(orders: Order[]) {
+  onPeriodChange(period: RevenuePeriod) {
+    this.revenuePeriod = period;
+    this.buildRevenueChart();
+  }
+
+  /** Builds the revenue trend for whichever period is currently selected. */
+  private buildRevenueChart() {
+
+    const sellableOrders = this.allOrders.filter(order => order.status !== 'cancelled');
+
+    if (this.revenuePeriod === 'year') {
+      this.buildRevenueByMonth(sellableOrders);
+    } else {
+      const days = this.revenuePeriod === 'week' ? 7 : 30;
+      this.buildRevenueByDay(sellableOrders, days);
+    }
+  }
+
+  private buildRevenueByDay(orders: Order[], dayCount: number) {
 
     const days: { label: string; key: string }[] = [];
 
-    for (let i = 6; i >= 0; i--) {
+    for (let i = dayCount - 1; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
       days.push({
-        label: date.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' }),
+        label: date.toLocaleDateString(undefined, { day: 'numeric', month: 'short' }),
         key: date.toDateString()
       });
     }
 
     const revenueByDay = new Map(days.map(d => [d.key, 0]));
 
-    orders
-      .filter(order => order.status !== 'cancelled')
-      .forEach(order => {
-        const key = new Date(order.createdAt).toDateString();
-        if (revenueByDay.has(key)) {
-          revenueByDay.set(key, revenueByDay.get(key)! + order.total);
-        }
-      });
+    orders.forEach(order => {
+      const key = new Date(order.createdAt).toDateString();
+      if (revenueByDay.has(key)) {
+        revenueByDay.set(key, revenueByDay.get(key)! + order.total);
+      }
+    });
 
+    this.setRevenueChartData(
+      days.map(d => d.label),
+      days.map(d => revenueByDay.get(d.key) ?? 0)
+    );
+  }
+
+  private buildRevenueByMonth(orders: Order[]) {
+
+    const months: { label: string; key: string }[] = [];
+
+    for (let i = 11; i >= 0; i--) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      months.push({
+        label: date.toLocaleDateString(undefined, { month: 'short', year: '2-digit' }),
+        key: `${date.getFullYear()}-${date.getMonth()}`
+      });
+    }
+
+    const revenueByMonth = new Map(months.map(m => [m.key, 0]));
+
+    orders.forEach(order => {
+      const date = new Date(order.createdAt);
+      const key = `${date.getFullYear()}-${date.getMonth()}`;
+      if (revenueByMonth.has(key)) {
+        revenueByMonth.set(key, revenueByMonth.get(key)! + order.total);
+      }
+    });
+
+    this.setRevenueChartData(
+      months.map(m => m.label),
+      months.map(m => revenueByMonth.get(m.key) ?? 0)
+    );
+  }
+
+  private setRevenueChartData(labels: string[], data: number[]) {
     this.revenueChartData = {
-      labels: days.map(d => d.label),
+      labels,
       datasets: [{
-        data: days.map(d => revenueByDay.get(d.key) ?? 0),
+        data,
         label: 'Revenue',
-        borderColor: '#6B4F3A',
-        backgroundColor: 'rgba(107, 79, 58, 0.10)',
-        pointBackgroundColor: '#6B4F3A',
+        borderColor: '#BE185D',
+        backgroundColor: 'rgba(190, 24, 93, 0.1)',
+        pointBackgroundColor: '#BE185D',
+        pointRadius: this.revenuePeriod === 'year' ? 3 : 2,
         fill: true,
         tension: 0.35
       }]
     };
   }
 
-  /** Counts orders per status for the doughnut chart. */
-  private buildStatusChart(orders: Order[]) {
+  /** Sums order-item revenue per product category, across all non-cancelled orders. */
+  private buildCategoryChart() {
+
+    const revenueByCategory = new Map<string, number>();
+
+    this.allOrders
+      .filter(order => order.status !== 'cancelled')
+      .forEach(order => {
+        order.items.forEach(item => {
+          const category = item.product.category;
+          const revenue = item.product.price * item.quantity;
+          revenueByCategory.set(category, (revenueByCategory.get(category) ?? 0) + revenue);
+        });
+      });
+
+    const entries = Array.from(revenueByCategory.entries())
+      .sort((a, b) => b[1] - a[1]); // largest category first
+
+    this.hasCategoryData = entries.length > 0;
+
+    const palette = ['#BE185D', '#F59E0B', '#3B82F6', '#16A34A', '#9333EA', '#F3C4D3', '#765662', '#D24F82'];
+
+    this.categoryChartData = {
+      labels: entries.map(([category]) => category),
+      datasets: [{
+        data: entries.map(([, revenue]) => revenue),
+        backgroundColor: entries.map((_, i) => palette[i % palette.length])
+      }]
+    };
+  }
+
+  /** Counts orders per status — kept as its own bar chart, separate from category sales. */
+  private buildStatusChart() {
 
     const statuses: Order['status'][] = ['placed', 'processing', 'shipped', 'delivered', 'cancelled'];
-    const colors = [ '#cca274',
-        '#a87e53',
-        '#6a4e36',
-        '#3d281a',
-        '#b8aa9c'];
+    const colors = ['#F3C4D3', '#F59E0B', '#3B82F6', '#16A34A', '#DC2626'];
 
     const counts = statuses.map(
-      status => orders.filter(o => o.status === status).length
+      status => this.allOrders.filter(o => o.status === status).length
     );
 
     this.statusChartData = {
