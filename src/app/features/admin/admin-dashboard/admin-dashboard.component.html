@@ -174,7 +174,7 @@
               @for (order of recentOrders; track order.id) {
                 <tr class="border-b border-[#F1EEE8] last:border-0">
                   <td class="py-3 pr-4 font-medium text-[#292723]">
-                    #{{ order.id?.toString()?.slice(-6) }}
+                    #{{ order.orderNumber ?? order.id?.toString()?.slice(-6) }}
                   </td>
                   <td class="py-3 pr-4 text-[#5F5A52]">
                     {{ order.address.fullName }}

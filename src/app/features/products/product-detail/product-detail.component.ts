@@ -42,9 +42,34 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
 
-    const id = Number(
-      this.route.snapshot.paramMap.get('id')
-    );
+    // Listen to the URL parameter instead of reading it once.
+    // Angular reuses this component when only the :id changes
+    // (e.g. clicking a "similar product"), so ngOnInit runs only once.
+    this.route.paramMap.subscribe(params => {
+
+      const id = params.get('id');
+
+      if (!id) {
+        this.notFound = true;
+        return;
+      }
+
+      this.loadProduct(id);
+
+    });
+
+  }
+
+
+  loadProduct(id: string) {
+
+    // Reset the page state for the new product
+    this.notFound = false;
+    this.zoomActive = false;
+    this.product = undefined as unknown as Product;
+    this.relatedProducts$ = of([]);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     this.productService.getProductById(id).subscribe({
       next: product => {

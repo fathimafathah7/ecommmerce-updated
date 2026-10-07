@@ -1,4 +1,4 @@
-<section class="hero-section relative min-h-[560px] overflow-hidden">
+<section class="hero-section relative overflow-hidden">
 
   <!-- Animated background -->
   <div class="hero-background"></div>
@@ -17,8 +17,8 @@
 
   <!-- Hero content -->
   <div
-    class="relative z-10 mx-auto flex min-h-[560px]
-           max-w-7xl items-center px-6 py-20"
+    class="relative z-10 mx-auto flex h-full
+           max-w-7xl items-center px-6 py-16"
   >
 
     <div class="max-w-2xl">
@@ -27,7 +27,7 @@
         class="mb-5 text-xs font-semibold uppercase
                tracking-[0.25em] text-[#6B574D]"
       >
-        Welcome to ToyStore
+        Welcome to Luméa ToyStore
       </p>
 
       <h1
@@ -46,8 +46,7 @@
         class="mt-7 max-w-xl text-base leading-8
                text-[#6B625D] md:text-lg"
       >
-        Discover thoughtfully selected toys for every little adventure.
-        Find something special for every child.
+        Discover thoughtfully selected toys for every little adventure.<br>Something special for every child.
       </p>
 
       <button
@@ -224,7 +223,111 @@
 
 </section>
 
+<!-- ==================== SHOP BY CATEGORY ==================== -->
+<section class="bg-[#362511] py-20 md:py-24">
 
+  <div class="mx-auto max-w-7xl px-6">
+
+    <!-- Section Heading -->
+    <div class="mx-auto max-w-2xl text-center"> 
+
+      <h2
+        class="mt-3 text-3xl font-semibold
+               tracking-[-0.03em] text-[#E6D4C2]
+               md:text-4xl"
+      >
+        Shop by Category
+      </h2>
+
+      <p
+        class="mt-4 text-sm leading-7 text-[#6B625D]
+               md:text-base"
+      >
+        Find the right toy faster. Pick a category to see
+        everything in it.
+      </p>
+
+    </div>
+
+
+    <!-- Category Cards -->
+    @if (categories$ | async; as categories) {
+
+      <div
+        class="mt-12 grid grid-cols-1 gap-6 
+               sm:grid-cols-2 lg:grid-cols-4"
+      >
+
+        @for (category of categories; track category.name) {
+
+          <a
+            [routerLink]="['/products']"
+            [queryParams]="{ category: category.name }"
+            class="group block overflow-hidden rounded-2xl
+                   border border-[#DCC8B8] bg-[#FFFDF8]
+                   transition duration-300
+                   hover:-translate-y-1 hover:border-[#6B574D]
+                   hover:shadow-[0_12px_30px_rgba(59,48,44,0.10)]"
+          >
+
+            <!-- Image -->
+            <div class="aspect-[4/3] overflow-hidden bg-[#FFFDF8]">
+              <img
+                [src]="category.image"
+                [alt]="category.name"
+                class="h-full w-full object-contain p-5
+                       transition duration-500
+                       group-hover:scale-105"
+              >
+            </div>
+
+            <!-- Name + count -->
+            <div
+              class="flex items-center justify-between
+                     border-t border-[#EFE4D6] px-5 py-4"
+            >
+
+              <div>
+                <h3 class="text-base font-semibold text-[#2F2724]">
+                  {{ category.name }}
+                </h3>
+
+                <p class="mt-0.5 text-xs text-[#8A7D72]">
+                  {{ category.count }}
+                  {{ category.count === 1 ? 'product' : 'products' }}
+                </p>
+              </div>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.6"
+                stroke="currentColor"
+                class="h-5 w-5 text-[#6B574D]
+                       transition duration-300
+                       group-hover:translate-x-1"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 12h14m-7-7 7 7-7 7"
+                />
+              </svg>
+
+            </div>
+
+          </a>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</section>
 <!-- ==================== COMPANY JOURNEY ==================== -->
 
 <section class="bg-[#FFFDF8] py-20 md:py-24">
@@ -247,7 +350,7 @@
                text-[#2F2724]
                md:text-4xl"
       >
-        From a Little Idea to ToyStore
+        From a Little Idea to Luméa ToyStore
       </h2>
 
       <p
@@ -262,12 +365,12 @@
     </div>
 
 
-    <!-- Timeline -->
-    <div class="relative mx-auto mt-16 max-w-5xl">
+    <!-- Timeline (animates when it scrolls into view) -->
+    <div appReveal class="journey relative mx-auto mt-16 max-w-5xl">
 
-      <!-- Horizontal Line - Desktop -->
+      <!-- Horizontal Line - Desktop (draws itself from left to right) -->
       <div
-        class="absolute left-0 right-0 top-6 hidden h-px
+        class="journey-line absolute left-0 right-0 top-6 hidden h-px
                bg-[#DCC8B8] md:block"
       ></div>
 
@@ -276,13 +379,10 @@
         class="grid grid-cols-1 gap-12
                md:grid-cols-4 md:gap-8"
       >
-
-
-        <!-- 2022 -->
-        <div class="relative text-center">
+        <div class="journey-step relative text-center">
 
           <div
-            class="relative z-10 mx-auto flex h-12 w-12
+            class="journey-dot relative z-10 mx-auto flex h-12 w-12
                    items-center justify-center
                    rounded-full
                    border-4 border-[#FFFDF8]
@@ -317,13 +417,10 @@
           </p>
 
         </div>
-
-
-        <!-- 2023 -->
-        <div class="relative text-center">
+        <div class="journey-step relative text-center">
 
           <div
-            class="relative z-10 mx-auto flex h-12 w-12
+            class="journey-dot relative z-10 mx-auto flex h-12 w-12
                    items-center justify-center
                    rounded-full
                    border-4 border-[#FFFDF8]
@@ -358,13 +455,10 @@
           </p>
 
         </div>
-
-
-        <!-- 2024 -->
-        <div class="relative text-center">
+        <div class="journey-step relative text-center">
 
           <div
-            class="relative z-10 mx-auto flex h-12 w-12
+            class="journey-dot relative z-10 mx-auto flex h-12 w-12
                    items-center justify-center
                    rounded-full
                    border-4 border-[#FFFDF8]
@@ -399,13 +493,10 @@
           </p>
 
         </div>
-
-
-        <!-- Today -->
-        <div class="relative text-center">
+        <div class="journey-step relative text-center">
 
           <div
-            class="relative z-10 mx-auto flex h-12 w-12
+            class="journey-dot relative z-10 mx-auto flex h-12 w-12
                    items-center justify-center
                    rounded-full
                    border-4 border-[#FFFDF8]
@@ -448,6 +539,4 @@
   </div>
 
 </section>
-
-
 <app-footer></app-footer>

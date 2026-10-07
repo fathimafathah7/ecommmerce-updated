@@ -24,13 +24,7 @@ import { PaymentMethod } from '../../core/models/order.model';
   selector: 'app-checkout',
   standalone: true,
   imports: [
-    AsyncPipe,
-    CurrencyPipe,
-    ReactiveFormsModule,
-    RouterLink,
-    AddressFormComponent,
-    ConfirmDialogComponent
-  ],
+    AsyncPipe, CurrencyPipe,ReactiveFormsModule,RouterLink, AddressFormComponent,ConfirmDialogComponent],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -60,7 +54,7 @@ export class CheckoutComponent implements OnInit {
   placingOrder = false;
 
   paymentForm = this.fb.group({
-    method: this.fb.control<PaymentMethod>('cod', Validators.required),
+    method:this.fb.control<PaymentMethod>('cod', Validators.required),
     cardNumber: [''],
     cardExpiry: [''],
     cardCvv: [''],
@@ -122,8 +116,6 @@ export class CheckoutComponent implements OnInit {
 
     });
   }
-
-  // --- Address management ---
 
   openAddAddress() {
     this.editingAddress = null;
@@ -201,8 +193,6 @@ export class CheckoutComponent implements OnInit {
     this.selectedAddressId = id;
   }
 
-  // --- Order placement ---
-
   get selectedPaymentMethod(): PaymentMethod {
     return this.paymentForm.controls.method.value as PaymentMethod;
   }
@@ -243,9 +233,9 @@ export class CheckoutComponent implements OnInit {
       status: 'placed',
       createdAt: new Date().toISOString()
     }).subscribe({
-      next: () => {
+      next: placedOrder => {
 
-        // Clear the persisted cart on the backend, then reset local state.
+      
         const deletions = items.map(item => this.cartService.removeFromCart(item.id!));
 
         const deletions$: Observable<unknown> = deletions.length
@@ -256,14 +246,12 @@ export class CheckoutComponent implements OnInit {
           next: () => {
             this.store.dispatch(clearCart());
             this.placingOrder = false;
-            this.snackbar.success('Order placed successfully!');
-            this.router.navigate(['/orders']);
+            this.router.navigate(['/order-success', placedOrder.id], { replaceUrl: true });
           },
           error: () => {
             this.placingOrder = false;
             this.store.dispatch(clearCart());
-            this.snackbar.success('Order placed successfully!');
-            this.router.navigate(['/orders']);
+            this.router.navigate(['/order-success', placedOrder.id], { replaceUrl: true });
           }
         });
 

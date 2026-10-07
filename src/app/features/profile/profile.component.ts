@@ -10,6 +10,7 @@ import { Order } from '../../core/models/order.model';
 import { User } from '../../core/models/user.model';
 import { AddressFormComponent } from '../../shared/components/address-form/address-form.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ImageCropperComponent } from '../../shared/components/image-crop/image-cropper.component';
 
 /**
  * Shows the signed-in user's details, their saved addresses (full
@@ -19,7 +20,7 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [RouterLink, DatePipe, AddressFormComponent, ConfirmDialogComponent],
+  imports: [RouterLink, DatePipe, AddressFormComponent, ConfirmDialogComponent, ImageCropperComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
    // --- Profile photo upload ---
   @ViewChild('photoInput') photoInput?: ElementRef<HTMLInputElement>;
   uploadingPhoto = false;
+  photoToCrop: File | null = null;   // chosen file waiting to be cropped
  
   private readonly maxPhotoSizeBytes = 2 * 1024 * 1024; 
 
@@ -179,37 +181,40 @@ export class ProfileComponent implements OnInit {
       return;
     }
  
-    const reader = new FileReader();
- 
-    reader.onload = () => {
- 
-      const dataUrl = reader.result as string;
- 
-      this.uploadingPhoto = true;
- 
-      this.authService.updateProfilePhoto(this.user!.id!, dataUrl).subscribe({
-        next: updatedUser => {
- 
-          this.user = updatedUser;
-          // Keep localStorage / the app-wide currentUser$ stream in sync
-          // so the new photo shows up anywhere else it's used too.
-          this.authService.setCurrentUser(updatedUser);
- 
-          this.uploadingPhoto = false;
-          this.snackbar.success('Profile photo updated.');
-        },
-        error: () => {
-          this.uploadingPhoto = false;
-          this.snackbar.error('Could not update your profile photo. Please try again.');
-        }
-      });
-    };
- 
-    reader.onerror = () => {
-      this.snackbar.error('Could not read that file. Please try again.');
-    };
- 
-    reader.readAsDataURL(file);
+    // Open the cropper first - the photo is saved after the user crops it
+    this.photoToCrop = file;
+  }
+
+  cancelPhotoCrop() {
+    this.photoToCrop = null;
+  }
+
+  onPhotoCropped(dataUrl: string) {
+
+    this.photoToCrop = null;
+
+    if (!this.user?.id) {
+      return;
+    }
+
+    this.uploadingPhoto = true;
+
+    this.authService.updateProfilePhoto(this.user.id, dataUrl).subscribe({
+      next: updatedUser => {
+
+        this.user = updatedUser;
+        // Keep localStorage / the app-wide currentUser$ stream in sync
+        // so the new photo shows up anywhere else it's used too.
+        this.authService.setCurrentUser(updatedUser);
+
+        this.uploadingPhoto = false;
+        this.snackbar.success('Profile photo updated.');
+      },
+      error: () => {
+        this.uploadingPhoto = false;
+        this.snackbar.error('Could not update your profile photo. Please try again.');
+      }
+    });
   }
  
 

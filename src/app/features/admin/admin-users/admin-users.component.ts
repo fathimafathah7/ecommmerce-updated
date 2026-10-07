@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { User } from '../../../core/models/user.model';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [FormsModule, ConfirmDialogComponent],
+  imports: [FormsModule, RouterLink, ConfirmDialogComponent, PaginationComponent],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css'
 })
@@ -21,7 +23,7 @@ export class AdminUsersComponent implements OnInit {
   loading = true;
   searchTerm = '';
 
-  userPendingDelete: User | null = null;
+  userPendingDeactivate: User | null = null;
 
   currentUserId = this.authService.getCurrentUserId();
 
@@ -39,6 +41,29 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  // ---------- Pagination ----------
+
+  readonly pageSize = 10;
+  page = 1;
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredUsers.length / this.pageSize));
+  }
+
+  /** Current page, never beyond the last page (e.g. after a delete or a filter). */
+  get currentPage(): number {
+    return Math.min(this.page, this.totalPages);
+  }
+
+  get pagedUsers(): User[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredUsers.slice(start, start + this.pageSize);
+  }
+
+  goToPage(page: number) {
+    this.page = page;
+  }
+
   get filteredUsers(): User[] {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) {
@@ -50,37 +75,55 @@ export class AdminUsersComponent implements OnInit {
     );
   }
 
-  askDelete(user: User) {
+  isActive(user: User): boolean {
+    // Accounts created before this feature have no flag, so they count as active
+    return user.isActive !== false;
+  }
+
+  askDeactivate(user: User) {
 
     if (user.id === this.currentUserId) {
-      this.snackbar.warning('You cannot delete your own admin account.');
+      this.snackbar.warning('You cannot deactivate your own admin account.');
       return;
     }
 
-    this.userPendingDelete = user;
+    this.userPendingDeactivate = user;
   }
 
-  cancelDelete() {
-    this.userPendingDelete = null;
+  cancelDeactivate() {
+    this.userPendingDeactivate = null;
   }
 
-  confirmDelete() {
+  confirmDeactivate() {
 
-    if (!this.userPendingDelete) {
+    if (!this.userPendingDeactivate) {
       return;
     }
 
-    const id = this.userPendingDelete.id!;
+    const user = this.userPendingDeactivate;
+    this.userPendingDeactivate = null;
 
-    this.authService.deleteUser(id).subscribe({
+    this.setActive(user, false);
+  }
+
+  activate(user: User) {
+    this.setActive(user, true);
+  }
+
+  /** Only the isActive flag changes - the user's data is never erased. */
+  private setActive(user: User, isActive: boolean) {
+
+    this.authService.setUserActive(user.id!, isActive).subscribe({
       next: () => {
-        this.users = this.users.filter(u => u.id !== id);
-        this.snackbar.info('User account deleted.');
-        this.userPendingDelete = null;
+        user.isActive = isActive;
+        this.snackbar.info(
+          isActive
+            ? `${user.name}'s account has been activated.`
+            : `${user.name}'s account has been deactivated.`
+        );
       },
       error: () => {
-        this.snackbar.error('Could not delete this user.');
-        this.userPendingDelete = null;
+        this.snackbar.error('Could not update this account. Please try again.');
       }
     });
   }

@@ -8,6 +8,7 @@ import { AdminUsersComponent } from './features/admin/admin-users/admin-users.co
 import { adminGuard } from './core/guards/admin.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { noAdminGuard } from './core/guards/no-admin.guard';
+import { AdminUserDetailsComponent } from './features/admin/admin-user-details/admin-user-details.component';
 
 export const routes: Routes = [
     {
@@ -69,6 +70,15 @@ export const routes: Routes = [
         .then(m => m.OrdersComponent),
         canActivate:[authGuard,noAdminGuard]
     },
+
+    {
+        path:'order-success/:id',
+        loadComponent:()=>
+            import('./features/order-success/order-success.component')
+        .then(m=>m.OrderSuccessComponent),
+        canActivate:[noAdminGuard,authGuard]
+
+    },
     {
         path: 'auth',
         canActivate:[guestGuard,noAdminGuard],
@@ -104,6 +114,10 @@ export const routes: Routes = [
             {
                 path:'users',
                 component:AdminUsersComponent
+            },
+            {
+                path:'users/:id',
+                component:AdminUserDetailsComponent
             }
         ]
     },

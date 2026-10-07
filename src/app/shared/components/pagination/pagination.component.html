@@ -1,0 +1,59 @@
+@if (total() > pageSize()) {
+
+  <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+   
+
+    <nav class="flex items-center gap-1.5" aria-label="Pagination">
+
+      <button
+        type="button"
+        (click)="go(page() - 1)"
+        [disabled]="page() === 1"
+        class="rounded-full border border-[#D9D3C9] bg-white px-3.5 py-1.5 text-lg font-medium text-[#5F5A52]
+               transition hover:border-[#8B6F52] hover:text-[#8B6F52]
+               disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#D9D3C9] disabled:hover:text-[#5F5A52]"
+      >
+        ‹
+      </button>
+
+      @for (item of pages; track $index) {
+
+        @if (item === '…') {
+
+          <span class="px-1 text-xs text-[#A09A91]">…</span>
+
+        } @else {
+
+          <button
+            type="button"
+            (click)="go(item)"
+            [attr.aria-current]="item === page() ? 'page' : null"
+            class="h-8 min-w-8 rounded-full px-2 text-xs font-medium transition"
+            [class]="item === page()
+              ? 'bg-[#292723] text-white'
+              : 'border border-[#D9D3C9] bg-white text-[#5F5A52] hover:border-[#8B6F52] hover:text-[#8B6F52]'"
+          >
+            {{ item }}
+          </button>
+
+        }
+
+      }
+
+      <button
+        type="button"
+        (click)="go(page() + 1)"
+        [disabled]="page() === totalPages"
+        class="rounded-full border border-[#D9D3C9] bg-white px-3.5 py-1.5 text-lg font-medium text-[#5F5A52]
+               transition hover:border-[#8B6F52] hover:text-[#8B6F52]
+               disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#D9D3C9] disabled:hover:text-[#5F5A52]"
+      >
+        ›
+      </button>
+
+    </nav>
+
+  </div>
+
+}

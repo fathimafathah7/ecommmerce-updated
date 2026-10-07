@@ -8,5 +8,6 @@ export interface Address {
   city: string;
   state: string;
   pincode: string;
+  type?: 'home' | 'work';
   isDefault?: boolean;
 }

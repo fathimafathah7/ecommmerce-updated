@@ -19,7 +19,7 @@ export const adminGuard: CanActivateFn = () => {
   }
 
   if (!authService.isAdmin()) {
-    snackbar.error('You do not have access to the admin area.');
+    snackbar.error('You do not have access to the area.');
     return router.createUrlTree(['/']);
   }
 

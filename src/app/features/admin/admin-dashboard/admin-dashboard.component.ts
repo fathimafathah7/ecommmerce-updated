@@ -117,7 +117,7 @@ export class AdminDashboardComponent implements OnInit {
         this.lowStockCount = products.filter(p => p.stock <= 5).length;
 
         this.totalRevenue = orders
-          .filter(order => order.status !== 'cancelled')
+          .filter(order => order.status !== 'cancelled' && order.status !== 'refunded')
           .reduce((sum, order) => sum + order.total, 0);
 
         this.recentOrders = orders.slice(0, 5);
@@ -142,7 +142,7 @@ export class AdminDashboardComponent implements OnInit {
   /** Builds the revenue trend for whichever period is currently selected. */
   private buildRevenueChart() {
 
-    const sellableOrders = this.allOrders.filter(order => order.status !== 'cancelled');
+    const sellableOrders = this.allOrders.filter(order => order.status !== 'cancelled' && order.status !== 'refunded');
 
     if (this.revenuePeriod === 'year') {
       this.buildRevenueByMonth(sellableOrders);
@@ -215,9 +215,9 @@ export class AdminDashboardComponent implements OnInit {
       datasets: [{
         data,
         label: 'Revenue',
-        borderColor: '#BE185D',
-        backgroundColor: 'rgba(190, 24, 93, 0.1)',
-        pointBackgroundColor: '#BE185D',
+        borderColor: '#533E2E',
+        backgroundColor: 'rgba(170, 148, 127, 0.17)',
+        pointBackgroundColor: '#291E0D',
         pointRadius: this.revenuePeriod === 'year' ? 3 : 2,
         fill: true,
         tension: 0.35
@@ -231,7 +231,7 @@ export class AdminDashboardComponent implements OnInit {
     const revenueByCategory = new Map<string, number>();
 
     this.allOrders
-      .filter(order => order.status !== 'cancelled')
+      .filter(order => order.status !== 'cancelled' && order.status !== 'refunded')
       .forEach(order => {
         order.items.forEach(item => {
           const category = item.product.category;
@@ -245,7 +245,7 @@ export class AdminDashboardComponent implements OnInit {
 
     this.hasCategoryData = entries.length > 0;
 
-    const palette = ['#BE185D', '#F59E0B', '#3B82F6', '#16A34A', '#9333EA', '#F3C4D3', '#765662', '#D24F82'];
+    const palette = ['#49301b', '#7c4712c6', '#cda973e3', '#d0c3a9e9', '#9333EA', '#F3C4D3', '#765662', '#D24F82'];
 
     this.categoryChartData = {
       labels: entries.map(([category]) => category),
@@ -256,12 +256,17 @@ export class AdminDashboardComponent implements OnInit {
     };
   }
 
-  /** Counts orders per status — kept as its own bar chart, separate from category sales. */
+  
   private buildStatusChart() {
 
-    const statuses: Order['status'][] = ['placed', 'processing', 'shipped', 'delivered', 'cancelled'];
-    const colors = ['#F3C4D3', '#F59E0B', '#3B82F6', '#16A34A', '#DC2626'];
-
+    const statuses: Order['status'][] = [
+      'placed', 'processing', 'shipped', 'delivered', 'cancelled',
+      'return requested', 'returned', 'refunded'
+    ];
+    const colors = [
+      '#F3C4D3', '#F59E0B', '#3B82F6', '#16A34A', '#DC2626',
+      '#F97316', '#8B5CF6', '#64748B'
+    ];
     const counts = statuses.map(
       status => this.allOrders.filter(o => o.status === status).length
     );
@@ -281,6 +286,11 @@ export class AdminDashboardComponent implements OnInit {
       case 'shipped': return 'bg-blue-50 text-blue-700';
       case 'processing': return 'bg-amber-50 text-amber-700';
       case 'cancelled': return 'bg-red-50 text-red-700';
+      
+      case 'return requested': return 'bg-orange-50 text-orange-700';
+      case 'returned': return 'bg-purple-50 text-purple-700';
+      case 'refunded': return 'bg-slate-100 text-slate-700';
+ 
       default: return 'bg-gray-100 text-gray-700';
     }
   }

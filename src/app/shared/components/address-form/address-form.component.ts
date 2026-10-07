@@ -19,22 +19,27 @@ import { Address } from '../../../core/models/address.model';
   styleUrl: './address-form.component.css'
 })
 export class AddressFormComponent implements OnInit {
-
-  /** Pass an existing address to edit it; omit to create a new one. */
   editingAddress = input<Address | null>(null);
 
   saved = output<Address>();
   cancelled = output<void>();
-
+  addresspattern=/^[A-Za-z][A-Za-z0-9\s]+$/
   private fb = inject(FormBuilder);
   namepattern=/^[A-Za-z\s]+$/
+
+  readonly addressTypes = [
+    { value: 'home', label: 'Home', icon: '🏠' },
+    { value: 'work', label: 'Work', icon: '🏢' }
+  ];
+
   form = this.fb.group({
+    type: ['home'],
     fullName: ['', [Validators.required, Validators.minLength(3),Validators.pattern(this.namepattern)]],
     phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-    line1: ['', [Validators.required, Validators.minLength(5)]],
-    line2: [''],
-    city: ['', [Validators.required]],
-    state: ['', [Validators.required]],
+    line1: ['', [Validators.required, Validators.minLength(5),Validators.pattern(this.addresspattern)]],
+    line2: ['',[Validators.pattern(this.addresspattern)]],
+    city: ['', [Validators.required,Validators.pattern(this.namepattern)]],
+    state: ['', [Validators.required,Validators.pattern(this.namepattern)]],
     pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
     isDefault: [false]
   });
@@ -70,6 +75,7 @@ export class AddressFormComponent implements OnInit {
       city: value.city!,
       state: value.state!,
       pincode: value.pincode!,
+      type: value.type === 'work' ? 'work' : 'home',
       isDefault: value.isDefault ?? false,
       userId: existing?.userId ?? ''
     };

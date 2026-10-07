@@ -7,11 +7,7 @@ import { Product } from '../../../core/models/product.model';
 import { toggleWishlist } from '../../../store/wishlist/wishlist.action';
 import { selectIsInWishlist } from '../../../store/wishlist/wishlist.selector';
 
-/**
- * Heart / wishlist toggle button reused across the product list,
- * product detail, and cart pages so the "filled = in wishlist" behaviour
- * stays perfectly consistent everywhere it appears.
- */
+
 @Component({
   selector: 'app-wishlist-button',
   standalone: true,

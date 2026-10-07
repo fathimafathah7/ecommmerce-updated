@@ -61,7 +61,7 @@
   </h2>
 
   <!-- Rating -->
-  <div class="mt-2 flex items-center gap-2">
+  <div class="mt-1 flex items-center gap-2">
     <span class="text-sm text-[#6B574D]">
       ★
     </span>
@@ -73,7 +73,7 @@
 
   <!-- Price -->
   <p
-    class="mt-2 text-base font-semibold
+    class="mt-2 text-2xl font-semibold
            text-[#3B302C]"
   >
     ₹{{ product().price }}
@@ -81,7 +81,7 @@
 
   <!-- Stock -->
   @if (product().stock > 0) {
-    <p class="mt-1 text-xs font-medium text-[#6B574D]">
+    <p class="mt-2 text-xs font-medium text-[#6B574D]">
       In stock
     </p>
   } @else {
@@ -117,29 +117,12 @@
       Add to Cart
     </button>
 
-    <button
-      type="button"
-      (click)="viewDetails.emit(product().id)"
-      class="flex-1 rounded-full
-             border border-[#DCC8B8]
-             px-3 py-2
-             text-xs font-medium
-             text-[#6B574D]
-             transition-all duration-200
-             hover:border-[#3B302C]
-             hover:bg-[#F5EFE6]
-             hover:text-[#2F2724]"
-    >
-      Details
-    </button>
-
-  </div>
-
+    
   <button
     type="button"
     (click)="buyNow($event)"
     [disabled]="product().stock === 0"
-    class="mt-2 w-full rounded-full
+    class="flex-1 rounded-full
            bg-[#3B302C]
            px-3 py-2
            text-xs font-semibold
@@ -152,5 +135,8 @@
   >
     Buy Now
   </button>
+
+  </div>
+
 
 </div>

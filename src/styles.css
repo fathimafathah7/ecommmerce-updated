@@ -34,3 +34,6 @@
 .app-snackbar .mat-mdc-button {
   color: #ffffff !important;
 }
+html {
+  scroll-behavior: smooth;
+}

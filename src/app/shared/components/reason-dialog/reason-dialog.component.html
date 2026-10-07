@@ -1,0 +1,65 @@
+<div class="fixed inset-0 z-[70] flex items-center justify-center px-4" role="dialog" aria-modal="true">
+
+  <div class="absolute inset-0 bg-[#2F2724]/50 backdrop-blur-sm" (click)="cancel()"></div>
+
+  <div class="relative w-full max-w-md rounded-3xl border border-[#DCC8B8] bg-[#FFFDF8] p-6 shadow-[0_25px_80px_rgba(47,39,36,0.2)]">
+
+    <h3 class="text-lg font-semibold text-[#2F2724]">{{ title() }}</h3>
+
+    @if (message()) {
+      <p class="mt-1 text-sm text-[#6B625D]">{{ message() }}</p>
+    }
+
+    <div class="mt-5 space-y-2">
+
+      @for (reason of reasons(); track reason) {
+        <label
+          class="flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition"
+          [class]="selected === reason
+            ? 'border-[#6B574D] bg-[#F5EFE6] text-[#2F2724]'
+            : 'border-[#DCC8B8] bg-white text-[#6B625D] hover:border-[#6B574D]'"
+        >
+          <input type="radio" name="reason" [value]="reason" [(ngModel)]="selected" class="accent-[#6B574D]">
+          {{ reason }}
+        </label>
+      }
+
+      <label
+        class="flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition"
+        [class]="selected === otherLabel
+          ? 'border-[#6B574D] bg-[#F5EFE6] text-[#2F2724]'
+          : 'border-[#DCC8B8] bg-white text-[#6B625D] hover:border-[#6B574D]'"
+      >
+        <input type="radio" name="reason" [value]="otherLabel" [(ngModel)]="selected" class="accent-[#6B574D]">
+        {{ otherLabel }}
+      </label>
+
+      @if (selected === otherLabel) {
+        <textarea
+          [(ngModel)]="otherText"
+          rows="3"
+          maxlength="200"
+          placeholder="Tell us more (at least 3 characters)"
+          class="w-full rounded-xl border border-[#DCC8B8] bg-white px-4 py-3 text-sm text-[#2F2724] outline-none focus:border-[#6B574D]"
+        ></textarea>
+      }
+
+    </div>
+
+    <div class="mt-6 flex justify-end gap-3">
+
+      <button type="button" (click)="cancel()"
+        class="rounded-full border border-[#DCC8B8] px-5 py-2.5 text-sm font-medium text-[#6B625D] transition hover:bg-[#F5EFE6]">
+        {{ cancelLabel() }}
+      </button>
+
+      <button type="button" (click)="confirm()" [disabled]="!canConfirm"
+        class="rounded-full bg-[#3B302C] px-5 py-2.5 text-sm font-semibold text-[#FFFDF8] transition hover:bg-[#2F2724] disabled:cursor-not-allowed disabled:opacity-50">
+        {{ confirmLabel() }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

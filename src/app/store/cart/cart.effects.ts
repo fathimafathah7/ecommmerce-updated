@@ -13,20 +13,10 @@ import { CartService } from '../../core/services/cart.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { AuthService } from '../../core/services/auth.service';
 
-import {
-  loadCart,
-  loadCartSuccess,
-  addToCart,
-  addToCartSuccess,
-  buyNow,
-  cartNoop,
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-  updateQuantitySuccess,
-  removeFromCartSuccess
-} from './cart.action';
-const MAX_CART_PRODUCT=8
+import {loadCart, loadCartSuccess,addToCart,addToCartSuccess, buyNow,cartNoop,
+  increaseQuantity,decreaseQuantity,removeFromCart,
+  updateQuantitySuccess,removeFromCartSuccess} from './cart.action';
+const MAX_CART_PRODUCT=8;
 
 @Injectable()
 export class CartEffects {
@@ -37,11 +27,6 @@ export class CartEffects {
   private router = inject(Router);
   private authService = inject(AuthService);
 
-  /**
-   * Every cart-mutating action funnels through here. If nobody is signed
-   * in, bounce to the auth page with a toast instead of hitting the API
-   * (which would otherwise happily create a cart item with userId=null).
-   */
   private requireAuth(): boolean {
 
     if (this.authService.isLoggedIn()) {

@@ -83,12 +83,8 @@ export class CartComponent implements OnInit {
       this.snackbar.warning(
         `You already have the maximum quantity of "${item.product.name}" in your cart.`
       );
-
     }
-
   }
-
-
   decrease(item: CartItem) {
 
     this.store.dispatch(
@@ -98,7 +94,6 @@ export class CartComponent implements OnInit {
     );
 
   }
-
 
   askRemove(item: CartItem) {
     this.itemPendingDelete = item;
@@ -132,6 +127,10 @@ export class CartComponent implements OnInit {
     }
 
     this.router.navigate(['/checkout']);
+  }
+
+  viewProduct(id: number | string) {
+    this.router.navigate(['/products', id]);
   }
 
 }

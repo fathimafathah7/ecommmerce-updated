@@ -198,7 +198,14 @@
                               {{ address.fullName }}
                             </p>
 
-
+                              @if (address.type) {
+                      <span
+                        class="rounded-full border border-[#DCC8B8] px-2.5 py-1
+                               text-[10px] font-semibold text-[#6B574D]"
+                      >
+                        {{ address.type === 'work' ? '🏢 Work' : '🏠 Home' }}
+                      </span>
+                    }
                             @if (address.isDefault) {
 
 

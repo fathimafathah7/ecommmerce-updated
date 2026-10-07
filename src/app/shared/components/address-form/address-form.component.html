@@ -39,6 +39,41 @@
       class="space-y-4"
     >
 
+      <!-- Address Type -->
+      <div>
+
+        <label class="mb-1.5 block text-sm font-medium text-[#6B574D]">
+          Address Type
+        </label>
+
+        <div class="grid grid-cols-2 gap-3">
+
+          @for (option of addressTypes; track option.value) {
+
+            <label
+              class="flex cursor-pointer items-center justify-center gap-2 rounded-xl
+                     border px-3.5 py-3 text-sm font-medium transition"
+              [class]="form.controls.type.value === option.value
+                ? 'border-[#6B574D] bg-[#F5EFE6] text-[#2F2724]'
+                : 'border-[#DCC8B8] bg-[#FDFBF7] text-[#6B625D] hover:border-[#B8A18F]'"
+            >
+              <input
+                type="radio"
+                formControlName="type"
+                [value]="option.value"
+                class="sr-only"
+              >
+              <span>{{ option.icon }}</span>
+              {{ option.label }}
+            </label>
+
+          }
+
+        </div>
+
+      </div>
+
+
       <!-- Full Name -->
       <div>
 
@@ -97,6 +132,7 @@
             Enter a valid 10-digit mobile number.
           </p>
         }
+      
 
       </div>
 
@@ -110,7 +146,7 @@
 
         <input
           type="text"
-          formControlName="line1"
+          formControlName="line1" 
           placeholder="House no., street, area"
           class="w-full rounded-xl border border-[#DCC8B8] bg-[#FDFBF7]
                  px-3.5 py-3 text-sm text-[#2F2724] outline-none transition
@@ -118,13 +154,18 @@
                  focus:border-[#6B574D]
                  focus:ring-2 focus:ring-[#B8A18F]/30"
         >
-
-        @if (form.controls.line1.touched && form.controls.line1.invalid) {
-          <p class="mt-1 text-xs text-[#8A4F43]">
-            Please enter a valid address.
-          </p>
+        @if (form.controls.line1.touched) {
+          @if(form.controls.line1.hasError('required')){
+            <p class="mt-1 text-xs text-[#8A4F43]">
+              Please enter a valid address (min 5 characters).
+            </p>
+          }
+          @else if(form.controls.line1.hasError('pattern')){
+            <p class="mt-1 text-xs text-[#8A4F43]">
+              Address can only start with letters(A-Z)
+            </p>
+          }
         }
-
       </div>
 
 
@@ -146,6 +187,11 @@
                  focus:border-[#6B574D]
                  focus:ring-2 focus:ring-[#B8A18F]/30"
         >
+         @if (form.controls.line2.hasError('pattern')) {
+          <p class="mt-1 text-xs text-[#8A4F43]">
+            this field can only contain letters.
+          </p>
+        }
 
       </div>
 
@@ -170,12 +216,18 @@
                    focus:border-[#6B574D]
                    focus:ring-2 focus:ring-[#B8A18F]/30"
           >
-
-          @if (form.controls.city.touched && form.controls.city.invalid) {
+           @if (form.controls.city.touched) {
+          @if(form.controls.city.hasError('required')){
             <p class="mt-1 text-xs text-[#8A4F43]">
               Required.
             </p>
           }
+          @else if(form.controls.city.hasError('pattern')){
+            <p class="mt-1 text-xs text-[#8A4F43]">
+              city name can only contain letters(A-Z)
+            </p>
+          }
+        }
 
         </div>
 
@@ -198,11 +250,18 @@
                    focus:ring-2 focus:ring-[#B8A18F]/30"
           >
 
-          @if (form.controls.state.touched && form.controls.state.invalid) {
+           @if (form.controls.state.touched) {
+          @if(form.controls.state.hasError('required')){
             <p class="mt-1 text-xs text-[#8A4F43]">
-              Required.
+              Please enter a valid state (min 3 characters).
             </p>
           }
+          @else if(form.controls.state.hasError('pattern')){
+            <p class="mt-1 text-xs text-[#8A4F43]">
+              state feild can only contain letters(A-Z)
+            </p>
+          }
+        }
 
         </div>
 

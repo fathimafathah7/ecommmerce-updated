@@ -7,5 +7,6 @@ export interface Product {
     images: string[],
     rating: number,
     stock: number,
-    maxQuantity: number
+    maxQuantity: number,
+    createdAt?: string 
 }

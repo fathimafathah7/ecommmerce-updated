@@ -12,7 +12,6 @@ export class AuthService {
   private http = inject(HttpClient);
 
   private apiUrl = 'http://localhost:3000/users';
-
   
   private currentUserSubject = new BehaviorSubject<User | null>(
     this.readUserFromStorage()
@@ -35,8 +34,6 @@ export class AuthService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
-
- 
    updateProfilePhoto(userId: number | string, photoDataUrl: string): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/${userId}`, { profilePhoto: photoDataUrl });
   }
@@ -86,15 +83,11 @@ updatePassword(userId: number | string, newPassword: string): Observable<User> {
  isAdmin(): boolean {
     return this.currentUserSubject.value?.role === 'admin';
   }
- 
-  /**
-   * Used by the admin "Manage Users" page. Deleting a user does not
-   * touch their cart/wishlist/order rows — those stay orphaned in
-   * db.json but are harmless since nothing queries them without a
-   * matching signed-in userId.
-   */
   deleteUser(id: number | string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+   setUserActive(userId: number | string, isActive: boolean): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, { isActive });
   }
  
   logout(): void {

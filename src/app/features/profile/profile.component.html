@@ -207,7 +207,7 @@
                       class="truncate text-sm font-medium
                              text-[#2F2724]"
                     >
-                      Order #{{ order.id?.toString()?.slice(-6) }}
+                      Order #{{ order.orderNumber ?? order.id?.toString()?.slice(-6) }}
                     </p>
 
                     <p
@@ -379,7 +379,14 @@
                       {{ address.fullName }}
                     </p>
 
-
+                      @if (address.type) {
+                      <span
+                        class="rounded-full border border-[#DCC8B8] px-2.5 py-1
+                               text-[10px] font-semibold text-[#6B574D]"
+                      >
+                        {{ address.type === 'work' ? '🏢 Work' : '🏠 Home' }}
+                      </span>
+                    }
                     @if (address.isDefault) {
 
                       <span
@@ -496,5 +503,16 @@
     (confirmed)="confirmDeleteAddress()"
     (cancelled)="cancelDeleteAddress()"
   />
-
 }
+   @if (photoToCrop) {
+    <app-image-cropper
+      [file]="photoToCrop"
+      title="Crop profile photo"
+      [aspectRatio]="1"
+      [round]="true"
+      [outputSize]="400"
+      (cropped)="onPhotoCropped($event)"
+      (cancelled)="cancelPhotoCrop()"
+    />
+  }
+

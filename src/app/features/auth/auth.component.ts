@@ -7,13 +7,13 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Subscription, interval } from 'rxjs';
+import { Subscription, catchError, debounceTime, distinctUntilChanged, interval, map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { EmailOtpService } from '../../core/services/email-otp.service';
 import { User } from '../../core/models/user.model';
 
-const OTP_DURATION_SECONDS = 180; // 3 minutes
+const OTP_DURATION_SECONDS = 180; 
 
 @Component({
   selector: 'app-auth',
@@ -54,6 +54,11 @@ export class AuthComponent implements OnDestroy {
   private matchedUserId: number | string | null = null;
   emailTaken = false;
 
+  // True when the email typed on the login form belongs to an admin account.
+  // Admins cannot create customer accounts, so "Create your account" is disabled.
+  adminEmailDetected = false;
+  private adminCheckSubscription?: Subscription;
+
   // --- OTP registration state ---
   registerStep: 'form' | 'otp' = 'form';
   sendingOtp = false;
@@ -76,10 +81,9 @@ export class AuthComponent implements OnDestroy {
   private emailOtpService = inject(EmailOtpService);
 
   passwordPattern =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
-  // Letters and spaces only (so names like "Fathima Fathah" are allowed,
-  // but "Fathima123" or "F@thima" are not).
+  
   namePattern = /^[A-Za-z\s]+$/;
 
   loginForm = new FormGroup({
@@ -136,7 +140,34 @@ export class AuthComponent implements OnDestroy {
     ])
   }, { validators: passwordsMatchValidator });
 
+  constructor() {
+    // While the email is being typed on the login form, check whether it
+    // belongs to an admin (waits 400 ms after the last keystroke).
+    this.adminCheckSubscription = this.loginForm.controls.email.valueChanges.pipe(
+      debounceTime(400),
+      map(value => (value ?? '').trim()),
+      distinctUntilChanged(),
+      switchMap(email => {
+        if (!email || this.loginForm.controls.email.invalid) {
+          return of([] as User[]);
+        }
+        return this.authService.findByEmail(email).pipe(
+          catchError(() => of([] as User[]))
+        );
+      })
+    ).subscribe(users => {
+      this.adminEmailDetected = users.some(user => user.role === 'admin');
+    });
+  }
+
   switchMode() {
+
+    // Admins are not allowed to switch to the registration form
+    if (this.isLogin && this.adminEmailDetected) {
+      this.snackbar.warning('Admin accounts cannot create a new account.');
+      return;
+    }
+
     this.isLogin = !this.isLogin;
     this.loginForm.reset();
     this.registerForm.reset();
@@ -273,6 +304,12 @@ export class AuthComponent implements OnDestroy {
         if (users.length > 0) {
 
           const user = users[0];
+
+          // Deactivated accounts are blocked by the admin
+          if (user.isActive === false) {
+            this.snackbar.error('Your account has been deactivated by the admin.');
+            return;
+          }
 
           this.authService.setCurrentUser(user);
           this.snackbar.success(`Welcome back, ${user.name}!`);
@@ -445,6 +482,7 @@ export class AuthComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.timerSubscription?.unsubscribe();
+    this.adminCheckSubscription?.unsubscribe();
   }
 }
 

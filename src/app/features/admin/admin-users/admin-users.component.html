@@ -1,4 +1,3 @@
-
 <div>
 
   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -15,6 +14,7 @@
     <input
       type="text"
       [(ngModel)]="searchTerm"
+      (ngModelChange)="page = 1"
       placeholder="Search by name or email..."
       class="w-full max-w-sm rounded-full border border-[#D9D3C9] bg-white px-4 py-2.5 text-sm outline-none focus:border-[#8B6F52]"
     >
@@ -39,12 +39,13 @@
             <th class="px-5 py-3 font-medium">Name</th>
             <th class="px-5 py-3 font-medium">Email</th>
             <th class="px-5 py-3 font-medium">Role</th>
+            <th class="px-5 py-3 font-medium">Status</th>
             <th class="px-5 py-3 font-medium text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
-          @for (user of filteredUsers; track user.id) {
-            <tr class="border-b border-[#F1EEE8] last:border-0">
+          @for (user of pagedUsers; track user.id) {
+            <tr class="border-b border-[#F1EEE8] last:border-0" [class.opacity-60]="!isActive(user)">
               <td class="px-5 py-3">
                 <div class="flex items-center gap-3">
                   <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#292723] text-xs font-semibold text-white">
@@ -66,11 +67,27 @@
                   <span class="rounded-full bg-[#F1EEE8] px-2.5 py-1 text-xs font-medium text-[#716C64]">User</span>
                 }
               </td>
+              <td class="px-5 py-3">
+                @if (isActive(user)) {
+                  <span class="rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">Active</span>
+                } @else {
+                  <span class="rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">Deactivated</span>
+                }
+              </td>
               <td class="px-5 py-3 text-right">
+                <a [routerLink]="['/admin/users', user.id]" class="mr-4 text-xs font-medium text-[#8B6F52] hover:underline">
+                  View
+                </a>
                 @if (user.id !== currentUserId) {
-                  <button type="button" (click)="askDelete(user)" class="text-xs font-medium text-[#9A5B52] hover:underline">
-                    Delete
-                  </button>
+                  @if (isActive(user)) {
+                    <button type="button" (click)="askDeactivate(user)" class="text-xs font-medium text-[#9A5B52] hover:underline">
+                      Deactivate
+                    </button>
+                  } @else {
+                    <button type="button" (click)="activate(user)" class="text-xs font-medium text-green-700 hover:underline">
+                      Activate
+                    </button>
+                  }
                 } @else {
                   <span class="text-xs text-[#A09A91]">—</span>
                 }
@@ -81,16 +98,25 @@
       </table>
     </div>
 
+    <app-pagination
+      [total]="filteredUsers.length"
+      [pageSize]="pageSize"
+      [page]="currentPage"
+      label="users"
+      (pageChange)="goToPage($event)"
+    />
+
   }
 
 </div>
 
 
-@if (userPendingDelete) {
+@if (userPendingDeactivate) {
   <app-confirm-dialog
-    title="Delete this account?"
-[message]="'This will permanently delete the account for ' + userPendingDelete.name + ' (' + userPendingDelete.email + ').'"    confirmLabel="Delete"
-    (confirmed)="confirmDelete()"
-    (cancelled)="cancelDelete()"
+    title="Deactivate this account?"
+    [message]="userPendingDeactivate.name + ' (' + userPendingDeactivate.email + ') will not be able to log in until you activate the account again. Their data is kept.'"
+    confirmLabel="Deactivate"
+    (confirmed)="confirmDeactivate()"
+    (cancelled)="cancelDeactivate()"
   />
 }

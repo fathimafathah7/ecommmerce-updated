@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
@@ -12,8 +12,17 @@ export class ProductService {
 
   private apiUrl = "http://localhost:3000/products";
 
+  /**
+   * All products, newest first. Products without a createdAt (the ones that
+   * existed before) keep their original order after the new ones.
+   */
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(this.apiUrl).pipe(
+      map(products => {
+        const time = (p: Product) => p.createdAt ? new Date(p.createdAt).getTime() : 0;
+        return [...products].sort((a, b) => time(b) - time(a));
+      })
+    );
   }
 
   getProductById(id: number | string): Observable<Product> {

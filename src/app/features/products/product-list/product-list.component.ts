@@ -59,6 +59,13 @@ export class ProductListComponent implements OnInit {
       const term = params.get('search') ?? '';
       this.searchTerm = term;
       this.searchSubject.next(term.trim().toLowerCase());
+      const category = params.get('category');
+
+       if (category !== null) {
+        this.selectedCategory = category;
+        this.categorySubject.next(category);
+        this.goToPage(1);
+      }
     });
 
     this.categories$ = this.products$.pipe(
@@ -141,10 +148,16 @@ export class ProductListComponent implements OnInit {
     this.goToPage(1);
   }
 
-  onCategoryChange(category: string) {
+onCategoryChange(category: string) {
     this.selectedCategory = category;
     this.categorySubject.next(category);
     this.goToPage(1);
+ 
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { category: category || null },
+      queryParamsHandling: 'merge'
+    });
   }
 
   clearFilters() {

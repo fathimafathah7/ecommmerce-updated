@@ -95,6 +95,7 @@
                   <div
                     class="h-32 w-full shrink-0 overflow-hidden
                            rounded-xl bg-[#F5EFE6] sm:w-32"
+                           (click)="viewProduct(item.product.id)"
                   >
                     <img
                       [src]="item.product.images[0]"

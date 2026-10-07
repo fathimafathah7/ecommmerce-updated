@@ -1,0 +1,107 @@
+<div class="fixed inset-0 z-[70] flex items-center justify-center px-4" role="dialog" aria-modal="true">
+
+  <div class="absolute inset-0 bg-[#292723]/50 backdrop-blur-sm" (click)="cancel()"></div>
+
+  <div class="relative w-full max-w-sm rounded-3xl border border-[#E5E0D7] bg-white p-6 shadow-[0_25px_80px_rgba(41,39,35,0.16)]">
+
+    <h3 class="text-lg font-semibold text-[#292723]">{{ title() }}</h3>
+
+    <p class="mt-1 text-sm text-[#817B72]">
+      Drag to move, use the slider to zoom.
+      @if (subtitle()) {
+        <span class="font-medium text-[#8B6F52]">{{ subtitle() }}</span>
+      }
+    </p>
+
+
+    @if (failed) {
+
+      <p class="mt-6 rounded-xl bg-[#FAF0EE] p-4 text-sm text-[#9A5B52]">
+        This image could not be opened. Please choose a different file.
+      </p>
+
+    } @else {
+
+      <!-- Crop frame -->
+
+      <div class="mt-5 flex justify-center">
+
+        <div
+          class="relative cursor-grab touch-none select-none overflow-hidden bg-[#F4F1EB] active:cursor-grabbing"
+          [class.rounded-full]="round()"
+          [class.rounded-xl]="!round()"
+          [style.width.px]="frameWidth"
+          [style.height.px]="frameHeight"
+          (pointerdown)="onPointerDown($event)"
+          (pointermove)="onPointerMove($event)"
+          (pointerup)="onPointerUp()"
+          (pointercancel)="onPointerUp()"
+          (wheel)="onWheel($event)"
+        >
+
+          @if (ready) {
+            <img
+              [src]="imageUrl"
+              alt="Image to crop"
+              draggable="false"
+              class="pointer-events-none absolute max-w-none"
+              [style.width.px]="displayWidth"
+              [style.height.px]="displayHeight"
+              [style.left.px]="posX"
+              [style.top.px]="posY"
+            >
+          }
+
+          <!-- Frame border -->
+          <div
+            class="pointer-events-none absolute inset-0 border-2 border-white/90 shadow-[inset_0_0_0_1px_rgba(41,39,35,0.25)]"
+            [class.rounded-full]="round()"
+            [class.rounded-xl]="!round()"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Zoom -->
+
+      <div class="mt-5 flex items-center gap-3">
+        <span class="text-xs text-[#817B72]">−</span>
+        <input
+          type="range"
+          min="1"
+          [max]="maxZoom"
+          step="0.01"
+          [value]="zoom"
+          (input)="onZoomInput($event)"
+          class="h-1.5 flex-1 cursor-pointer accent-[#8B6F52]"
+          aria-label="Zoom"
+        >
+        <span class="text-xs text-[#817B72]">+</span>
+        <button type="button" (click)="reset()"
+          class="text-xs font-medium text-[#8B6F52] hover:underline">
+          Reset
+        </button>
+      </div>
+
+    }
+
+
+    <div class="mt-7 flex justify-end gap-3">
+
+      <button type="button" (click)="cancel()"
+        class="rounded-full border border-[#D9D3C9] px-5 py-2.5 text-sm font-medium text-[#5F5A52] transition hover:bg-[#F7F5F0]">
+        Cancel
+      </button>
+
+      <button type="button" (click)="confirm()" [disabled]="!ready || failed"
+        class="rounded-full bg-[#292723] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#8B6F52] disabled:cursor-not-allowed disabled:opacity-50">
+        Crop &amp; Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

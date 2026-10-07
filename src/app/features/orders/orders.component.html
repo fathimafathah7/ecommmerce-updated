@@ -161,7 +161,7 @@
                 <p
                   class="font-semibold text-[#2F2724]"
                 >
-                  Order #{{ order.id }}
+                  Order #{{ order.orderNumber ?? order.id?.toString()?.slice(-6) }}
                 </p>
 
                 <p
@@ -387,6 +387,81 @@
                       {{ paymentLabel(order.paymentMethod) }}
                     </p>
 
+                    <!-- Cancel / return -->
+
+                    <div class="mt-6 border-t border-[#DCC8B8] pt-5">
+
+                      @if (canCancel(order)) {
+
+                        <p class="mb-3 text-xs text-[#8A7D72]">
+                          You can cancel this order until it is shipped.
+                        </p>
+
+                        <button
+                          type="button"
+                          (click)="askCancel(order)"
+                          class="rounded-full border border-[#C6284F] px-5 py-2 text-sm font-medium text-[#C6284F] transition hover:bg-[#C6284F] hover:text-white"
+                        >
+                          Cancel order
+                        </button>
+
+                      } @else if (canReturn(order)) {
+
+                        <p class="mb-3 text-xs text-[#8A7D72]">
+                          Not happy with your order? You can request a return.
+                        </p>
+
+                        <button
+                          type="button"
+                          (click)="askReturn(order)"
+                          class="rounded-full border border-[#6B574D] px-5 py-2 text-sm font-medium text-[#6B574D] transition hover:bg-[#6B574D] hover:text-white"
+                        >
+                          Return order
+                        </button>
+
+                      } @else if (order.status === 'cancelled') {
+
+                        <p class="text-sm text-[#6B625D]">
+                          <span class="font-semibold text-[#2F2724]">Order cancelled.</span>
+                          @if (order.cancelReason) {
+                            Reason: {{ order.cancelReason }}
+                          }
+                        </p>
+
+                      } @else if (order.status === 'return requested') {
+
+                        <p class="text-sm text-[#6B625D]">
+                          <span class="font-semibold text-[#2F2724]">Return requested.</span>
+                          We will update this order once the item reaches us.
+                          @if (order.returnReason) {
+                            <br>Reason: {{ order.returnReason }}
+                          }
+                        </p>
+
+                      } @else if (order.status === 'returned') {
+
+                        <p class="text-sm text-[#6B625D]">
+                          <span class="font-semibold text-[#2F2724]">Item received.</span>
+                          Your refund will be processed shortly.
+                        </p>
+
+                      } @else if (order.status === 'refunded') {
+
+                        <p class="text-sm text-[#6B625D]">
+                          <span class="font-semibold text-[#2F2724]">Refund completed.</span>
+                          The amount of {{ order.total | currency:'INR':'symbol':'1.0-0' }} has been refunded.
+                        </p>
+
+                      } @else {
+
+                        <p class="text-xs text-[#8A7D72]">
+                          Cancelling is no longer possible once an order is shipped.
+                        </p>
+
+                      }
+
+                    </div>
+
                   </div>
 
                 </div>
@@ -406,5 +481,29 @@
 
 
   </div>
+
+
+@if (orderToCancel) {
+  <app-reason-dialog
+    title="Cancel this order?"
+    [message]="'Order #' + (orderToCancel.orderNumber ?? orderToCancel.id) + ' will be cancelled. Please tell us why.'"
+    [reasons]="cancelReasons"
+    confirmLabel="Cancel order"
+    cancelLabel="Keep order"
+    (confirmed)="confirmCancel($event)"
+    (cancelled)="orderToCancel = null"
+  />
+}
+
+@if (orderToReturn) {
+  <app-reason-dialog
+    title="Return this order?"
+    [message]="'Why do you want to return order #' + (orderToReturn.orderNumber ?? orderToReturn.id) + '?'"
+    [reasons]="returnReasons"
+    confirmLabel="Request return"
+    (confirmed)="confirmReturn($event)"
+    (cancelled)="orderToReturn = null"
+  />
+}
 
 </section>
