@@ -43,7 +43,7 @@
 
       <button
         type="button"
-        (click)="logout()"
+        (click)="askLogout()"
         class="mt-1 flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium
                text-[#9A5B52] transition hover:bg-[#FBF4F2]"
       >
@@ -111,3 +111,12 @@
   </div>
 
 </div>
+@if (logoutConfirm) {
+  <app-confirm-dialog
+    title="Do you want to logout?"
+    message="You will need to sign in again to access the admin side. "
+    confirmLabel="Logout"
+    (cancelled)="cancelLogout()"
+    (confirmed)="logout()"
+  />
+}

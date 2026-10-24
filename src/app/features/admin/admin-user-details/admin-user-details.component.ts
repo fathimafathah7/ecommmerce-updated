@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, forkJoin, of } from 'rxjs';
 
 import { User } from '../../../core/models/user.model';
-import { Order } from '../../../core/models/order.model';
+import { Order,orderNetTotal } from '../../../core/models/order.model';
 import { Address } from '../../../core/models/address.model';
 import { CartItem } from '../../../core/models/cart.model';
 import { WishlistItem } from '../../../core/models/wishlist.model';
@@ -75,7 +75,6 @@ export class AdminUserDetailsComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        // The user itself could not be loaded (deleted or wrong id)
         this.user = null;
         this.loading = false;
         this.notFound = true;
@@ -87,7 +86,7 @@ export class AdminUserDetailsComponent implements OnInit {
   get totalSpent(): number {
     return this.orders
         .filter(order => order.status !== 'cancelled' && order.status !== 'refunded')
-      .reduce((sum, order) => sum + order.total, 0);
+      .reduce((sum, order) => sum + orderNetTotal(order), 0);
   }
 
   paymentLabel(method: Order['paymentMethod']): string {

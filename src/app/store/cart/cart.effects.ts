@@ -16,7 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
 import {loadCart, loadCartSuccess,addToCart,addToCartSuccess, buyNow,cartNoop,
   increaseQuantity,decreaseQuantity,removeFromCart,
   updateQuantitySuccess,removeFromCartSuccess} from './cart.action';
-const MAX_CART_PRODUCT=8;
+const MAX_CART_PRODUCT=3;
 
 @Injectable()
 export class CartEffects {
@@ -97,7 +97,7 @@ export class CartEffects {
             }
 
             if(items.length >= MAX_CART_PRODUCT){
-              this.snackbar.warning(`Your cart is full. Remove something first.`)
+              this.snackbar.warning(`Your cart is full(max-3 product). Remove something first.`)
               return [cartNoop()]
             }
 

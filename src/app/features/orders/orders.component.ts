@@ -3,7 +3,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { OrderService } from '../../core/services/order.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
-import { Order } from '../../core/models/order.model';
+import { Order, OrderItem, itemStatusOf, orderNetTotal, removedAmount } from '../../core/models/order.model';
 import { ReasonDialogComponent } from '../../shared/components/reason-dialog/reason-dialog.component';
 
 
@@ -26,6 +26,10 @@ export class OrdersComponent implements OnInit {
   // Order waiting for the customer to pick a cancel / return reason
   orderToCancel: Order | null = null;
   orderToReturn: Order | null = null;
+
+  // A single product the customer wants to cancel / return
+  itemToCancel: { order: Order; index: number } | null = null;
+  itemToReturn: { order: Order; index: number } | null = null;
 
   readonly cancelReasons = [
     'Ordered by mistake',
@@ -127,6 +131,91 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  // ---------- Single products ----------
+
+  itemStatus(order: Order, item: OrderItem) {
+    return itemStatusOf(order, item);
+  }
+
+  netTotal(order: Order): number {
+    return orderNetTotal(order);
+  }
+
+  removed(order: Order): number {
+    return removedAmount(order);
+  }
+
+  /** Per-product buttons are only useful when the order has more than one product. */
+  canCancelItem(order: Order, item: OrderItem): boolean {
+    return order.items.length > 1 && this.canCancel(order) && itemStatusOf(order, item) === 'active';
+  }
+
+  canReturnItem(order: Order, item: OrderItem): boolean {
+    return order.items.length > 1 && this.canReturn(order) && itemStatusOf(order, item) === 'active';
+  }
+
+  askCancelItem(order: Order, index: number) {
+    this.itemToCancel = { order, index };
+  }
+
+  askReturnItem(order: Order, index: number) {
+    this.itemToReturn = { order, index };
+  }
+
+  itemName(target: { order: Order; index: number } | null): string {
+    return target ? target.order.items[target.index].product.name : '';
+  }
+
+  confirmCancelItem(reason: string) {
+
+    const target = this.itemToCancel;
+    this.itemToCancel = null;
+
+    if (!target?.order.id) {
+      return;
+    }
+
+    this.orderService.cancelItem(target.order.id, target.index, reason).subscribe({
+      next: updated => {
+        this.replaceOrder(updated);
+        this.snackbar.success('The item has been cancelled.');
+      },
+      error: err => {
+        this.snackbar.error(
+          err?.message === 'NOT_CANCELLABLE'
+            ? 'This item can no longer be cancelled - the order has already been shipped.'
+            : 'Could not cancel the item. Please try again.'
+        );
+        this.loadOrders(false);
+      }
+    });
+  }
+
+  confirmReturnItem(reason: string) {
+
+    const target = this.itemToReturn;
+    this.itemToReturn = null;
+
+    if (!target?.order.id) {
+      return;
+    }
+
+    this.orderService.returnItem(target.order.id, target.index, reason).subscribe({
+      next: updated => {
+        this.replaceOrder(updated);
+        this.snackbar.success('Return requested for this item.');
+      },
+      error: err => {
+        this.snackbar.error(
+          err?.message === 'NOT_RETURNABLE'
+            ? 'This item is not eligible for a return.'
+            : 'Could not request the return. Please try again.'
+        );
+        this.loadOrders(false);
+      }
+    });
+  }
+
   private replaceOrder(updated: Order) {
     this.orders = this.orders.map(o => o.id === updated.id ? updated : o);
   }
@@ -144,7 +233,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  statusBadgeClass(status: Order['status']): string {
+  statusBadgeClass(status: string): string {
   switch (status) {
   case 'delivered': return 'bg-green-100 text-green-700';
   case 'shipped': return 'bg-blue-100 text-blue-700';

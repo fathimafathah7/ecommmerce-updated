@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../../core/services/order.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { Order } from '../../../core/models/order.model';
-
+import { Order, OrderItem, itemStatusOf } from '../../../core/models/order.model';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { select } from '@ngrx/store';
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, FormsModule, PaginationComponent],
+  imports: [CurrencyPipe, DatePipe, FormsModule, PaginationComponent,ConfirmDialogComponent],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.css'
 })
@@ -22,6 +23,7 @@ export class AdminOrdersComponent implements OnInit {
   loading = true;
   expandedOrderId: number | string | null = null;
   statusFilter = '';
+  pendingChange:{order:Order,status:Order['status'],select:HTMLSelectElement } | null= null;
 
   statusOptions: Order['status'][] = [
     'placed', 'processing', 'shipped', 'delivered', 'cancelled',
@@ -69,7 +71,14 @@ export class AdminOrdersComponent implements OnInit {
     if (!this.statusFilter) {
       return this.orders;
     }
-    return this.orders.filter(o => o.status === this.statusFilter);
+    const filter = this.statusFilter;
+    const itemLevel = ['cancelled', 'return requested', 'returned', 'refunded'].includes(filter);
+
+    // A status filter also finds orders where only SOME products are in that status
+    return this.orders.filter(o =>
+      o.status === filter ||
+      (itemLevel && o.items.some(item => itemStatusOf(o, item) === filter))
+    );
   }
 
   toggleExpand(order: Order) {
@@ -86,8 +95,9 @@ export class AdminOrdersComponent implements OnInit {
     'shipped': ['delivered'],
     'delivered': [],
     'cancelled': [],
-    'return requested': ['returned'],
-    'returned': ['refunded'],
+    // Returns are handled product by product in the Items list
+    'return requested': [],
+    'returned': [],
     'refunded': []
   };
 
@@ -109,8 +119,8 @@ export class AdminOrdersComponent implements OnInit {
       case 'shipped': return 'Next step: delivered. A shipped order can no longer be cancelled.';
       case 'delivered': return 'Delivered. The customer can still request a return.';
       case 'cancelled': return 'This order was cancelled and can no longer be changed.';
-      case 'return requested': return 'Customer requested a return. Next step: mark it as returned once you receive the item.';
-      case 'returned': return 'Item received. Next step: refunded, after the money is sent back.';
+      case 'return requested': return 'Return requested. Mark each product as returned, then refunded, in the Items list.';
+      case 'returned': return 'Items received. Mark each product as refunded in the Items list.';
       case 'refunded': return 'Refund completed - this order is closed.';
       default: return '';
     }
@@ -141,6 +151,42 @@ export class AdminOrdersComponent implements OnInit {
     });
   }
 
+  // ---------- Single products ----------
+
+  itemStatus(order: Order, item: OrderItem) {
+    return itemStatusOf(order, item);
+  }
+
+  /** The next step for a returned product, or null when there is none. */
+  nextItemStep(order: Order, item: OrderItem): 'returned' | 'refunded' | null {
+    const status = itemStatusOf(order, item);
+
+    if (status === 'return requested') {
+      return 'returned';
+    }
+
+    return status === 'returned' ? 'refunded' : null;
+  }
+
+  advanceItem(order: Order, index: number) {
+
+    const next = this.nextItemStep(order, order.items[index]);
+
+    if (!next || order.id === undefined) {
+      return;
+    }
+
+    this.orderService.updateItemStatus(order.id, index, next).subscribe({
+      next: updated => {
+        this.orders = this.orders.map(o => o.id === updated.id ? updated : o);
+        this.snackbar.success(`Item marked as ${next}.`);
+      },
+      error: () => {
+        this.snackbar.error('Could not update this item. Please refresh and try again.');
+      }
+    });
+  }
+
   paymentLabel(method: Order['paymentMethod']): string {
     switch (method) {
       case 'cod': return 'Cash on Delivery';
@@ -149,8 +195,22 @@ export class AdminOrdersComponent implements OnInit {
       default: return method;
     }
   }
-
-  statusBadgeClass(status: Order['status']): string {
+  askConfirm(order:Order,status:Order['status'],select:HTMLSelectElement){
+    this.pendingChange={order,status,select}
+  }
+  confirmChange(){
+    if(!this.pendingChange)return;
+    const { order, status } = this.pendingChange;
+  this.pendingChange = null;  
+  this.updateStatus(order, status);
+  }
+  cancelChange(){
+    if(!this.pendingChange)return;
+    const {order,select}= this.pendingChange;
+    select.value=order.status;
+    this.pendingChange=null;
+  }
+  statusBadgeClass(status: string): string {
     switch (status) {
       case 'delivered': return 'bg-green-50 text-green-700';
       case 'shipped': return 'bg-blue-50 text-blue-700';

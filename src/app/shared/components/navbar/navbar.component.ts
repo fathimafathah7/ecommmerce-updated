@@ -4,15 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { selectCartItemCount } from '../../../store/cart/cart.selector';
 import { selectWishlistCount } from '../../../store/wishlist/wishlist.selector';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AsyncPipe, FormsModule],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, FormsModule,ConfirmDialogComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -28,6 +30,7 @@ export class NavbarComponent {
   cartCount$ = this.store.select(selectCartItemCount);
   wishlistCount$ = this.store.select(selectWishlistCount);
 
+  logoutConfirm=false
   searchTerm = '';
   accountMenuOpen = false;
   mobileMenuOpen = false;
@@ -70,8 +73,15 @@ export class NavbarComponent {
 
     this.mobileMenuOpen = false;
   }
+  askLogout(){
+    this.logoutConfirm=true
+  }
+  cancelLogout(){
+    this.logoutConfirm=false
+  }
 
   logout() {
+    this.logoutConfirm=false
     const name = this.authService.getCurrentUser()?.name;
     this.authService.logout();
     this.snackbar.info(name ? `Goodbye, ${name}!` : 'You have been logged out.');

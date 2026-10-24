@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, map, switchMap, throwError } from 'rxjs';
-import { Order } from '../models/order.model';
+import { ItemStatus, Order, deriveOrderStatus, itemStatusOf } from '../models/order.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -46,39 +46,107 @@ export class OrderService {
     return this.http.get<Order>(`${this.apiUrl}/${id}`);
   }
 
-  /**
-   * Customer cancels an order. The latest status is checked first, so an order
-   * that the admin has just shipped can no longer be cancelled.
-   */
+  // ---------- Cancel / return (whole order or single products) ----------
+
   cancelOrder(id: number | string, reason: string): Observable<Order> {
+    return this.changeItems(id, null, 'cancel', reason);
+  }
+
+  cancelItem(id: number | string, itemIndex: number, reason: string): Observable<Order> {
+    return this.changeItems(id, [itemIndex], 'cancel', reason);
+  }
+
+  requestReturn(id: number | string, reason: string): Observable<Order> {
+    return this.changeItems(id, null, 'return', reason);
+  }
+
+  returnItem(id: number | string, itemIndex: number, reason: string): Observable<Order> {
+    return this.changeItems(id, [itemIndex], 'return', reason);
+  }
+
+  /**
+   * Cancels or returns the chosen products (null = every product still active).
+   * The latest order is fetched first, so an order the admin has just shipped
+   * can no longer be cancelled.
+   */
+  private changeItems(
+    id: number | string,
+    indexes: number[] | null,
+    action: 'cancel' | 'return',
+    reason: string
+  ): Observable<Order> {
+
+    const errorCode = action === 'cancel' ? 'NOT_CANCELLABLE' : 'NOT_RETURNABLE';
+    const allowedOrderStatus = action === 'cancel' ? ['placed', 'processing'] : ['delivered'];
+
     return this.getOrderById(id).pipe(
       switchMap(order => {
-        if (order.status !== 'placed' && order.status !== 'processing') {
-          return throwError(() => new Error('NOT_CANCELLABLE'));
+
+        if (!allowedOrderStatus.includes(order.status)) {
+          return throwError(() => new Error(errorCode));
         }
 
-        return this.http.patch<Order>(`${this.apiUrl}/${id}`, {
-          status: 'cancelled',
-          cancelReason: reason,
-          cancelledAt: new Date().toISOString()
-        });
+        // Write every item's status down explicitly (older orders only had an order status)
+        const items = order.items.map(item => ({ ...item, itemStatus: itemStatusOf(order, item) }));
+
+        const targets = (indexes ?? items.map((_, i) => i))
+          .filter(i => items[i]?.itemStatus === 'active');
+
+        if (targets.length === 0) {
+          return throwError(() => new Error(errorCode));
+        }
+
+        const now = new Date().toISOString();
+        const newStatus: ItemStatus = action === 'cancel' ? 'cancelled' : 'return requested';
+
+        const updatedItems = items.map((item, i) =>
+          targets.includes(i)
+            ? { ...item, itemStatus: newStatus, itemReason: reason, itemUpdatedAt: now }
+            : item
+        );
+
+        const status = deriveOrderStatus({ ...order, items: updatedItems });
+
+        const patch: Partial<Order> = { items: updatedItems, status };
+
+        if (status === 'cancelled') {
+          patch.cancelReason = reason;
+          patch.cancelledAt = now;
+        }
+
+        if (status === 'return requested') {
+          patch.returnReason = reason;
+          patch.returnRequestedAt = now;
+        }
+
+        return this.http.patch<Order>(`${this.apiUrl}/${id}`, patch);
       })
     );
   }
 
-  /** Customer asks to return a delivered order. */
-  requestReturn(id: number | string, reason: string): Observable<Order> {
+  /** Admin: move ONE returned product forward (return requested -> returned -> refunded). */
+  updateItemStatus(id: number | string, itemIndex: number, next: 'returned' | 'refunded'): Observable<Order> {
+
+    const expected: ItemStatus = next === 'returned' ? 'return requested' : 'returned';
+
     return this.getOrderById(id).pipe(
       switchMap(order => {
-        if (order.status !== 'delivered') {
-          return throwError(() => new Error('NOT_RETURNABLE'));
+
+        const items = order.items.map(item => ({ ...item, itemStatus: itemStatusOf(order, item) }));
+
+        if (items[itemIndex]?.itemStatus !== expected) {
+          return throwError(() => new Error('INVALID_STATE'));
         }
 
-        return this.http.patch<Order>(`${this.apiUrl}/${id}`, {
-          status: 'return requested',
-          returnReason: reason,
-          returnRequestedAt: new Date().toISOString()
-        });
+        const updatedItems = items.map((item, i) =>
+          i === itemIndex
+            ? { ...item, itemStatus: next as ItemStatus, itemUpdatedAt: new Date().toISOString() }
+            : item
+        );
+
+        const status = deriveOrderStatus({ ...order, items: updatedItems });
+
+        return this.http.patch<Order>(`${this.apiUrl}/${id}`, { items: updatedItems, status });
       })
     );
   }

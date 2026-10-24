@@ -296,7 +296,7 @@
                 <!-- Logout -->
                 <button
                   type="button"
-                  (click)="logout()"
+                  (click)="askLogout()"
                   class="w-full px-5 py-3 text-left
                          text-sm text-[#6B574D]
                          transition-colors
@@ -432,3 +432,12 @@
   </div>
 
 </nav>
+@if (logoutConfirm) {
+  <app-confirm-dialog
+    title="Do you want to logout?"
+    message="You will need to sign in again. "
+    confirmLabel="Logout"
+    (cancelled)="cancelLogout()"
+    (confirmed)="logout()"
+  />
+}

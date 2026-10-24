@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   private addressService = inject(AddressService);
   private orderService = inject(OrderService);
   private snackbar = inject(SnackbarService);
-
+private maxAddress=2
   user: User | null = null;
    // --- Profile photo upload ---
   @ViewChild('photoInput') photoInput?: ElementRef<HTMLInputElement>;
@@ -61,6 +61,7 @@ export class ProfileComponent implements OnInit {
       next: addresses => {
         this.addresses = addresses;
         this.loadingAddresses = false;
+        
       },
       error: () => {
         this.loadingAddresses = false;
@@ -85,6 +86,7 @@ export class ProfileComponent implements OnInit {
   openAddAddress() {
     this.editingAddress = null;
     this.showAddressForm = true;
+    
   }
 
   openEditAddress(address: Address) {
@@ -108,15 +110,19 @@ export class ProfileComponent implements OnInit {
 
         if (address.id) {
           this.addresses = this.addresses.map(a => a.id === saved.id ? saved : a);
-        } else {
+        } else  {
           this.addresses = [...this.addresses, saved];
         }
 
         this.snackbar.success(address.id ? 'Address updated.' : 'Address added.');
         this.closeAddressForm();
+         {
+
+        }
       },
       error: () => this.snackbar.error('Could not save this address. Please try again.')
     });
+    
   }
 
   askDeleteAddress(address: Address) {

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 /**
  * Shell for the whole admin area: a fixed sidebar + top bar wrapping a
  * <router-outlet> for the admin child routes. Deliberately has no
@@ -13,7 +13,7 @@ import { SnackbarService } from '../../../core/services/snackbar.service';
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive,ConfirmDialogComponent],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css'
 })
@@ -23,6 +23,7 @@ export class AdminLayoutComponent {
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
 
+  logoutConfirm=false
   adminName = this.authService.getCurrentUser()?.name ?? 'Admin';
 
   navLinks = [
@@ -31,10 +32,15 @@ export class AdminLayoutComponent {
     { path: '/admin/orders', label: 'Orders' },
     { path: '/admin/users', label: 'Users' }
   ];
-
- 
+  askLogout(){
+    this.logoutConfirm=true
+  }
+ cancelLogout(){
+  this.logoutConfirm=false
+ }
 
   logout() {
+    this.logoutConfirm=false;
     this.authService.logout();
     this.snackbar.success('Logged out successfully.');
     this.router.navigate(['/auth'], { replaceUrl:true});

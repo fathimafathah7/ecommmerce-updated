@@ -13,7 +13,7 @@ import { SnackbarService } from '../../core/services/snackbar.service';
 import { EmailOtpService } from '../../core/services/email-otp.service';
 import { User } from '../../core/models/user.model';
 
-const OTP_DURATION_SECONDS = 180; 
+const OTP_DURATION_SECONDS = 180; // 3 minutes
 
 @Component({
   selector: 'app-auth',
@@ -49,9 +49,11 @@ export class AuthComponent implements OnDestroy {
   }
 
   showForgotPassword = false;
-  forgotStep: 'request' | 'reset' = 'request';
+  forgotStep: 'request' | 'otp' | 'reset' = 'request';
   forgotEmailNotFound = false;
   private matchedUserId: number | string | null = null;
+  private forgotUser: User | null = null;   // account whose email the code was sent to
+  private otpVerified = false;              // true once the emailed code was entered correctly
   emailTaken = false;
 
   // True when the email typed on the login form belongs to an admin account.
@@ -81,9 +83,10 @@ export class AuthComponent implements OnDestroy {
   private emailOtpService = inject(EmailOtpService);
 
   passwordPattern =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  
+  // Letters and spaces only (so names like "Fathima Fathah" are allowed,
+  // but "Fathima123" or "F@thima" are not).
   namePattern = /^[A-Za-z\s]+$/;
 
   loginForm = new FormGroup({
@@ -124,7 +127,9 @@ export class AuthComponent implements OnDestroy {
   forgotForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
-      Validators.email
+      Validators.email,
+      // Validators.email accepts things like "name@domain" - also require ".com", ".in" etc.
+      Validators.pattern(/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/)
     ])
   });
 
@@ -181,6 +186,9 @@ export class AuthComponent implements OnDestroy {
     this.forgotStep = 'request';
     this.forgotEmailNotFound = false;
     this.matchedUserId = null;
+    this.forgotUser = null;
+    this.otpVerified = false;
+    this.resetOtpState();
     this.forgotForm.reset();
     this.resetForm.reset();
     this.showResetPassword = false;
@@ -196,6 +204,7 @@ export class AuthComponent implements OnDestroy {
     this.resetForgotPasswordState();
   }
 
+  // --- Forgot password, step 1: find the account, then email a verification code ---
   submitForgotEmail() {
 
     if (this.forgotForm.invalid) {
@@ -203,24 +212,112 @@ export class AuthComponent implements OnDestroy {
       return;
     }
 
+    if (this.sendingOtp) {
+      return;
+    }
+
     this.forgotEmailNotFound = false;
 
-    const email = this.forgotForm.controls.email.value!;
+    const email = this.forgotForm.controls.email.value!.trim();
+
+    this.sendingOtp = true;
 
     this.authService.findByEmail(email).subscribe({
       next: users => {
 
         if (users.length === 0) {
+          this.sendingOtp = false;
           this.forgotEmailNotFound = true;
           return;
         }
-        this.matchedUserId = users[0].id!;
-        this.forgotStep = 'reset';
+
+        const user = users[0];
+
+        if (user.isActive === false) {
+          this.sendingOtp = false;
+          this.snackbar.error('This account has been deactivated. Please contact the store admin.');
+          return;
+        }
+
+        this.matchedUserId = user.id!;
+        this.forgotUser = user;
+        this.sendForgotOtp(user);
       },
       error: () => {
+        this.sendingOtp = false;
         this.snackbar.error('Something went wrong. Please try again.');
       }
     });
+  }
+
+  private sendForgotOtp(user: User) {
+
+    const otp = this.emailOtpService.generateOtp();
+
+    this.emailOtpService.sendOtp(user.email, user.name, otp).then(
+      () => {
+        this.generatedOtp = otp;
+        this.sendingOtp = false;
+        this.forgotStep = 'otp';
+        this.otpControl.reset();
+        this.otpError = '';
+        this.startOtpTimer();
+        this.snackbar.success(`A verification code was sent to ${user.email}.`);
+      },
+      () => {
+        this.sendingOtp = false;
+        this.snackbar.error('Could not send the verification email. Please try again.');
+      }
+    );
+  }
+
+  // --- Forgot password, step 2: check the code ---
+  verifyForgotOtp() {
+
+    if (this.otpControl.invalid) {
+      this.otpControl.markAsTouched();
+      return;
+    }
+
+    if (this.otpExpired) {
+      this.otpError = 'This code has expired. Please request a new one.';
+      return;
+    }
+
+    if (this.otpControl.value !== this.generatedOtp) {
+      this.otpError = 'Incorrect code. Please check and try again.';
+      return;
+    }
+
+    this.otpError = '';
+    this.otpVerified = true;
+    this.timerSubscription?.unsubscribe();
+    this.generatedOtp = null;
+    this.forgotStep = 'reset';
+  }
+
+  resendForgotOtp() {
+
+    if (!this.otpExpired || !this.forgotUser) {
+      return;
+    }
+
+    this.sendingOtp = true;
+    this.sendForgotOtp(this.forgotUser);
+  }
+
+  /** "Back" from the code screen to the email screen. */
+  backToForgotEmail() {
+    this.resetOtpState();
+    this.otpVerified = false;
+    this.matchedUserId = null;
+    this.forgotUser = null;
+    this.forgotStep = 'request';
+  }
+
+  /** Email the code was sent to (shown on the code screen). */
+  get forgotEmailDisplay(): string {
+    return this.forgotUser?.email ?? '';
   }
 
   showResetPasswordError(): boolean {
@@ -236,7 +333,13 @@ export class AuthComponent implements OnDestroy {
 
   submitNewPassword() {
 
-    if (this.resetForm.invalid || !this.matchedUserId) {
+    // The password can only be changed after the emailed code was verified
+    if (!this.otpVerified || !this.matchedUserId) {
+      this.forgotStep = 'request';
+      return;
+    }
+
+    if (this.resetForm.invalid) {
       this.resetForm.markAllAsTouched();
       return;
     }
@@ -307,7 +410,7 @@ export class AuthComponent implements OnDestroy {
 
           // Deactivated accounts are blocked by the admin
           if (user.isActive === false) {
-            this.snackbar.error('Your account has been deactivated by the admin.');
+            this.snackbar.error('Your account has been deactivated. Please contact the store admin.');
             return;
           }
 

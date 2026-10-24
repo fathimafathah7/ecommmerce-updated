@@ -7,7 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ProductService } from '../../../core/services/product.service';
 import { OrderService } from '../../../core/services/order.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Order } from '../../../core/models/order.model';
+import { Order,itemStatusOf,orderNetTotal } from '../../../core/models/order.model';
 
 type RevenuePeriod = 'week' | 'month' | 'year';
 
@@ -118,7 +118,7 @@ export class AdminDashboardComponent implements OnInit {
 
         this.totalRevenue = orders
           .filter(order => order.status !== 'cancelled' && order.status !== 'refunded')
-          .reduce((sum, order) => sum + order.total, 0);
+          .reduce((sum, order) => sum +  orderNetTotal(order), 0);
 
         this.recentOrders = orders.slice(0, 5);
 
@@ -170,7 +170,7 @@ export class AdminDashboardComponent implements OnInit {
     orders.forEach(order => {
       const key = new Date(order.createdAt).toDateString();
       if (revenueByDay.has(key)) {
-        revenueByDay.set(key, revenueByDay.get(key)! + order.total);
+        revenueByDay.set(key, revenueByDay.get(key)! +  orderNetTotal(order));
       }
     });
 
@@ -199,7 +199,7 @@ export class AdminDashboardComponent implements OnInit {
       const date = new Date(order.createdAt);
       const key = `${date.getFullYear()}-${date.getMonth()}`;
       if (revenueByMonth.has(key)) {
-        revenueByMonth.set(key, revenueByMonth.get(key)! + order.total);
+        revenueByMonth.set(key, revenueByMonth.get(key)! +  orderNetTotal(order));
       }
     });
 
@@ -227,13 +227,17 @@ export class AdminDashboardComponent implements OnInit {
 
   /** Sums order-item revenue per product category, across all non-cancelled orders. */
   private buildCategoryChart() {
-
+    
     const revenueByCategory = new Map<string, number>();
 
     this.allOrders
       .filter(order => order.status !== 'cancelled' && order.status !== 'refunded')
       .forEach(order => {
         order.items.forEach(item => {
+          const itemState = itemStatusOf(order, item);
+          if (itemState === 'cancelled' || itemState === 'refunded') {
+            return;
+          }
           const category = item.product.category;
           const revenue = item.product.price * item.quantity;
           revenueByCategory.set(category, (revenueByCategory.get(category) ?? 0) + revenue);

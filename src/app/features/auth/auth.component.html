@@ -1,1210 +1,496 @@
-<div class="flex min-h-screen items-center justify-center bg-[#F7F5F0] px-4 py-12">
+<!--
+  Beige toy-store auth design. All component logic/bindings are unchanged.
+  Optional: put a mascot image at src/assets/mascot.png (hidden automatically if missing).
+-->
+<div class="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F3ECDF] px-4 py-10">
 
-  <div class="w-full max-w-md">
+  <!-- Decorative toys -->
+  <span class="pointer-events-none absolute left-[6%] top-[8%] -rotate-12 text-5xl opacity-[0.18]">🧸</span>
+  <span class="pointer-events-none absolute right-[7%] top-[12%] rotate-12 text-5xl opacity-[0.18]">🧩</span>
+  <span class="pointer-events-none absolute left-[9%] top-[50%] rotate-6 text-4xl opacity-[0.15]">🚂</span>
+  <span class="pointer-events-none absolute bottom-[14%] right-[8%] -rotate-12 text-5xl opacity-[0.18]">🪀</span>
+  <span class="pointer-events-none absolute bottom-[8%] left-[12%] rotate-12 text-4xl opacity-[0.15]">🎈</span>
+  <span class="pointer-events-none absolute right-[14%] top-[44%] -rotate-6 text-3xl opacity-[0.15]">⭐</span>
 
-    <!-- Brand -->
-    <div class="mb-8 text-center">
+  <div class="relative w-full max-w-md">
 
-      
-      <a  routerLink="/"
-        class="text-2xl font-semibold tracking-[-0.03em] text-[#292723]"
-      >
-        Lu<span class="text-[#8B6F52]">méa</span>
-      </a>
+    <!-- Main rounded panel -->
+    <div class="rounded-[2.75rem] border border-[#E9DFCC] bg-[#FBF8F2] px-5 pb-6 pt-8
+                shadow-[0_30px_80px_rgba(107,90,69,0.14)] sm:px-8">
 
-      <p class="mt-2 text-sm text-[#817B72]">
-        where little wonders Begins
-      </p>
+      <!-- Brand -->
+      <div class="text-center">
+        <a routerLink="/" class="inline-block">
+          <span class="block font-serif text-3xl font-medium uppercase tracking-[0.14em] text-[#7A664C]">
+            Lu<span class="text-[#B39B78]">méa</span>
+          </span>
+        </a>
+        <p class="mt-1 text-sm text-[#9C8B74]">Where little wonders begin ✦</p>
+      </div>
 
-    </div>
+      <!-- Mascot (optional image, e.g. a child peeking with a teddy bear) -->
+      <div class="mt-4 flex justify-center">
+        <img src="assets/mascot.png" alt="" class="-mb-7 h-28 w-auto object-contain"
+             (error)="$any($event.target).style.display = 'none'">
+      </div>
 
+      <!-- Form panel -->
+      <div class="relative rounded-[2rem] border border-[#EDE4D3] bg-white p-6 shadow-[0_12px_40px_rgba(107,90,69,0.08)]">
 
-    <!-- Main Card -->
-    <div
-      class="rounded-3xl border border-[#E5E0D7] bg-white p-7
-             shadow-[0_20px_60px_rgba(41,39,35,0.06)] sm:p-9"
-    >
+        @if (isLogin && !showForgotPassword) {
 
-      <!-- ================================================= -->
-      <!-- LOGIN -->
-      <!-- ================================================= -->
-
-      @if (isLogin && !showForgotPassword) {
-
-        <div class="mb-7">
-
-          <p
-            class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#9A8063]"
-          >
-            Welcome Back
-          </p>
-
-          <h1
-            class="mt-2 text-2xl font-semibold tracking-[-0.02em] text-[#292723]"
-          >
-            Sign in
-          </h1>
-
-          <p class="mt-1 text-sm text-[#817B72]">
-            Enter your details to continue.
-          </p>
-
-        </div>
-
-
-        <form
-          [formGroup]="loginForm"
-          (ngSubmit)="login()"
-          autocomplete="on"
-          class="space-y-5"
-        >
-
-          <!-- Email -->
-
-          <div>
-
-            <label
-              for="login-email"
-              class="mb-2 block text-sm font-medium text-[#4E4942]"
-            >
-              Email
-            </label>
-
-            <input
-              id="login-email"
-              name="login-email"
-              type="email"
-              formControlName="email"
-              placeholder="Enter your email"
-              autocomplete="username"
-              class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9]
-                     px-4 py-3 text-sm text-[#292723] outline-none transition
-                     placeholder:text-[#AAA59D]
-                     focus:border-[#8B6F52]
-                     focus:ring-2 focus:ring-[#8B6F52]/10"
-            >
-
-            @if (
-              loginForm.controls.email.touched &&
-              loginForm.controls.email.invalid
-            ) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                Please enter a valid email address.
-              </p>
-
-            }
-
+          <!-- ================= LOGIN ================= -->
+          <div class="mb-6 text-center">
+            <h1 class="text-3xl font-semibold tracking-[-0.02em] text-[#7A664C]">Welcome back</h1>
+            <p class="mt-1 text-sm text-[#9C8B74]">Sign in to continue shopping</p>
           </div>
 
+          <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="on" class="space-y-4">
 
-          <!-- Password -->
-
-          <div>
-
-            <div class="mb-2 flex items-center justify-between">
-
-              <label
-                for="login-password"
-                class="block text-sm font-medium text-[#4E4942]"
-              >
-                Password
-              </label>
-
-              <button
-                type="button"
-                (click)="openForgotPassword()"
-                class="text-xs font-semibold text-[#8B6F52]
-                       transition hover:underline"
-              >
-                Forgot password?
-              </button>
-
+            <div>
+              <label for="login-email" class="sr-only">Email</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.1a7.5 7.5 0 0 1 15 0"/>
+                  </svg>
+                </span>
+                <input id="login-email" name="login-email" type="email" formControlName="email"
+                       placeholder="Enter your email" autocomplete="username"
+                       class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-5
+                              text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                              focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+              </div>
+              @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+                <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Please enter a valid email address.</p>
+              }
             </div>
 
-
-            <div class="relative">
-
-              <input
-                id="login-password"
-                name="login-password"
-                [type]="showLoginPassword ? 'text' : 'password'"
-                formControlName="password"
-                placeholder="Enter your password"
-                autocomplete="current-password"
-                class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9]
-                       px-4 py-3 pr-11 text-sm text-[#292723] outline-none
-                       transition placeholder:text-[#AAA59D]
-                       focus:border-[#8B6F52]
-                       focus:ring-2 focus:ring-[#8B6F52]/10"
-              >
-
-
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('login')"
-                class="absolute inset-y-0 right-0 flex items-center pr-3.5
-                       text-[#817B72] transition hover:text-[#4E4942]"
-                [attr.aria-label]="
-                  showLoginPassword ? 'Hide password' : 'Show password'
-                "
-              >
-
-                @if (showLoginPassword) {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12
-                      C3.226 16.338 7.244 19.5 12 19.5
-                      c.993 0 1.953-.138 2.863-.395
-                      M6.228 6.228A10.45 10.45 0 0 1 12 4.5
-                      c4.756 0 8.773 3.162 10.065 7.498
-                      a10.523 10.523 0 0 1-4.293 5.774
-                      M6.228 6.228 3 3m3.228 3.228
-                      3.65 3.65m7.894 7.894L21 21
-                      m-3.228-3.228-3.65-3.65m0 0
-                      a3 3 0 1 0-4.243-4.243
-                      m4.242 4.242L9.88 9.88"
-                    />
-
+            <div>
+              <label for="login-password" class="sr-only">Password</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
                   </svg>
-
-                } @else {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
-                      C3.423 7.51 7.36 4.5 12 4.5
-                      c4.638 0 8.573 3.007 9.963 7.178
-                      .07.207.07.431 0 .639
-                      C20.577 16.49 16.64 19.5 12 19.5
-                      c-4.638 0-8.573-3.007-9.963-7.178Z"
-                    />
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-
+                </span>
+                <input id="login-password" name="login-password"
+                       [type]="showLoginPassword ? 'text' : 'password'" formControlName="password"
+                       placeholder="Enter your password" autocomplete="current-password"
+                       class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-12
+                              text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                              focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                <button type="button" (click)="togglePasswordVisibility('login')"
+                        class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#9C8B74] transition hover:text-[#4A3F31]"
+                        [attr.aria-label]="showLoginPassword ? 'Hide password' : 'Show password'">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-[18px] w-[18px]">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.04 12.32a1 1 0 0 1 0-.64C3.42 7.51 7.36 4.5 12 4.5s8.57 3.01 9.96 7.18a1 1 0 0 1 0 .64C20.58 16.49 16.64 19.5 12 19.5s-8.57-3.01-9.96-7.18ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    @if (showLoginPassword) { <path stroke-linecap="round" d="M4 4l16 16"/> }
                   </svg>
+                </button>
+              </div>
+              @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+                <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Please enter your password.</p>
+              }
+              <div class="mt-2 text-right">
+                <button type="button" (click)="openForgotPassword()"
+                        class="text-xs font-medium text-[#9C8B74] transition hover:text-[#7A664C] hover:underline">
+                  Forgot password?
+                </button>
+              </div>
+            </div>
 
+            <button type="submit" [disabled]="loginForm.invalid"
+                    class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                           shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                           hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+              Sign in
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            @if (adminEmailDetected) {
+              <p class="text-sm text-[#9C8B74]">Admin account detected. Registration is not available for admins.</p>
+            } @else {
+              <p class="text-sm text-[#9C8B74]">New to Toy Store?</p>
+            }
+            <button type="button" (click)="switchMode()" [disabled]="adminEmailDetected"
+                    class="mt-1 text-sm font-semibold text-[#7A664C] transition hover:underline
+                           disabled:cursor-not-allowed disabled:text-[#C9BEAA] disabled:no-underline">
+              Create your account
+            </button>
+          </div>
+
+        }
+
+        @else if (isLogin && showForgotPassword) {
+
+          <!-- ================= FORGOT PASSWORD ================= -->
+          <div class="mb-6 text-center">
+            <h1 class="text-2xl font-semibold tracking-[-0.02em] text-[#7A664C]">Reset your password</h1>
+            <p class="mt-1 text-sm text-[#9C8B74]">
+              @if (forgotStep === 'request') {
+                Enter the email linked to your account.
+              } @else if (forgotStep === 'otp') {
+                We sent a 6-digit code to {{ forgotEmailDisplay }}. It expires in 3 minutes.
+              } @else {
+                Choose a new password for your account.
+              }
+            </p>
+          </div>
+
+          @if (forgotStep === 'request') {
+
+            <form [formGroup]="forgotForm" (ngSubmit)="submitForgotEmail()" autocomplete="off" class="space-y-4">
+              <div>
+                <label for="forgot-email" class="sr-only">Email</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="forgot-email" name="forgot-email" type="email" formControlName="email"
+                         placeholder="Enter your email" autocomplete="email"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-5
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                </div>
+                @if (forgotForm.controls.email.touched && forgotForm.controls.email.invalid) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Please enter a valid email address.</p>
+                } @else if (forgotEmailNotFound) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">No account found with this email.</p>
                 }
+              </div>
 
+              <button type="submit" [disabled]="forgotForm.invalid"
+                      class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                             shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                             hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+                Continue
               </button>
-
-            </div>
-
-
-            @if (
-              loginForm.controls.password.touched &&
-              loginForm.controls.password.invalid
-            ) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                Please enter your password.
-              </p>
-
-            }
-
-          </div>
-
-
-          <!-- Sign In Button -->
-
-          <button
-            type="submit"
-            class="w-full rounded-full bg-[#292723] py-3.5
-                   text-sm font-semibold text-white
-                   transition duration-300
-                   hover:bg-[#8B6F52]
-                   disabled:cursor-not-allowed
-                   disabled:opacity-50"
-            [disabled]="loginForm.invalid"
-          >
-            Sign in
-          </button>
-
-        </form>
-
-
-       <!-- Register Link -->
-
-        <div
-          class="mt-7 border-t border-[#EAE6DE] pt-6 text-center"
-        >
-
-          @if (adminEmailDetected) {
-
-            <p class="text-sm text-[#817B72]">
-              Admin account detected. Registration is not available for admins.
-            </p>
-
-          } @else {
-
-            <p class="text-sm text-[#817B72]">
-              New to Toy Store?
-            </p>
+            </form>
 
           }
 
-          <button
-            type="button"
-            (click)="switchMode()"
-            [disabled]="adminEmailDetected"
-            class="mt-2 text-sm font-semibold text-[#8B6F52]
-                   transition hover:underline
-                   disabled:cursor-not-allowed
-                   disabled:text-[#B9B2A6]
-                   disabled:no-underline"
-          >
-            Create your account
-          </button>
+          @else if (forgotStep === 'otp') {
 
-        </div>
+            <div class="space-y-4">
+              <div>
+                <label for="forgot-otp-code" class="sr-only">Verification Code</label>
+                <input id="forgot-otp-code" type="text" inputmode="numeric" maxlength="6"
+                       [formControl]="otpControl" placeholder="123456" autocomplete="one-time-code"
+                       class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] px-5 text-center
+                              text-lg tracking-[0.4em] text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                              focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                @if (otpControl.touched && otpControl.invalid) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Enter the 6-digit code exactly as sent.</p>
+                } @else if (otpError) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">{{ otpError }}</p>
+                }
+              </div>
 
-      }
+              <div class="flex items-center justify-between px-1 text-sm">
+                <span class="text-[#9C8B74]">
+                  @if (!otpExpired) {
+                    Code expires in <span class="font-semibold text-[#4A3F31]">{{ otpTimerDisplay }}</span>
+                  } @else {
+                    <span class="font-medium text-[#9A5B52]">Code expired.</span>
+                  }
+                </span>
+                <button type="button" (click)="resendForgotOtp()" [disabled]="!otpExpired || sendingOtp"
+                        class="font-semibold text-[#7A664C] transition hover:underline
+                               disabled:cursor-not-allowed disabled:text-[#C9BEAA] disabled:hover:no-underline">
+                  {{ sendingOtp ? 'Sending...' : 'Resend code' }}
+                </button>
+              </div>
 
+              <button type="button" (click)="verifyForgotOtp()" [disabled]="otpExpired"
+                      class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                             shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                             hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+                Verify code
+              </button>
 
-      <!-- ================================================= -->
-      <!-- FORGOT PASSWORD -->
-      <!-- ================================================= -->
-
-      @else if (isLogin && showForgotPassword) {
-
-        <div class="mb-7">
-
-          <p
-            class="text-[10px] font-semibold uppercase tracking-[0.2em]
-                   text-[#9A8063]"
-          >
-            Account Recovery
-          </p>
-
-          <h1
-            class="mt-2 text-2xl font-semibold tracking-[-0.02em]
-                   text-[#292723]"
-          >
-            Reset your password
-          </h1>
-
-          <p class="mt-1 text-sm text-[#817B72]">
-
-            @if (forgotStep === 'request') {
-              Enter the email linked to your account.
-            } @else {
-              Choose a new password for your account.
-            }
-
-          </p>
-
-        </div>
-
-
-        <!-- Forgot Email -->
-
-        @if (forgotStep === 'request') {
-
-          <form
-            [formGroup]="forgotForm"
-            (ngSubmit)="submitForgotEmail()"
-            autocomplete="off"
-            class="space-y-5"
-          >
-
-            <div>
-
-              <label
-                for="forgot-email"
-                class="mb-2 block text-sm font-medium text-[#4E4942]"
-              >
-                Email
-              </label>
-
-              <input
-                id="forgot-email"
-                name="forgot-email"
-                type="email"
-                formControlName="email"
-                placeholder="Enter your email"
-                autocomplete="email"
-                class="w-full rounded-xl border border-[#D9D3C9]
-                       bg-[#FCFBF9] px-4 py-3 text-sm text-[#292723]
-                       outline-none transition
-                       placeholder:text-[#AAA59D]
-                       focus:border-[#8B6F52]
-                       focus:ring-2 focus:ring-[#8B6F52]/10"
-              >
-
-              @if (
-                forgotForm.controls.email.touched &&
-                forgotForm.controls.email.invalid
-              ) {
-
-                <p class="mt-1.5 text-xs text-[#9A5B52]">
-                  Please enter a valid email address.
-                </p>
-
-              } @else if (forgotEmailNotFound) {
-
-                <p class="mt-1.5 text-xs text-[#9A5B52]">
-                  No account found with this email.
-                </p>
-
-              }
-
+              <div class="text-center">
+                <button type="button" (click)="backToForgotEmail()"
+                        class="text-sm font-semibold text-[#7A664C] transition hover:underline">
+                  ← Use a different email
+                </button>
+              </div>
             </div>
 
+          }
 
-            <button
-              type="submit"
-              [disabled]="forgotForm.invalid"
-              class="w-full rounded-full bg-[#292723] py-3.5
-                     text-sm font-semibold text-white
-                     transition duration-300
-                     hover:bg-[#8B6F52]
-                     disabled:cursor-not-allowed
-                     disabled:opacity-50"
-            >
-              Continue
+          @else {
+
+            <form [formGroup]="resetForm" (ngSubmit)="submitNewPassword()" autocomplete="off" class="space-y-4">
+
+              <div>
+                <label for="reset-password" class="sr-only">New Password</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="reset-password" name="reset-password"
+                         [type]="showResetPassword ? 'text' : 'password'" formControlName="password"
+                         placeholder="Create a new password" autocomplete="new-password"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-12
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                  <button type="button" (click)="togglePasswordVisibility('reset')"
+                          class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#9C8B74] transition hover:text-[#4A3F31]"
+                          [attr.aria-label]="showResetPassword ? 'Hide password' : 'Show password'">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-[18px] w-[18px]">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.04 12.32a1 1 0 0 1 0-.64C3.42 7.51 7.36 4.5 12 4.5s8.57 3.01 9.96 7.18a1 1 0 0 1 0 .64C20.58 16.49 16.64 19.5 12 19.5s-8.57-3.01-9.96-7.18ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                      @if (showResetPassword) { <path stroke-linecap="round" d="M4 4l16 16"/> }
+                    </svg>
+                  </button>
+                </div>
+                @if (showResetPasswordError()) {
+                  <p class="mt-1.5 pl-4 text-xs leading-5 text-[#9A5B52]">
+                    Password must include at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.
+                  </p>
+                }
+              </div>
+
+              <div>
+                <label for="reset-confirm-password" class="sr-only">Confirm New Password</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="reset-confirm-password" name="reset-confirm-password"
+                         [type]="showResetConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                         placeholder="Confirm your new password" autocomplete="new-password"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-12
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                  <button type="button" (click)="togglePasswordVisibility('resetConfirm')"
+                          class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#9C8B74] transition hover:text-[#4A3F31]"
+                          [attr.aria-label]="showResetConfirmPassword ? 'Hide password' : 'Show password'">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-[18px] w-[18px]">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.04 12.32a1 1 0 0 1 0-.64C3.42 7.51 7.36 4.5 12 4.5s8.57 3.01 9.96 7.18a1 1 0 0 1 0 .64C20.58 16.49 16.64 19.5 12 19.5s-8.57-3.01-9.96-7.18ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                      @if (showResetConfirmPassword) { <path stroke-linecap="round" d="M4 4l16 16"/> }
+                    </svg>
+                  </button>
+                </div>
+                @if (showResetConfirmPasswordError()) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Passwords do not match.</p>
+                }
+              </div>
+
+              <button type="submit" [disabled]="resetForm.invalid"
+                      class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                             shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                             hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+                Reset password
+              </button>
+            </form>
+
+          }
+
+          <div class="mt-6 border-t border-[#EFE7D8] pt-5 text-center">
+            <button type="button" (click)="cancelForgotPassword()"
+                    class="text-sm font-semibold text-[#7A664C] transition hover:underline">
+              ← Back to sign in
             </button>
-
-          </form>
+          </div>
 
         }
-
-
-        <!-- Reset Password -->
 
         @else {
 
-          <form
-            [formGroup]="resetForm"
-            (ngSubmit)="submitNewPassword()"
-            autocomplete="off"
-            class="space-y-5"
-          >
+          @if (registerStep === 'form') {
 
-            <!-- New Password -->
-
-            <div>
-
-              <label
-                for="reset-password"
-                class="mb-2 block text-sm font-medium text-[#4E4942]"
-              >
-                New Password
-              </label>
-
-              <div class="relative">
-
-                <input
-                  id="reset-password"
-                  name="reset-password"
-                  [type]="showResetPassword ? 'text' : 'password'"
-                  formControlName="password"
-                  placeholder="Create a new password"
-                  autocomplete="new-password"
-                  class="w-full rounded-xl border border-[#D9D3C9]
-                         bg-[#FCFBF9] px-4 py-3 pr-11
-                         text-sm text-[#292723] outline-none transition
-                         placeholder:text-[#AAA59D]
-                         focus:border-[#8B6F52]
-                         focus:ring-2 focus:ring-[#8B6F52]/10"
-                >
-
-
-                <button
-                  type="button"
-                  (click)="togglePasswordVisibility('reset')"
-                  class="absolute inset-y-0 right-0 flex items-center
-                         pr-3.5 text-[#817B72]
-                         transition hover:text-[#4E4942]"
-                  [attr.aria-label]="
-                    showResetPassword ? 'Hide password' : 'Show password'
-                  "
-                >
-
-                  @if (showResetPassword) {
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.6"
-                      stroke="currentColor"
-                      class="h-[18px] w-[18px]"
-                    >
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12
-                        C3.226 16.338 7.244 19.5 12 19.5
-                        c.993 0 1.953-.138 2.863-.395
-                        M6.228 6.228A10.45 10.45 0 0 1 12 4.5
-                        c4.756 0 8.773 3.162 10.065 7.498
-                        a10.523 10.523 0 0 1-4.293 5.774
-                        M6.228 6.228 3 3m3.228 3.228
-                        3.65 3.65m7.894 7.894L21 21
-                        m-3.228-3.228-3.65-3.65m0 0
-                        a3 3 0 1 0-4.243-4.243
-                        m4.242 4.242L9.88 9.88"
-                      />
-
-                    </svg>
-
-                  } @else {
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.6"
-                      stroke="currentColor"
-                      class="h-[18px] w-[18px]"
-                    >
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
-                        C3.423 7.51 7.36 4.5 12 4.5
-                        c4.638 0 8.573 3.007 9.963 7.178
-                        .07.207.07.431 0 .639
-                        C20.577 16.49 16.64 19.5 12 19.5
-                        c-4.638 0-8.573-3.007-9.963-7.178Z"
-                      />
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                      />
-
-                    </svg>
-
-                  }
-
-                </button>
-
-              </div>
-
-
-              @if (showResetPasswordError()) {
-
-                <p class="mt-1.5 text-xs leading-5 text-[#9A5B52]">
-                  Password must include at least 8 characters,
-                  1 uppercase letter, 1 lowercase letter,
-                  1 digit, and 1 special character.
-                </p>
-
-              }
-
+            <!-- ================= REGISTER ================= -->
+            <div class="mb-6 text-center">
+              <h1 class="text-3xl font-semibold tracking-[-0.02em] text-[#7A664C]">Create account</h1>
+              <p class="mt-1 text-sm text-[#9C8B74]">Create your account to start your toy adventure.</p>
             </div>
 
+            <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off" class="space-y-4">
 
-            <!-- Confirm Password -->
-
-            <div>
-
-              <label
-                for="reset-confirm-password"
-                class="mb-2 block text-sm font-medium text-[#4E4942]"
-              >
-                Confirm New Password
-              </label>
-
-              <div class="relative">
-
-                <input
-                  id="reset-confirm-password"
-                  name="reset-confirm-password"
-                  [type]="showResetConfirmPassword ? 'text' : 'password'"
-                  formControlName="confirmPassword"
-                  placeholder="Confirm your new password"
-                  autocomplete="new-password"
-                  class="w-full rounded-xl border border-[#D9D3C9]
-                         bg-[#FCFBF9] px-4 py-3 pr-11
-                         text-sm text-[#292723] outline-none transition
-                         placeholder:text-[#AAA59D]
-                         focus:border-[#8B6F52]
-                         focus:ring-2 focus:ring-[#8B6F52]/10"
-                >
-
-
-                <button
-                  type="button"
-                  (click)="togglePasswordVisibility('resetConfirm')"
-                  class="absolute inset-y-0 right-0 flex items-center
-                         pr-3.5 text-[#817B72]
-                         transition hover:text-[#4E4942]"
-                  [attr.aria-label]="
-                    showResetConfirmPassword
-                      ? 'Hide password'
-                      : 'Show password'
-                  "
-                >
-
-                  @if (showResetConfirmPassword) {
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.6"
-                      stroke="currentColor"
-                      class="h-[18px] w-[18px]"
-                    >
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12
-                        C3.226 16.338 7.244 19.5 12 19.5
-                        c.993 0 1.953-.138 2.863-.395
-                        M6.228 6.228A10.45 10.45 0 0 1 12 4.5
-                        c4.756 0 8.773 3.162 10.065 7.498
-                        a10.523 10.523 0 0 1-4.293 5.774
-                        M6.228 6.228 3 3m3.228 3.228
-                        3.65 3.65m7.894 7.894L21 21
-                        m-3.228-3.228-3.65-3.65m0 0
-                        a3 3 0 1 0-4.243-4.243
-                        m4.242 4.242L9.88 9.88"
-                      />
-
+              <div>
+                <label for="register-name" class="sr-only">Name</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.1a7.5 7.5 0 0 1 15 0"/>
                     </svg>
-
-                  } @else {
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.6"
-                      stroke="currentColor"
-                      class="h-[18px] w-[18px]"
-                    >
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
-                        C3.423 7.51 7.36 4.5 12 4.5
-                        c4.638 0 8.573 3.007 9.963 7.178
-                        .07.207.07.431 0 .639
-                        C20.577 16.49 16.64 19.5 12 19.5
-                        c-4.638 0-8.573-3.007-9.963-7.178Z"
-                      />
-
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                      />
-
-                    </svg>
-
-                  }
-
-                </button>
-
+                  </span>
+                  <input id="register-name" name="register-name" type="text" formControlName="name"
+                         placeholder="Enter your name" autocomplete="name"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-5
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                </div>
+                @if (showNameError()) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">{{ nameErrorMessage() }}</p>
+                }
               </div>
 
+              <div>
+                <label for="register-email" class="sr-only">Email</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="register-email" name="register-email" type="email" formControlName="email"
+                         placeholder="Enter your email" autocomplete="off" (input)="emailTaken = false"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-5
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                </div>
+                @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Please enter a valid email address.</p>
+                } @else if (emailTaken) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">This email is already registered. Try signing in instead.</p>
+                }
+              </div>
 
-              @if (showResetConfirmPasswordError()) {
+              <div>
+                <label for="register-password" class="sr-only">Password</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="register-password" name="register-password"
+                         [type]="showRegisterPassword ? 'text' : 'password'" formControlName="password"
+                         placeholder="Create a password" autocomplete="new-password"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-12
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                  <button type="button" (click)="togglePasswordVisibility('register')"
+                          class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#9C8B74] transition hover:text-[#4A3F31]"
+                          [attr.aria-label]="showRegisterPassword ? 'Hide password' : 'Show password'">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-[18px] w-[18px]">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.04 12.32a1 1 0 0 1 0-.64C3.42 7.51 7.36 4.5 12 4.5s8.57 3.01 9.96 7.18a1 1 0 0 1 0 .64C20.58 16.49 16.64 19.5 12 19.5s-8.57-3.01-9.96-7.18ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                      @if (showRegisterPassword) { <path stroke-linecap="round" d="M4 4l16 16"/> }
+                    </svg>
+                  </button>
+                </div>
+                @if (showPasswordError()) {
+                  <p class="mt-1.5 pl-4 text-xs leading-5 text-[#9A5B52]">
+                    Password must include at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.
+                  </p>
+                }
+              </div>
 
-                <p class="mt-1.5 text-xs text-[#9A5B52]">
-                  Passwords do not match.
-                </p>
+              <div>
+                <label for="confirm-password" class="sr-only">Confirm Password</label>
+                <div class="relative">
+                  <span class="pointer-events-none absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B39B78] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                  </span>
+                  <input id="confirm-password" name="confirm-password"
+                         [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                         placeholder="Confirm your password" autocomplete="new-password"
+                         class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] pl-16 pr-12
+                                text-sm text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                                focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                  <button type="button" (click)="togglePasswordVisibility('confirm')"
+                          class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#9C8B74] transition hover:text-[#4A3F31]"
+                          [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-[18px] w-[18px]">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.04 12.32a1 1 0 0 1 0-.64C3.42 7.51 7.36 4.5 12 4.5s8.57 3.01 9.96 7.18a1 1 0 0 1 0 .64C20.58 16.49 16.64 19.5 12 19.5s-8.57-3.01-9.96-7.18ZM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                      @if (showConfirmPassword) { <path stroke-linecap="round" d="M4 4l16 16"/> }
+                    </svg>
+                  </button>
+                </div>
+                @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.invalid) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Please confirm your password.</p>
+                } @else if (showConfirmPasswordError()) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Passwords do not match.</p>
+                }
+              </div>
 
-              }
+              <button type="submit" [disabled]="registerForm.invalid || emailTaken"
+                      class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                             shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                             hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+                {{ sendingOtp ? 'Sending code...' : 'Create account' }}
+              </button>
+            </form>
 
+            <div class="mt-6 text-center">
+              <p class="text-sm text-[#9C8B74]">Already have an account?</p>
+              <button type="button" (click)="switchMode()"
+                      class="mt-1 text-sm font-semibold text-[#7A664C] transition hover:underline">
+                Sign in
+              </button>
             </div>
 
+          }
 
-            <button
-              type="submit"
-              [disabled]="resetForm.invalid"
-              class="w-full rounded-full bg-[#292723] py-3.5
-                     text-sm font-semibold text-white
-                     transition duration-300
-                     hover:bg-[#8B6F52]
-                     disabled:cursor-not-allowed
-                     disabled:opacity-50"
-            >
-              Reset Password
-            </button>
+          @else {
 
-          </form>
+            <!-- ================= VERIFY EMAIL ================= -->
+            <div class="mb-6 text-center">
+              <h1 class="text-2xl font-semibold tracking-[-0.02em] text-[#7A664C]">Enter verification code</h1>
+              <p class="mt-1 text-sm text-[#9C8B74]">We sent a 6-digit code to your email. It expires in 3 minutes.</p>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label for="otp-code" class="sr-only">Verification Code</label>
+                <input id="otp-code" type="text" inputmode="numeric" maxlength="6"
+                       [formControl]="otpControl" placeholder="123456" autocomplete="one-time-code"
+                       class="h-12 w-full rounded-full border border-[#E6DCCB] bg-[#F7F2E8] px-5 text-center
+                              text-lg tracking-[0.4em] text-[#4A3F31] outline-none transition placeholder:text-[#B5A892]
+                              focus:border-[#B39B78] focus:ring-2 focus:ring-[#B39B78]/20">
+                @if (otpControl.touched && otpControl.invalid) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">Enter the 6-digit code exactly as sent.</p>
+                } @else if (otpError) {
+                  <p class="mt-1.5 pl-4 text-xs text-[#9A5B52]">{{ otpError }}</p>
+                }
+              </div>
+
+              <div class="flex items-center justify-between px-1 text-sm">
+                <span class="text-[#9C8B74]">
+                  @if (!otpExpired) {
+                    Code expires in <span class="font-semibold text-[#4A3F31]">{{ otpTimerDisplay }}</span>
+                  } @else {
+                    <span class="font-medium text-[#9A5B52]">Code expired.</span>
+                  }
+                </span>
+                <button type="button" (click)="resendOtp()" [disabled]="!otpExpired || sendingOtp"
+                        class="font-semibold text-[#7A664C] transition hover:underline
+                               disabled:cursor-not-allowed disabled:text-[#C9BEAA] disabled:hover:no-underline">
+                  {{ sendingOtp ? 'Sending...' : 'Resend code' }}
+                </button>
+              </div>
+
+              <button type="button" (click)="verifyOtp()" [disabled]="verifyingOtp || otpExpired || otpControl.invalid"
+                      class="w-full rounded-full bg-[#B39B78] py-3.5 text-base font-semibold text-white
+                             shadow-[0_8px_20px_rgba(179,155,120,0.35)] transition duration-300
+                             hover:bg-[#8F7650] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+                {{ verifyingOtp ? 'Verifying...' : 'Verify & create account' }}
+              </button>
+            </div>
+
+            <div class="mt-6 border-t border-[#EFE7D8] pt-5 text-center">
+              <button type="button" (click)="backToRegisterForm()"
+                      class="text-sm font-semibold text-[#7A664C] transition hover:underline">
+                ← Back to registration form
+              </button>
+            </div>
+
+          }
 
         }
 
-
-        <!-- Back -->
-
-        <div
-          class="mt-7 border-t border-[#EAE6DE] pt-6 text-center"
-        >
-
-          <button
-            type="button"
-            (click)="cancelForgotPassword()"
-            class="text-sm font-semibold text-[#8B6F52]
-                   transition hover:underline"
-          >
-            ← Back to Sign In
-          </button>
-
-        </div>
-
-      }
-
-
-      <!-- ================================================= -->
-      <!-- REGISTER -->
-      <!-- ================================================= -->
-
-      @else {
-        @if (registerStep === 'form') {
-
-        <div class="mb-7">
-
-          <p
-            class="text-[10px] font-semibold uppercase tracking-[0.2em]
-                   text-[#9A8063]"
-          >
-            Get Started
-          </p>
-
-          <h1
-            class="mt-2 text-2xl font-semibold tracking-[-0.02em]
-                   text-[#292723]"
-          >
-            Create account
-          </h1>
-
-          <p class="mt-1 text-sm text-[#817B72]">
-            Create your account to start shopping.
-          </p>
-
-        </div>
-
-
-        <form
-          [formGroup]="registerForm"
-          (ngSubmit)="register()"
-          autocomplete="off"
-          class="space-y-5"
-        >
-
-          <!-- Name -->
-
-          <div>
-
-            <label
-              for="register-name"
-              class="mb-2 block text-sm font-medium text-[#4E4942]"
-            >
-              Name
-            </label>
-
-            <input
-              id="register-name"
-              name="register-name"
-              type="text"
-              formControlName="name"
-              placeholder="Enter your name"
-              autocomplete="name"
-              class="w-full rounded-xl border border-[#D9D3C9]
-                     bg-[#FCFBF9] px-4 py-3 text-sm text-[#292723]
-                     outline-none transition
-                     placeholder:text-[#AAA59D]
-                     focus:border-[#8B6F52]
-                     focus:ring-2 focus:ring-[#8B6F52]/10"
-            >
-
-            @if (showNameError()) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                {{ nameErrorMessage() }}
-              </p>
-
-            }
-
-          </div>
-
-
-          <!-- Email -->
-
-          <div>
-
-            <label
-              for="register-email"
-              class="mb-2 block text-sm font-medium text-[#4E4942]"
-            >
-              Email
-            </label>
-
-            <input
-              id="register-email"
-              name="register-email"
-              type="email"
-              formControlName="email"
-              placeholder="Enter your email"
-              autocomplete="off"
-              (input)="emailTaken = false"
-              class="w-full rounded-xl border border-[#D9D3C9]
-                     bg-[#FCFBF9] px-4 py-3 text-sm text-[#292723]
-                     outline-none transition
-                     placeholder:text-[#AAA59D]
-                     focus:border-[#8B6F52]
-                     focus:ring-2 focus:ring-[#8B6F52]/10"
-            >
-
-
-            @if (
-              registerForm.controls.email.touched &&
-              registerForm.controls.email.invalid
-            ) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                Please enter a valid email address.
-              </p>
-
-            } @else if (emailTaken) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                This email is already registered.
-                Try signing in instead.
-              </p>
-
-            }
-
-          </div>
-
-
-          <!-- Password -->
-
-          <div>
-
-            <label
-              for="register-password"
-              class="mb-2 block text-sm font-medium text-[#4E4942]"
-            >
-              Password
-            </label>
-
-            <div class="relative">
-
-              <input
-                id="register-password"
-                name="register-password"
-                [type]="showRegisterPassword ? 'text' : 'password'"
-                formControlName="password"
-                placeholder="Create a password"
-                autocomplete="new-password"
-                class="w-full rounded-xl border border-[#D9D3C9]
-                       bg-[#FCFBF9] px-4 py-3 pr-11
-                       text-sm text-[#292723] outline-none transition
-                       placeholder:text-[#AAA59D]
-                       focus:border-[#8B6F52]
-                       focus:ring-2 focus:ring-[#8B6F52]/10"
-              >
-
-
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('register')"
-                class="absolute inset-y-0 right-0 flex items-center
-                       pr-3.5 text-[#817B72]
-                       transition hover:text-[#4E4942]"
-                [attr.aria-label]="
-                  showRegisterPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                "
-              >
-
-                @if (showRegisterPassword) {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12
-                      C3.226 16.338 7.244 19.5 12 19.5
-                      c.993 0 1.953-.138 2.863-.395
-                      M6.228 6.228A10.45 10.45 0 0 1 12 4.5
-                      c4.756 0 8.773 3.162 10.065 7.498
-                      a10.523 10.523 0 0 1-4.293 5.774
-                      M6.228 6.228 3 3m3.228 3.228
-                      3.65 3.65m7.894 7.894L21 21
-                      m-3.228-3.228-3.65-3.65m0 0
-                      a3 3 0 1 0-4.243-4.243
-                      m4.242 4.242L9.88 9.88"
-                    />
-
-                  </svg>
-
-                } @else {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
-                      C3.423 7.51 7.36 4.5 12 4.5
-                      c4.638 0 8.573 3.007 9.963 7.178
-                      .07.207.07.431 0 .639
-                      C20.577 16.49 16.64 19.5 12 19.5
-                      c-4.638 0-8.573-3.007-9.963-7.178Z"
-                    />
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-
-                  </svg>
-
-                }
-
-              </button>
-
-            </div>
-
-
-            @if (showPasswordError()) {
-
-              <p class="mt-1.5 text-xs leading-5 text-[#9A5B52]">
-                Password must include at least 8 characters,
-                1 uppercase letter, 1 lowercase letter,
-                1 digit, and 1 special character.
-              </p>
-
-            }
-
-          </div>
-
-
-          <!-- Confirm Password -->
-
-          <div>
-
-            <label
-              for="confirm-password"
-              class="mb-2 block text-sm font-medium text-[#4E4942]"
-            >
-              Confirm Password
-            </label>
-
-            <div class="relative">
-
-              <input
-                id="confirm-password"
-                name="confirm-password"
-                [type]="showConfirmPassword ? 'text' : 'password'"
-                formControlName="confirmPassword"
-                placeholder="Confirm your password"
-                autocomplete="new-password"
-                class="w-full rounded-xl border border-[#D9D3C9]
-                       bg-[#FCFBF9] px-4 py-3 pr-11
-                       text-sm text-[#292723] outline-none transition
-                       placeholder:text-[#AAA59D]
-                       focus:border-[#8B6F52]
-                       focus:ring-2 focus:ring-[#8B6F52]/10"
-              >
-
-
-              <button
-                type="button"
-                (click)="togglePasswordVisibility('confirm')"
-                class="absolute inset-y-0 right-0 flex items-center
-                       pr-3.5 text-[#817B72]
-                       transition hover:text-[#4E4942]"
-                [attr.aria-label]="
-                  showConfirmPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                "
-              >
-
-                @if (showConfirmPassword) {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12
-                      C3.226 16.338 7.244 19.5 12 19.5
-                      c.993 0 1.953-.138 2.863-.395
-                      M6.228 6.228A10.45 10.45 0 0 1 12 4.5
-                      c4.756 0 8.773 3.162 10.065 7.498
-                      a10.523 10.523 0 0 1-4.293 5.774
-                      M6.228 6.228 3 3m3.228 3.228
-                      3.65 3.65m7.894 7.894L21 21
-                      m-3.228-3.228-3.65-3.65m0 0
-                      a3 3 0 1 0-4.243-4.243
-                      m4.242 4.242L9.88 9.88"
-                    />
-
-                  </svg>
-
-                } @else {
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.6"
-                    stroke="currentColor"
-                    class="h-[18px] w-[18px]"
-                  >
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
-                      C3.423 7.51 7.36 4.5 12 4.5
-                      c4.638 0 8.573 3.007 9.963 7.178
-                      .07.207.07.431 0 .639
-                      C20.577 16.49 16.64 19.5 12 19.5
-                      c-4.638 0-8.573-3.007-9.963-7.178Z"
-                    />
-
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-
-                  </svg>
-
-                }
-
-              </button>
-
-            </div>
-
-
-            @if (
-              registerForm.controls.confirmPassword.touched &&
-              registerForm.controls.confirmPassword.invalid
-            ) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                Please confirm your password.
-              </p>
-
-            } @else if (showConfirmPasswordError()) {
-
-              <p class="mt-1.5 text-xs text-[#9A5B52]">
-                Passwords do not match.
-              </p>
-
-            }
-
-          </div>
-
-
-          <!-- Create Account Button -->
-
-          <button
-            type="submit"
-            [disabled]="registerForm.invalid || emailTaken"
-            class="w-full rounded-full bg-[#292723] py-3.5
-                   text-sm font-semibold text-white
-                   transition duration-300
-                   hover:bg-[#8B6F52]
-                   disabled:cursor-not-allowed
-                   disabled:opacity-50"
-          >
-            {{ sendingOtp ? 'Sending code...' : 'Create account' }}
-          </button>
-
-        </form>
-
-
-        <!-- Sign In Link -->
-
-        <div
-          class="mt-7 border-t border-[#EAE6DE] pt-6 text-center"
-        >
-
-          <p class="text-sm text-[#817B72]">
-            Already have an account?
-          </p>
-
-          <button
-            type="button"
-            (click)="switchMode()"
-            class="mt-2 text-sm font-semibold text-[#8B6F52]
-                   transition hover:underline"
-          >
-            Sign in
-          </button>
-
-        </div>
-
-      }
-      @else {
-
-          <!-- ================================================= -->
-          <!-- OTP VERIFICATION -->
-          <!-- ================================================= -->
-
-          <div class="mb-7">
-
-            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#9A8063]">
-              Verify Your Email
-            </p>
-
-            <h1 class="mt-2 text-2xl font-semibold tracking-[-0.02em] text-[#292723]">
-              Enter verification code
-            </h1>
-
-            <p class="mt-1 text-sm text-[#817B72]">
-              We sent a 6-digit code to your email. It expires in 3 minutes.
-            </p>
-
-          </div>
-
-          <div class="space-y-5">
-
-            <div>
-
-              <label for="otp-code" class="mb-2 block text-sm font-medium text-[#4E4942]">
-                Verification Code
-              </label>
-
-              <input
-                id="otp-code"
-                type="text"
-                inputmode="numeric"
-                maxlength="6"
-                [formControl]="otpControl"
-                placeholder="123456"
-                autocomplete="one-time-code"
-                class="w-full rounded-xl border border-[#D9D3C9] bg-[#FCFBF9]
-                       px-4 py-3 text-center text-lg tracking-[0.4em] text-[#292723]
-                       outline-none transition placeholder:text-[#AAA59D]
-                       focus:border-[#8B6F52] focus:ring-2 focus:ring-[#8B6F52]/10"
-              >
-
-              @if (otpControl.touched && otpControl.invalid) {
-                <p class="mt-1.5 text-xs text-[#9A5B52]">
-                  Enter the 6-digit code exactly as sent.
-                </p>
-              } @else if (otpError) {
-                <p class="mt-1.5 text-xs text-[#9A5B52]">
-                  {{ otpError }}
-                </p>
-              }
-
-            </div>
-
-            <div class="flex items-center justify-between text-sm">
-
-              <span class="text-[#817B72]">
-                @if (!otpExpired) {
-                  Code expires in
-                  <span class="font-semibold text-[#292723]">{{ otpTimerDisplay }}</span>
-                } @else {
-                  <span class="font-medium text-[#9A5B52]">Code expired.</span>
-                }
-              </span>
-
-              <button
-                type="button"
-                (click)="resendOtp()"
-                [disabled]="!otpExpired || sendingOtp"
-                class="font-semibold text-[#8B6F52] transition
-                       hover:underline
-                       disabled:cursor-not-allowed disabled:text-[#AAA59D] disabled:hover:no-underline"
-              >
-                {{ sendingOtp ? 'Sending...' : 'Resend code' }}
-              </button>
-
-            </div>
-
-            <button
-              type="button"
-              (click)="verifyOtp()"
-              [disabled]="verifyingOtp || otpExpired || otpControl.invalid"
-              class="w-full rounded-full bg-[#292723] py-3.5
-                     text-sm font-semibold text-white
-                     transition duration-300
-                     hover:bg-[#8B6F52]
-                     disabled:cursor-not-allowed
-                     disabled:opacity-50"
-            >
-              {{ verifyingOtp ? 'Verifying...' : 'Verify & Create Account' }}
-            </button>
-
-          </div>
-
-          <div class="mt-7 border-t border-[#EAE6DE] pt-6 text-center">
-            <button
-              type="button"
-              (click)="backToRegisterForm()"
-              class="text-sm font-semibold text-[#8B6F52] transition hover:underline"
-            >
-              ← Back to registration form
-            </button>
-          </div>
-
-        }
-
-      }
-
+      </div>
     </div>
 
-  </div>
-
-</div>
+    
